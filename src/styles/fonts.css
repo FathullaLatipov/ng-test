@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
+
+html { scroll-behavior: smooth; font-family: 'Manrope', sans-serif; }
+
+::-webkit-scrollbar { width: 3px; background: #080808; }
+::-webkit-scrollbar-thumb { background: #C9A24B; border-radius: 2px; }
+
+/* ─── Marquee ────────────────────────────────────── */
+@keyframes marquee-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ─── Hero image Ken Burns ───────────────────────── */
+@keyframes ken-burns {
+  0%   { transform: scale(1)    translate(0, 0); }
+  100% { transform: scale(1.08) translate(-2%, -1%); }
+}
+@keyframes ken-burns-b {
+  0%   { transform: scale(1)    translate(0, 0); }
+  100% { transform: scale(1.08) translate(2%, 1%); }
+}
+
+/* ─── Light sweep across hero ────────────────────── */
+@keyframes light-sweep {
+  0%   { transform: translateX(-150%) skewX(-18deg); opacity: 0; }
+  8%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { transform: translateX(250%)  skewX(-18deg); opacity: 0; }
+}
+@keyframes light-sweep-b {
+  0%   { transform: translateX(-150%) skewX(-18deg); opacity: 0; }
+  8%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { transform: translateX(250%)  skewX(-18deg); opacity: 0; }
+}
+
+/* ─── Floating particle drift ────────────────────── */
+@keyframes drift-up {
+  0%   { transform: translateY(0)   translateX(0);  opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 0.6; }
+  100% { transform: translateY(-80px) translateX(12px); opacity: 0; }
+}
+
+/* ─── Gold pulse ring ────────────────────────────── */
+@keyframes pulse-ring {
+  0%   { transform: scale(1);   opacity: 0.8; }
+  100% { transform: scale(2.8); opacity: 0; }
+}
+
+/* ─── Dot travel along route ─────────────────────── */
+@keyframes route-travel {
+  0%   { opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ─── Stat bar fill ──────────────────────────────── */
+@keyframes fill-bar {
+  from { width: 0; }
+  to   { width: var(--target-w); }
+}
+
+/* ─── Section grid float ─────────────────────────── */
+@keyframes grid-float {
+  0%, 100% { transform: translateY(0);   }
+  50%       { transform: translateY(-6px); }
+}
+
+/* ─── Glow pulse on gold elements ───────────────── */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(201,162,75,0.25), 0 0 24px rgba(201,162,75,0.08); }
+  50%       { box-shadow: 0 0 20px rgba(201,162,75,0.5), 0 0 48px rgba(201,162,75,0.18); }
+}
+
+/* ─── Diagonal gold sheen ────────────────────────── */
+@keyframes gold-sheen {
+  0%   { left: -60%; }
+  100% { left: 140%; }
+}
