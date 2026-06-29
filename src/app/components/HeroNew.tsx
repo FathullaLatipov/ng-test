@@ -130,7 +130,7 @@ export function HeroNew() {
               backgroundImage: `url(${s.img})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
-              filter: "brightness(0.22) saturate(0.4)",
+              filter: "brightness(0.5) saturate(0.75)",
               animation: `${s.kb} 9s ease-out forwards`,
             }}
           />
@@ -138,7 +138,7 @@ export function HeroNew() {
       ))}
 
       {/* ── Gradient overlays ───────────────────────── */}
-      <div style={{ position: "absolute", inset: 0, zIndex: 3, background: "linear-gradient(105deg, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.55) 55%, rgba(5,5,5,0.2) 100%)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", inset: 0, zIndex: 3, background: "linear-gradient(105deg, rgba(5,5,5,0.82) 0%, rgba(5,5,5,0.42) 55%, rgba(5,5,5,0.08) 100%)", pointerEvents: "none" }} />
       <div style={{ position: "absolute", inset: 0, zIndex: 3, background: "radial-gradient(ellipse at 70% 50%, rgba(201,162,75,0.07) 0%, transparent 65%)", pointerEvents: "none" }} />
       <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "28%", zIndex: 3, background: "linear-gradient(to top, #050505 0%, transparent 100%)", pointerEvents: "none" }} />
 
