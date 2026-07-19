@@ -1,5 +1,7 @@
 import { useRef, useState } from "react";
 import { motion, useInView } from "motion/react";
+import { Link } from "react-router";
+import nobelLogo from "../../assets/nobel-logo.png";
 
 const LANGS = ["RU", "UZ", "EN"];
 
@@ -10,12 +12,52 @@ const INQUIRY_TYPES = [
   { id: "career", label: "Отправить резюме", icon: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10" },
 ];
 
-const FOOTER_COLS = [
-  { title: "О группе", links: ["О компании", "История компании", "Миссия и ценности", "Руководство"] },
-  { title: "Бизнес", links: ["Импорт и закупки", "Дистрибуция", "HoReCa-поставки", "Развитие брендов"] },
-  { title: "Партнёрство", links: ["Для поставщиков", "Для дистрибьюторов", "Для HoReCa", "Стать партнёром"] },
-  { title: "Компания", links: ["Карьера", "Новости", "География", "Категории продукции"] },
-  { title: "Контакты", links: ["Ташкент, Узбекистан", "+998 71 000 00 00", "info@nobelgroup.uz", "Запросы на партнёрство"] },
+const FOOTER_COLS: { title: string; links: { label: string; to?: string }[] }[] = [
+  {
+    title: "О группе",
+    links: [
+      { label: "О компании", to: "/#about" },
+      { label: "История компании", to: "/history" },
+      { label: "Миссия и ценности", to: "/history" },
+      { label: "Главная", to: "/" },
+    ],
+  },
+  {
+    title: "Бизнес",
+    links: [
+      { label: "Импорт и закупки", to: "/business" },
+      { label: "Дистрибуция", to: "/business" },
+      { label: "HoReCa-поставки", to: "/business" },
+      { label: "Развитие брендов", to: "/business" },
+    ],
+  },
+  {
+    title: "Партнёрство",
+    links: [
+      { label: "Для поставщиков", to: "/partnership" },
+      { label: "Для дистрибьюторов", to: "/partnership" },
+      { label: "Для HoReCa", to: "/partnership" },
+      { label: "Стать партнёром", to: "/contacts" },
+    ],
+  },
+  {
+    title: "Компания",
+    links: [
+      { label: "Карьера", to: "/careers" },
+      { label: "География", to: "/geography" },
+      { label: "Категории продукции", to: "/business" },
+      { label: "Контакты", to: "/contacts" },
+    ],
+  },
+  {
+    title: "Контакты",
+    links: [
+      { label: "Ташкент, Узбекистан", to: "/contacts" },
+      { label: "+998 71 000 00 00" },
+      { label: "info@nobelgroup.uz" },
+      { label: "Запросы на партнёрство", to: "/contacts" },
+    ],
+  },
 ];
 
 export function ContactFooterNew() {
@@ -28,7 +70,7 @@ export function ContactFooterNew() {
 
   return (
     <>
-      <section id="contact" ref={ref} style={{ background: "#0A0A0A", padding: "110px 80px", position: "relative" }}>
+      <section id="contact" ref={ref} className="ng-sec-pad" style={{ background: "#0A0A0A", padding: "110px 80px", position: "relative" }}>
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(to right, transparent, rgba(201,162,75,0.2) 50%, transparent)" }} />
         <div style={{ maxWidth: 1400, margin: "0 auto" }}>
           <div style={{ marginBottom: 56 }}>
@@ -42,7 +84,7 @@ export function ContactFooterNew() {
             </motion.h2>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 72 }}>
+          <div className="ng-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 72 }}>
             {/* Left */}
             <div>
               <motion.div initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }} style={{ marginBottom: 32 }}>
@@ -126,14 +168,12 @@ export function ContactFooterNew() {
       </section>
 
       {/* Footer */}
-      <footer style={{ background: "#080808", borderTop: "1px solid rgba(255,255,255,0.07)", padding: "60px 80px 34px" }}>
+      <footer className="ng-side-pad" style={{ background: "#080808", borderTop: "1px solid rgba(255,255,255,0.07)", padding: "60px 80px 34px" }}>
         <div style={{ maxWidth: 1400, margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "220px 1fr", gap: 72, marginBottom: 48, paddingBottom: 48, borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+          <div className="ng-grid-2" style={{ display: "grid", gridTemplateColumns: "220px 1fr", gap: 72, marginBottom: 48, paddingBottom: 48, borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-                <div style={{ width: 28, height: 28, border: "2px solid #C9A24B", display: "flex", alignItems: "center", justifyContent: "center", transform: "rotate(45deg)" }}>
-                  <div style={{ width: 7, height: 7, background: "#C9A24B" }} />
-                </div>
+                <img src={nobelLogo} alt="Nobel Group" style={{ width: 32, height: 32, objectFit: "contain", flexShrink: 0 }} />
                 <div>
                   <div style={{ color: "#FFFFFF", fontSize: 14, fontWeight: 800, letterSpacing: "0.12em" }}>NOBEL</div>
                   <div style={{ color: "#C9A24B", fontSize: 8, fontWeight: 500, letterSpacing: "0.3em", marginTop: 1 }}>GROUP</div>
@@ -151,24 +191,34 @@ export function ContactFooterNew() {
                 ))}
               </div>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 28 }}>
+            <div className="ng-grid-5" style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 28 }}>
               {FOOTER_COLS.map((col) => (
                 <div key={col.title}>
                   <div style={{ color: "#FFFFFF", fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", marginBottom: 16 }}>{col.title.toUpperCase()}</div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                    {col.links.map((link) => (
-                      <a key={link} href="#" style={{ color: "#9A9A9A", textDecoration: "none", fontSize: 12, fontWeight: 400, lineHeight: 1.4, transition: "color 0.25s" }}
-                        onMouseEnter={(e) => (e.currentTarget.style.color = "#C9A24B")}
-                        onMouseLeave={(e) => (e.currentTarget.style.color = "#9A9A9A")}>
-                        {link}
-                      </a>
-                    ))}
+                    {col.links.map((link) =>
+                      link.to ? (
+                        <Link
+                          key={link.label}
+                          to={link.to}
+                          style={{ color: "#9A9A9A", textDecoration: "none", fontSize: 12, fontWeight: 400, lineHeight: 1.4, transition: "color 0.25s" }}
+                          onMouseEnter={(e) => (e.currentTarget.style.color = "#C9A24B")}
+                          onMouseLeave={(e) => (e.currentTarget.style.color = "#9A9A9A")}
+                        >
+                          {link.label}
+                        </Link>
+                      ) : (
+                        <span key={link.label} style={{ color: "#9A9A9A", fontSize: 12, fontWeight: 400, lineHeight: 1.4 }}>
+                          {link.label}
+                        </span>
+                      )
+                    )}
                   </div>
                 </div>
               ))}
             </div>
           </div>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div className="ng-stack ng-stack-center ng-footer-bottom" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div style={{ color: "#9A9A9A", fontSize: 11 }}>© 2024 Nobel Group. Все права защищены. Ташкент, Узбекистан.</div>
             <div style={{ display: "flex", gap: 22 }}>
               {["Политика конфиденциальности", "Условия использования"].map((item) => (

@@ -220,7 +220,7 @@ export function DesignSystem() {
                   <div style={{ position: "absolute", top: 0, left: 0, width: 32, height: 2, background: "#C9A24B" }} />
                   <div style={{ color: "#C9A24B", fontSize: 12, marginBottom: 8 }}>◈</div>
                   <div style={{ color: "#FFFFFF", fontSize: 15, fontWeight: 700, marginBottom: 8 }}>
-                    Nobel Trade
+                    Nobel group
                   </div>
                   <div style={{ color: "#9A9A9A", fontSize: 12, lineHeight: 1.6 }}>
                     Hover this card to see lift, border glow, and depth shadow.

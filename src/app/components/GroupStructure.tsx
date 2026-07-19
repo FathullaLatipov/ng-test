@@ -4,7 +4,7 @@ import { motion, useInView } from "motion/react";
 const DIVISIONS = [
   {
     id: "trade",
-    name: "Nobel Trade",
+    name: "Nobel group",
     desc: "Large-scale wholesale operations and strategic retail network management across all regions.",
     icon: "◈",
     color: "#C9A24B",

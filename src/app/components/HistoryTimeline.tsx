@@ -14,7 +14,7 @@ const MILESTONES = [
   },
   {
     year: "2016",
-    title: "Nobel Trade Launch",
+    title: "Nobel group Launch",
     desc: "Launched wholesale trade division, establishing direct supply contracts with 500+ retail outlets across 3 regions.",
   },
   {

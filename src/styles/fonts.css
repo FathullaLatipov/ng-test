@@ -1,9 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
 
+:root {
+  --ng-gold: #D5A251;
+  --ng-gold-soft: #C9A24B;
+  --ng-ink: #1A1814;
+  --ng-muted: #6B6760;
+  --ng-muted-dark: #9A958C;
+  --ng-paper: #F7F6F3;
+  --ng-paper-deep: #EEECE7;
+  --ng-surface: #FFFFFF;
+  --ng-void: #12110F;
+  --ng-charcoal: #181714;
+  --ng-elevated: #1E1C18;
+  --ng-line: rgba(26, 24, 20, 0.08);
+  --ng-line-dark: rgba(255, 255, 255, 0.08);
+}
+
 html { scroll-behavior: smooth; font-family: 'Manrope', sans-serif; }
 
-::-webkit-scrollbar { width: 3px; background: #080808; }
-::-webkit-scrollbar-thumb { background: #C9A24B; border-radius: 2px; }
+::-webkit-scrollbar { width: 3px; background: #12110F; }
+::-webkit-scrollbar-thumb { background: linear-gradient(0deg, #D5A251, #2F2512 97%); border-radius: 2px; }
+
+.text-gold-glow {
+  color: var(--ng-gold);
+  text-shadow: 0 0 24px rgba(213, 162, 81, 0.35), 0 0 48px rgba(213, 162, 81, 0.12);
+}
 
 /* ─── Marquee ────────────────────────────────────── */
 @keyframes marquee-scroll {

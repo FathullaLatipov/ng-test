@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
+import { Link } from "react-router";
 
 const TEAM_IMG = "https://images.unsplash.com/photo-1758518731468-98e90ffd7430?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200";
 
@@ -7,7 +8,7 @@ const OPEN_ROLES = [
   { title: "Менеджер по ключевым клиентам", dept: "Продажи и торговля", type: "Полная занятость", location: "Ташкент" },
   { title: "Координатор дистрибуционной логистики", dept: "Операции", type: "Полная занятость", location: "Ташкент" },
   { title: "Представитель HoReCa", dept: "Подразделение HoReCa", type: "Полная занятость", location: "Ташкент / Самарканд" },
-  { title: "Специалист по импорту и закупкам", dept: "Nobel Trade", type: "Полная занятость", location: "Ташкент" },
+  { title: "Специалист по импорту и закупкам", dept: "Nobel group", type: "Полная занятость", location: "Ташкент" },
 ];
 
 const VALUES_CAREERS = [
@@ -20,10 +21,10 @@ export function CareersSection() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   return (
-    <section id="careers" style={{ background: "#0D0D0D", padding: "110px 80px", position: "relative" }}>
+    <section id="careers" className="ng-sec-pad" style={{ background: "#0D0D0D", padding: "110px 80px", position: "relative" }}>
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(to right, transparent, rgba(201,162,75,0.2) 50%, transparent)" }} />
       <div style={{ maxWidth: 1400, margin: "0 auto" }} ref={ref}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 72, alignItems: "start" }}>
+        <div className="ng-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 72, alignItems: "start" }}>
           {/* Left */}
           <div>
             <motion.div initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
@@ -86,12 +87,12 @@ export function CareersSection() {
               <p style={{ color: "#9A9A9A", fontSize: 13, lineHeight: 1.7, marginBottom: 18 }}>
                 Мы всегда ищем опытных специалистов в области продаж, логистики, операций и торговли. Пришлите резюме — мы свяжемся, когда появится подходящая возможность.
               </p>
-              <a href="#contact"
+              <Link to="/careers#resume"
                 style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#C9A24B", color: "#0A0A0A", textDecoration: "none", fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", padding: "11px 20px", transition: "all 0.3s" }}
                 onMouseEnter={(e) => { e.currentTarget.style.background = "#D4AF37"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(201,162,75,0.3)"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = "#C9A24B"; e.currentTarget.style.boxShadow = "none"; }}>
                 ОТПРАВИТЬ РЕЗЮМЕ →
-              </a>
+              </Link>
             </motion.div>
           </div>
         </div>

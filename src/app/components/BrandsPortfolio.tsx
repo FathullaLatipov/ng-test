@@ -28,10 +28,10 @@ export function BrandsPortfolio() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   return (
-    <section id="brands" style={{ background: "#0D0D0D", padding: "110px 0", position: "relative", overflow: "hidden" }}>
+    <section id="brands" className="ng-sec-pad-v" style={{ background: "#0D0D0D", padding: "110px 0", position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(to right, transparent, rgba(201,162,75,0.2) 50%, transparent)" }} />
-      <div style={{ padding: "0 80px", maxWidth: 1400, margin: "0 auto" }} ref={ref}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "end", marginBottom: 56 }}>
+      <div className="ng-side-pad" style={{ padding: "0 80px", maxWidth: 1400, margin: "0 auto" }} ref={ref}>
+        <div className="ng-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "end", marginBottom: 56 }}>
           <div>
             <motion.div initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
               <div style={{ width: 24, height: 1, background: "#C9A24B" }} />
@@ -47,7 +47,7 @@ export function BrandsPortfolio() {
           </motion.p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 36, marginBottom: 48 }}>
+        <div className="ng-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 36, marginBottom: 48 }}>
           {/* Own brands */}
           <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.25 }}>
             <div style={{ color: "#9A9A9A", fontSize: 11, fontWeight: 600, letterSpacing: "0.18em", marginBottom: 18, paddingBottom: 12, borderBottom: "1px solid rgba(201,162,75,0.2)", display: "flex", alignItems: "center", gap: 8 }}>
@@ -100,8 +100,9 @@ export function BrandsPortfolio() {
         </div>
       </div>
 
-      <div style={{ padding: "36px 80px 0", maxWidth: 1400, margin: "0 auto" }}>
+      <div className="ng-side-pad" style={{ padding: "36px 80px 0", maxWidth: 1400, margin: "0 auto" }}>
         <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.7 }}
+          className="ng-stack"
           style={{ background: "#111111", border: "1px solid rgba(255,255,255,0.07)", padding: "26px 30px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
             <div style={{ color: "#9A9A9A", fontSize: 11, fontWeight: 600, letterSpacing: "0.16em", marginBottom: 8, display: "flex", alignItems: "center", gap: 8 }}>
@@ -110,7 +111,7 @@ export function BrandsPortfolio() {
             </div>
             <div style={{ color: "#FFFFFF", fontSize: 14, fontWeight: 500 }}>Эксклюзивные дистрибуторские соглашения с международными производителями по ключевым категориям.</div>
           </div>
-          <a href="#contact" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "transparent", color: "#C9A24B", textDecoration: "none", fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", padding: "11px 20px", border: "1px solid rgba(201,162,75,0.35)", whiteSpace: "nowrap", flexShrink: 0, marginLeft: 32, transition: "all 0.3s" }}
+          <a href="#contact" className="ng-cta-btn" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "transparent", color: "#C9A24B", textDecoration: "none", fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", padding: "11px 20px", border: "1px solid rgba(201,162,75,0.35)", whiteSpace: "nowrap", flexShrink: 0, marginLeft: 32, transition: "all 0.3s" }}
             onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(201,162,75,0.08)"; e.currentTarget.style.borderColor = "#C9A24B"; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "rgba(201,162,75,0.35)"; }}>
             ЗАЯВКА ПОСТАВЩИКА →

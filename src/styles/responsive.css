@@ -1,0 +1,182 @@
+/* ────────────────────────────────────────────────────────────
+   Nobel Group — responsive retrofit layer.
+   Components use inline styles for the desktop layout, so these
+   rules rely on !important at defined breakpoints to override them.
+   Breakpoints: tablet ≤1024px, mobile ≤680px, small phone ≤380px.
+   ──────────────────────────────────────────────────────────── */
+
+/* Prevent any residual horizontal scroll from decorative absolutely
+   positioned elements once things get tight. */
+html, body { overflow-x: hidden; max-width: 100%; }
+
+/* ─── Section padding (big vertical rhythm sections) ────────── */
+@media (max-width: 1024px) {
+  .ng-sec-pad { padding-top: 84px !important; padding-bottom: 84px !important; padding-left: 40px !important; padding-right: 40px !important; }
+}
+@media (max-width: 680px) {
+  .ng-sec-pad { padding-top: 56px !important; padding-bottom: 56px !important; padding-left: 20px !important; padding-right: 20px !important; }
+}
+
+/* ─── Lighter bands (dividers, quote, route transition, mega stats) ─── */
+@media (max-width: 1024px) {
+  .ng-sec-pad-sm { padding-left: 40px !important; padding-right: 40px !important; }
+}
+@media (max-width: 680px) {
+  .ng-sec-pad-sm { padding-left: 20px !important; padding-right: 20px !important; padding-top: 36px !important; padding-bottom: 36px !important; }
+}
+
+/* ─── Vertical-only padding (sections whose side padding lives on an inner wrapper) ─── */
+@media (max-width: 1024px) {
+  .ng-sec-pad-v { padding-top: 84px !important; padding-bottom: 84px !important; }
+}
+@media (max-width: 680px) {
+  .ng-sec-pad-v { padding-top: 56px !important; padding-bottom: 56px !important; }
+}
+
+/* ─── Horizontal-only padding (content blocks, containers) ──── */
+@media (max-width: 1024px) {
+  .ng-side-pad { padding-left: 40px !important; padding-right: 40px !important; }
+}
+@media (max-width: 680px) {
+  .ng-side-pad { padding-left: 20px !important; padding-right: 20px !important; }
+}
+
+/* ─── Grid collapses ─────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .ng-grid-2 { grid-template-columns: 1fr !important; gap: 40px !important; }
+  .ng-grid-3 { grid-template-columns: repeat(2, 1fr) !important; }
+  .ng-grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
+  .ng-grid-5 { grid-template-columns: repeat(3, 1fr) !important; }
+}
+@media (max-width: 680px) {
+  .ng-grid-2, .ng-grid-3, .ng-grid-4, .ng-grid-5 { grid-template-columns: 1fr !important; gap: 24px !important; }
+}
+
+/* Card grids (direction/trust/audience cards) — stay 2-up even on phones
+   instead of collapsing to 1 column, to cut down the scroll length. */
+@media (max-width: 1024px) {
+  .ng-grid-cards2 { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 680px) {
+  .ng-grid-cards2 { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
+}
+
+@media (max-width: 680px) {
+  .ng-card-compact { padding: 16px 14px !important; min-height: 0 !important; }
+  .ng-card-compact-title { font-size: 15px !important; margin-bottom: 4px !important; }
+  .ng-card-compact-tagline { font-size: 9px !important; margin-bottom: 8px !important; }
+  .ng-card-compact-desc { font-size: 11.5px !important; line-height: 1.55 !important; margin-bottom: 12px !important; }
+  .ng-card-compact-benefit { font-size: 11px !important; }
+  .ng-card-compact-top { margin-bottom: 12px !important; }
+  .ng-card-icon { margin-bottom: 12px !important; }
+  .ng-card-icon > div { width: 44px !important; height: 44px !important; }
+  .ng-card-icon svg { width: 24px !important; height: 24px !important; }
+  .ng-card-photo { height: 110px !important; }
+  .ng-card-photo-badge { width: 36px !important; height: 36px !important; top: 10px !important; right: 10px !important; }
+  .ng-card-photo-badge svg { width: 18px !important; height: 18px !important; }
+  .ng-card-photo-caption { left: 14px !important; right: 14px !important; bottom: 10px !important; }
+}
+
+/* Stat strips stay 2-up even on phones (small cells, reads fine as 2x2) */
+@media (max-width: 1024px) {
+  .ng-grid-stats { grid-template-columns: repeat(2, 1fr) !important; }
+  .ng-grid-stats > *:nth-child(3) { border-left: none !important; padding-left: 0 !important; }
+}
+@media (max-width: 680px) {
+  .ng-grid-stats { row-gap: 4px !important; }
+}
+
+/* ─── Flex rows that should stack on small screens ───────────── */
+@media (max-width: 680px) {
+  .ng-stack { flex-direction: column !important; align-items: flex-start !important; gap: 24px !important; }
+  .ng-stack.ng-stack-center { align-items: center !important; text-align: center !important; }
+  .ng-cta-btn { width: 100% !important; justify-content: center !important; box-sizing: border-box !important; margin-left: 0 !important; }
+}
+
+/* ─── Decorative giant watermarks — off on phones, kept on tablets ─── */
+@media (max-width: 680px) {
+  .ng-decor { display: none !important; }
+}
+
+/* ─── Card min-height relax when stacked to 1 column ─────────── */
+@media (max-width: 680px) {
+  .ng-card-auto-h { min-height: 0 !important; }
+}
+
+/* ─── Hero ────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .ng-hero-copy { max-width: 100% !important; }
+}
+@media (max-width: 1024px) {
+  .ng-teaser-grid > div:nth-child(1) { order: 1 !important; }
+  .ng-teaser-grid > div:nth-child(2) { order: 2 !important; margin-top: 8px; }
+}
+
+@media (max-width: 680px) {
+  .ng-hero-heading { font-size: clamp(24px, 8vw, 40px) !important; letter-spacing: -0.01em !important; }
+  .ng-hero-kicker span { font-size: 10px !important; letter-spacing: 0.18em !important; }
+  .ng-hero-section { height: auto !important; min-height: 100vh !important; }
+  .ng-hero-copy { justify-content: flex-start !important; padding-top: 92px !important; }
+}
+@media (max-width: 400px) {
+  .ng-hero-heading { font-size: clamp(21px, 8vw, 32px) !important; }
+}
+
+/* ─── Company journey milestone rows ─────────────────────────── */
+@media (max-width: 680px) {
+  .ng-milestone-grid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 14px !important;
+  }
+  .ng-milestone-grid > *:nth-child(1) {
+    width: auto !important;
+    text-align: left !important;
+    padding-top: 0 !important;
+    order: 1;
+  }
+  .ng-milestone-grid > *:nth-child(2) {
+    order: 2;
+    margin-top: 0 !important;
+  }
+  .ng-milestone-grid > *:nth-child(3) {
+    order: 3;
+    width: 100% !important;
+    flex-basis: 100% !important;
+  }
+  .ng-timeline-spine { display: none !important; }
+  .ng-milestone-content { padding: 18px 18px !important; }
+}
+
+/* ─── Header ──────────────────────────────────────────────────── */
+.ng-nav-toggle { display: none; }
+@media (max-width: 1024px) {
+  .ng-nav-desktop, .ng-header-actions { display: none !important; }
+  .ng-nav-toggle { display: flex !important; }
+  .ng-header-inner { padding-left: 24px !important; padding-right: 24px !important; }
+}
+
+/* ─── Route transition label ─────────────────────────────────── */
+@media (max-width: 680px) {
+  .ng-route-label { font-size: 9px !important; letter-spacing: 0.14em !important; }
+}
+@media (max-width: 400px) {
+  .ng-route-label { display: none !important; }
+}
+
+/* ─── Contact form / footer specifics ────────────────────────── */
+@media (max-width: 680px) {
+  .ng-footer-bottom { text-align: center !important; }
+}
+
+/* ─── Inner page hero + visual ───────────────────────────────── */
+@media (max-width: 1024px) {
+  .ng-page-hero { min-height: auto !important; padding-top: 120px !important; padding-bottom: 56px !important; }
+  .ng-page-hero-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
+  .ng-page-hero-visual { max-width: 320px !important; margin: 0 auto !important; min-height: 240px !important; }
+}
+@media (max-width: 680px) {
+  .ng-page-hero { padding-top: 108px !important; padding-bottom: 40px !important; }
+  .ng-page-hero-visual { max-width: 260px !important; min-height: 200px !important; }
+}
