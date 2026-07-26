@@ -3,12 +3,21 @@ import { AnimatePresence, motion } from "motion/react";
 import { Link, NavLink, useLocation } from "react-router";
 import nobelLogo from "../../assets/nobel-logo.png";
 
+const BUSINESS_LINKS = [
+  { label: "Импорт и дистрибуция", to: "/business#import" },
+  { label: "Производство", to: "/business#production" },
+  { label: "HoReCa", to: "/business#horeca" },
+  { label: "Международная торговля", to: "/business#trade" },
+  { label: "Инвестиционные проекты", to: "/business#invest" },
+];
+
 const NAV = [
-  { label: "Группа", to: "/#about" },
-  { label: "Бизнес", to: "/business" },
-  { label: "История", to: "/history" },
-  { label: "География", to: "/geography" },
-  { label: "Партнерство", to: "/partnership" },
+  { label: "Главная", to: "/" },
+  { label: "О группе", to: "/about" },
+  { label: "Направления бизнеса", to: "/business", children: BUSINESS_LINKS },
+  { label: "Бренды", to: "/brands" },
+  { label: "Партнерам", to: "/partnership" },
+  { label: "Новости", to: "/news" },
   { label: "Карьера", to: "/careers" },
   { label: "Контакты", to: "/contacts" },
 ];
@@ -23,6 +32,7 @@ function navStyle(active: boolean): CSSProperties {
     fontWeight: active ? 600 : 500,
     letterSpacing: "0.04em",
     transition: "color 0.25s",
+    whiteSpace: "nowrap",
   };
 }
 
@@ -30,6 +40,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [lang, setLang] = useState("RU");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [bizOpen, setBizOpen] = useState(false);
   const { pathname, hash } = useLocation();
 
   useEffect(() => {
@@ -47,6 +58,7 @@ export function Header() {
 
   useEffect(() => {
     setMenuOpen(false);
+    setBizOpen(false);
   }, [pathname, hash]);
 
   return (
@@ -61,52 +73,104 @@ export function Header() {
         background: scrolled || menuOpen ? "rgba(8,8,8,0.97)" : "transparent",
         backdropFilter: scrolled || menuOpen ? "blur(20px)" : "none",
         borderBottom: scrolled || menuOpen ? "1px solid rgba(255,255,255,0.07)" : "1px solid transparent",
-        padding: scrolled ? "14px 0" : "22px 0",
+        padding: scrolled ? "12px 0" : "18px 0",
       }}
     >
       <div
         className="ng-header-inner"
         style={{
-          maxWidth: 1400,
+          maxWidth: 1440,
           margin: "0 auto",
-          padding: "0 48px",
+          padding: "0 40px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          gap: 20,
         }}
       >
-        <Link to="/" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none", flexShrink: 0 }}>
+        <Link to="/" style={{ display: "flex", alignItems: "center", gap: 14, textDecoration: "none", flexShrink: 0 }}>
           <img
             src={nobelLogo}
             alt="Nobel Group"
-            style={{ width: 34, height: 34, objectFit: "contain", flexShrink: 0 }}
+            style={{ width: 52, height: 52, objectFit: "contain", flexShrink: 0 }}
           />
           <div>
-            <div style={{ color: "#FFFFFF", fontSize: 15, fontWeight: 800, letterSpacing: "0.12em", lineHeight: 1 }}>NOBEL</div>
-            <div style={{ color: "#C9A24B", fontSize: 8, fontWeight: 500, letterSpacing: "0.32em", marginTop: 2, lineHeight: 1 }}>GROUP</div>
+            <div style={{ color: "#FFFFFF", fontSize: 18, fontWeight: 800, letterSpacing: "0.12em", lineHeight: 1 }}>NOBEL</div>
+            <div style={{ color: "#C9A24B", fontSize: 10, fontWeight: 600, letterSpacing: "0.34em", marginTop: 3, lineHeight: 1 }}>GROUP</div>
           </div>
         </Link>
 
-        <nav className="ng-nav-desktop" style={{ display: "flex", alignItems: "center", gap: 28 }}>
+        <nav className="ng-nav-desktop" style={{ display: "flex", alignItems: "center", gap: 20 }}>
           {NAV.map((item) => {
-            const isHash = item.to.includes("#");
-            const active = isHash
-              ? pathname === "/" && (hash === "#about" || (!hash && item.label === "Группа" && false))
-              : pathname === item.to;
-
-            if (isHash) {
+            if (item.children) {
+              const active = pathname.startsWith("/business");
               return (
-                <Link
+                <div
                   key={item.label}
-                  to={item.to}
-                  style={navStyle(pathname === "/" && hash === "#about")}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "#FFFFFF")}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.color = pathname === "/" && hash === "#about" ? "#C9A24B" : "#9A9A9A";
-                  }}
+                  style={{ position: "relative" }}
+                  onMouseEnter={() => setBizOpen(true)}
+                  onMouseLeave={() => setBizOpen(false)}
                 >
-                  {item.label}
-                </Link>
+                  <NavLink to={item.to} style={navStyle(active)} onMouseEnter={(e) => { e.currentTarget.style.color = "#FFFFFF"; }} onMouseLeave={(e) => { e.currentTarget.style.color = active ? "#C9A24B" : "#9A9A9A"; }}>
+                    {item.label}
+                    <span style={{ marginLeft: 4, fontSize: 9, opacity: 0.7 }}>▾</span>
+                  </NavLink>
+                  <AnimatePresence>
+                    {bizOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 8 }}
+                        transition={{ duration: 0.2 }}
+                        style={{
+                          position: "absolute",
+                          top: "100%",
+                          left: "50%",
+                          transform: "translateX(-50%)",
+                          paddingTop: 14,
+                          zIndex: 50,
+                        }}
+                      >
+                        <div
+                          style={{
+                            minWidth: 260,
+                            background: "rgba(14,13,11,0.98)",
+                            border: "1px solid rgba(213,162,81,0.25)",
+                            boxShadow: "0 20px 48px rgba(0,0,0,0.55)",
+                            padding: "10px 0",
+                          }}
+                        >
+                          {item.children.map((child) => (
+                            <Link
+                              key={child.to}
+                              to={child.to}
+                              style={{
+                                display: "block",
+                                padding: "11px 20px",
+                                color: "#C8C8C8",
+                                textDecoration: "none",
+                                fontSize: 12,
+                                fontWeight: 500,
+                                letterSpacing: "0.03em",
+                                transition: "all 0.2s",
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.color = "#C9A24B";
+                                e.currentTarget.style.background = "rgba(213,162,81,0.08)";
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.color = "#C8C8C8";
+                                e.currentTarget.style.background = "transparent";
+                              }}
+                            >
+                              {child.label}
+                            </Link>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               );
             }
 
@@ -114,10 +178,11 @@ export function Header() {
               <NavLink
                 key={item.label}
                 to={item.to}
-                style={({ isActive }) => navStyle(isActive || active)}
+                end={item.to === "/"}
+                style={({ isActive }) => navStyle(isActive)}
                 onMouseEnter={(e) => (e.currentTarget.style.color = "#FFFFFF")}
                 onMouseLeave={(e) => {
-                  const on = pathname === item.to;
+                  const on = pathname === item.to || (item.to === "/" && pathname === "/");
                   e.currentTarget.style.color = on ? "#C9A24B" : "#9A9A9A";
                 }}
               >
@@ -127,17 +192,22 @@ export function Header() {
           })}
         </nav>
 
-        <div className="ng-header-actions" style={{ display: "flex", alignItems: "center", gap: 18, flexShrink: 0 }}>
+        <div className="ng-header-actions" style={{ display: "flex", alignItems: "center", gap: 14, flexShrink: 0 }}>
           <div style={{ display: "flex", gap: 2 }}>
             {LANGS.map((l) => (
               <button
                 key={l}
                 onClick={() => setLang(l)}
                 style={{
-                  background: "transparent", border: "none", cursor: "pointer",
-                  fontSize: 11, fontWeight: 600, letterSpacing: "0.06em",
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: 11,
+                  fontWeight: 600,
+                  letterSpacing: "0.06em",
                   color: lang === l ? "#C9A24B" : "#9A9A9A",
-                  padding: "4px 6px", transition: "color 0.25s",
+                  padding: "4px 6px",
+                  transition: "color 0.25s",
                   borderBottom: lang === l ? "1px solid #C9A24B" : "1px solid transparent",
                   fontFamily: "Manrope, sans-serif",
                 }}
@@ -147,16 +217,29 @@ export function Header() {
             ))}
           </div>
           <Link
-            to="/contacts"
+            to="/partnership#partner-form"
             style={{
-              background: "#C9A24B", color: "#0A0A0A", textDecoration: "none",
-              fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
-              padding: "9px 20px", display: "block", transition: "all 0.3s", whiteSpace: "nowrap",
+              background: "#C9A24B",
+              color: "#0A0A0A",
+              textDecoration: "none",
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: "0.08em",
+              padding: "10px 18px",
+              display: "block",
+              transition: "all 0.3s",
+              whiteSpace: "nowrap",
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = "#D4AF37"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(201,162,75,0.35)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = "#C9A24B"; e.currentTarget.style.boxShadow = "none"; }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "#D4AF37";
+              e.currentTarget.style.boxShadow = "0 4px 16px rgba(201,162,75,0.35)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "#C9A24B";
+              e.currentTarget.style.boxShadow = "none";
+            }}
           >
-            СТАТЬ ПАРТНЕРОМ
+            ОБСУДИТЬ
           </Link>
         </div>
 
@@ -201,22 +284,58 @@ export function Header() {
           >
             <nav style={{ display: "flex", flexDirection: "column", padding: "8px 24px 20px" }}>
               {NAV.map((item) => (
-                <Link
-                  key={item.label}
-                  to={item.to}
-                  onClick={() => setMenuOpen(false)}
-                  style={{
-                    color: "#FFFFFF",
-                    textDecoration: "none",
-                    fontSize: 16,
-                    fontWeight: 600,
-                    letterSpacing: "0.02em",
-                    padding: "16px 0",
-                    borderBottom: "1px solid rgba(255,255,255,0.06)",
-                  }}
-                >
-                  {item.label}
-                </Link>
+                <div key={item.label}>
+                  <Link
+                    to={item.to}
+                    onClick={() => !item.children && setMenuOpen(false)}
+                    style={{
+                      color: "#FFFFFF",
+                      textDecoration: "none",
+                      fontSize: 16,
+                      fontWeight: 600,
+                      letterSpacing: "0.02em",
+                      padding: "16px 0",
+                      borderBottom: "1px solid rgba(255,255,255,0.06)",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    {item.label}
+                    {item.children && (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setBizOpen((v) => !v);
+                        }}
+                        style={{ background: "none", border: "none", color: "#C9A24B", fontSize: 14, cursor: "pointer" }}
+                      >
+                        {bizOpen ? "−" : "+"}
+                      </button>
+                    )}
+                  </Link>
+                  {item.children && bizOpen && (
+                    <div style={{ padding: "4px 0 12px 12px" }}>
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.to}
+                          to={child.to}
+                          onClick={() => setMenuOpen(false)}
+                          style={{
+                            display: "block",
+                            color: "rgba(255,255,255,0.65)",
+                            textDecoration: "none",
+                            fontSize: 14,
+                            padding: "10px 0",
+                          }}
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ))}
 
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 0 6px" }}>
@@ -244,7 +363,7 @@ export function Header() {
               </div>
 
               <Link
-                to="/contacts"
+                to="/partnership#partner-form"
                 onClick={() => setMenuOpen(false)}
                 style={{
                   background: "#C9A24B",
@@ -258,7 +377,7 @@ export function Header() {
                   marginTop: 16,
                 }}
               >
-                СТАТЬ ПАРТНЕРОМ
+                ОБСУДИТЬ СОТРУДНИЧЕСТВО
               </Link>
             </nav>
           </motion.div>

@@ -4,22 +4,22 @@ import { GoldCheck } from "./BrandIcons";
 import { GiantNumber, GiantOutline, IbmGrid, LogisticsMesh, DrawLine } from "./BrandDecor";
 
 const CAPABILITIES = [
-  { id: "import",      label: "Импорт и закупки",                     icon: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" },
-  { id: "wholesale",   label: "Оптовая торговля",                     icon: "M3 7h18M3 12h18M3 17h12" },
-  { id: "dist",        label: "Региональная дистрибуция",              icon: "M1 3h15v13H1zM16 8l4 2v6h-4z" },
-  { id: "horeca",      label: "HoReCa-поставки",                      icon: "M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z" },
-  { id: "brand",       label: "Развитие брендов",                     icon: "M22 7 13.5 15.5 8.5 10.5 2 17M16 7h6v6" },
+  { id: "import",      label: "Импорт и дистрибуция",                  icon: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" },
+  { id: "production",  label: "Собственное производство",              icon: "M14.7 6.3a1 1 0 010 1.4l-8 8a1 1 0 01-.4.25l-3 1a1 1 0 01-1.25-1.25l1-3a1 1 0 01.25-.4l8-8a1 1 0 011.4 0z" },
+  { id: "horeca",      label: "HoReCa-поставки",                       icon: "M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z" },
+  { id: "trade",       label: "Международная торговля",                icon: "M1 3h15v13H1zM16 8l4 2v6h-4z" },
+  { id: "invest",      label: "Инвестиционные проекты",                icon: "M3 7h18M3 12h18M3 17h12" },
+  { id: "brand",       label: "Развитие потребительских брендов",      icon: "M22 7 13.5 15.5 8.5 10.5 2 17M16 7h6v6" },
   { id: "logistics",   label: "Логистика и складская инфраструктура",  icon: "M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18" },
-  { id: "production",  label: "Производственные и фасовочные проекты", icon: "M14.7 6.3a1 1 0 010 1.4l-8 8a1 1 0 01-.4.25l-3 1a1 1 0 01-1.25-1.25l1-3a1 1 0 01.25-.4l8-8a1 1 0 011.4 0z" },
 ];
 
 const CAP_NODES = [
-  { id: "import",    label: "Импорт\nи закупки",    x: 50,   y: 10 },
-  { id: "dist",      label: "Дистрибуция",           x: 84.6, y: 30 },
-  { id: "horeca",    label: "HoReCa",                x: 84.6, y: 70 },
-  { id: "brand",     label: "Развитие\nбрендов",     x: 50,   y: 90 },
-  { id: "logistics", label: "Логистика\nи склад",    x: 15.4, y: 70 },
-  { id: "wholesale", label: "Оптовая\nторговля",     x: 15.4, y: 30 },
+  { id: "import",     label: "Импорт и\nдистрибуция", x: 50,   y: 10 },
+  { id: "production", label: "Производство",          x: 84.6, y: 30 },
+  { id: "horeca",     label: "HoReCa",                x: 84.6, y: 70 },
+  { id: "brand",      label: "Бренды",                x: 50,   y: 90 },
+  { id: "logistics",  label: "Логистика\nи склад",    x: 15.4, y: 70 },
+  { id: "trade",      label: "Междунар.\nторговля",   x: 15.4, y: 30 },
 ];
 
 const CONNS: [number, number][] = [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[0,3],[1,4],[2,5]];
@@ -91,11 +91,11 @@ export function AboutGroup() {
             </motion.h2>
             <motion.p initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }}
               style={{ color: "var(--ng-muted-dark)", fontSize: 15, fontWeight: 300, lineHeight: 1.82, marginBottom: 10 }}>
-              Nobel Group — развивающаяся группа компаний, специализирующаяся на поставках продуктов питания и развитии эффективной системы дистрибуции в Узбекистане.
+              Nobel Group — группа компаний в сфере производства, импорта и дистрибуции продуктов питания в Узбекистане.
             </motion.p>
             <motion.p initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.25 }}
               style={{ color: "var(--ng-muted-dark)", fontSize: 14, fontWeight: 300, lineHeight: 1.82, marginBottom: 28 }}>
-              Наша задача — создавать устойчивые связи между производителями, поставщиками и рынком.
+              Мы объединяем импорт, собственное производство, оптовую дистрибуцию, HoReCa и развитие потребительских брендов.
             </motion.p>
 
             <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.3 }} style={{ marginBottom: 28 }}>

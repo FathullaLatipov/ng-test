@@ -3,178 +3,58 @@ import { motion, useInView } from "motion/react";
 import { Link } from "react-router";
 import { PageLayout } from "../components/PageLayout";
 import { PageHero } from "../components/PageHero";
-import { BusinessDirections } from "../components/BusinessDirections";
+import { BusinessDirections, DIRECTIONS } from "../components/BusinessDirections";
 import { BrandsPortfolio } from "../components/BrandsPortfolio";
-import {
-  SectionDivider,
-  QuoteBand,
-  RouteTransition,
-  MegaStats,
-  IbmGrid,
-  LogisticsMesh,
-  GiantNumber,
-} from "../components/BrandDecor";
+import { SectionDivider, QuoteBand, MegaStats, IbmGrid } from "../components/BrandDecor";
 import { GoldCheck } from "../components/BrandIcons";
 
-const CATEGORIES = [
-  { name: "Растительные масла", desc: "Оптовые поставки и дистрибуция ключевых категорий масел для ретейла и производства." },
-  { name: "Пальмовый жир", desc: "Сырьё и полуфабрикаты для пищевой промышленности с стабильным графиком поставок." },
-  { name: "Какао-продукты", desc: "Ингредиенты и готовые решения для кондитерского и пищевого сегмента." },
-  { name: "Крахмал", desc: "Промышленные и пищевые позиции для производителей и переработчиков." },
-  { name: "Молочная сыворотка", desc: "Специализированные поставки для производств и профессиональных каналов." },
-  { name: "FMCG-ассортимент", desc: "Мультикатегорийный портфель продуктов питания для оптовых и региональных партнёров." },
-];
-
-const ENTITIES = [
-  { name: "Nobel Trade", role: "Оптовая торговля и импорт", focus: "Крупные объёмы, прямые контракты, работа с производителями." },
-  { name: "Nobel Distribution", role: "Региональная дистрибуция", focus: "Складская сеть, транспорт, покрытие регионов Узбекистана." },
-  { name: "HoReCa", role: "Профессиональный канал", focus: "Снабжение ресторанов, отелей и предприятий общественного питания." },
-  { name: "Eco Born", role: "Развитие брендов", focus: "Продвижение продуктовых направлений и локальное присутствие." },
-  { name: "Rimada", role: "Продуктовое направление", focus: "Специализированные категории внутри экосистемы группы." },
-  { name: "Elite Daily", role: "Рыночное присутствие", focus: "Работа с востребованными позициями повседневного спроса." },
-];
-
 export function BusinessPage() {
-  const catRef = useRef<HTMLDivElement>(null);
-  const entRef = useRef<HTMLDivElement>(null);
-  const catInView = useInView(catRef, { once: true, margin: "-80px" });
-  const entInView = useInView(entRef, { once: true, margin: "-80px" });
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
     <PageLayout>
       <PageHero
-        eyebrow="НАПРАВЛЕНИЯ ДЕЯТЕЛЬНОСТИ"
-        title="Бизнес,"
-        titleAccent="который питает рынок."
-        subtitle="Импорт, оптовая торговля, региональная дистрибуция, HoReCa и развитие брендов — единая экосистема поставок продуктов питания в Узбекистане."
-        crumbs={[{ label: "Бизнес" }]}
+        eyebrow="НАПРАВЛЕНИЯ БИЗНЕСА"
+        title="Импорт, производство,"
+        titleAccent="дистрибуция и рост."
+        subtitle="Пять направлений Nobel Group: импорт и дистрибуция, производство, HoReCa, международная торговля и инвестиционные проекты."
+        crumbs={[{ label: "Направления бизнеса" }]}
         visual="business"
       />
 
       <BusinessDirections />
 
-      <RouteTransition label="КАТЕГОРИИ ПРОДУКЦИИ" />
-
-      <section
-        ref={catRef}
-        className="ng-sec-pad"
-        style={{ background: "var(--ng-charcoal)", padding: "100px 80px", position: "relative", overflow: "hidden" }}
-      >
+      <section ref={ref} className="ng-sec-pad" style={{ background: "var(--ng-charcoal)", padding: "90px 80px", position: "relative", overflow: "hidden" }}>
         <IbmGrid opacity={0.02} />
-        <div className="ng-decor"><GiantNumber n="02" /></div>
         <div style={{ maxWidth: 1400, margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={catInView ? { opacity: 1, y: 0 } : {}}
-            style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}
-          >
-            <div style={{ width: 24, height: 1, background: "#C9A24B" }} />
-            <span style={{ color: "#C9A24B", fontSize: 11, fontWeight: 600, letterSpacing: "0.26em" }}>АССОРТИМЕНТ</span>
-          </motion.div>
           <motion.h2
-            initial={{ opacity: 0, y: 24 }}
-            animate={catInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.1 }}
-            style={{ fontSize: "clamp(28px, 3.4vw, 44px)", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: 18, maxWidth: 720 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            style={{ fontSize: "clamp(26px, 3vw, 40px)", fontWeight: 800, color: "#FFFFFF", marginBottom: 36, letterSpacing: "-0.02em" }}
           >
-            Ключевые категории
-            <br /><span style={{ color: "#C9A24B" }}>продовольственного портфеля.</span>
+            Структура направлений
           </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={catInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.18 }}
-            style={{ color: "var(--ng-muted-dark)", fontSize: 15, lineHeight: 1.8, maxWidth: 640, marginBottom: 48 }}
-          >
-            Основной фокус группы — продукты питания и сырьё: растительные масла, пальмовый жир, какао, крахмал, молочная сыворотка и смежные FMCG-направления.
-          </motion.p>
-
-          <div className="ng-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
-            {CATEGORIES.map((c, i) => (
-              <motion.div
-                key={c.name}
-                initial={{ opacity: 0, y: 28 }}
-                animate={catInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.15 + i * 0.07, duration: 0.6 }}
+          <div className="ng-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12 }}>
+            {DIRECTIONS.map((d, i) => (
+              <motion.a
+                key={d.id}
+                href={`#${d.id}`}
+                initial={{ opacity: 0, y: 18 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.08 + i * 0.05 }}
                 style={{
+                  textDecoration: "none",
                   background: "var(--ng-elevated)",
                   border: "1px solid rgba(255,255,255,0.07)",
-                  padding: "28px 26px",
-                  transition: "border-color 0.3s, transform 0.3s",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(213,162,81,0.4)";
-                  e.currentTarget.style.transform = "translateY(-4px)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)";
-                  e.currentTarget.style.transform = "translateY(0)";
-                }}
-              >
-                <div style={{ color: "rgba(213,162,81,0.45)", fontSize: 12, fontWeight: 700, letterSpacing: "0.18em", marginBottom: 14 }}>
-                  {String(i + 1).padStart(2, "0")}
-                </div>
-                <div style={{ color: "#FFFFFF", fontSize: 18, fontWeight: 700, marginBottom: 10 }}>{c.name}</div>
-                <p style={{ color: "var(--ng-muted-dark)", fontSize: 13, lineHeight: 1.7, margin: 0 }}>{c.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <SectionDivider mark="hex" />
-
-      <section
-        ref={entRef}
-        className="ng-sec-pad"
-        style={{ background: "var(--ng-void)", padding: "100px 80px", position: "relative", overflow: "hidden" }}
-      >
-        <LogisticsMesh opacity={0.08} />
-        <div style={{ maxWidth: 1400, margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={entInView ? { opacity: 1, y: 0 } : {}}
-            style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}
-          >
-            <div style={{ width: 24, height: 1, background: "#C9A24B" }} />
-            <span style={{ color: "#C9A24B", fontSize: 11, fontWeight: 600, letterSpacing: "0.26em" }}>СТРУКТУРА ГРУППЫ</span>
-          </motion.div>
-          <motion.h2
-            initial={{ opacity: 0, y: 24 }}
-            animate={entInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.1 }}
-            style={{ fontSize: "clamp(28px, 3.4vw, 44px)", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: 16, maxWidth: 700 }}
-          >
-            Nobel Group → направления
-            <br /><span style={{ color: "#C9A24B" }}>→ компании и подразделения.</span>
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={entInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.18 }}
-            style={{ color: "var(--ng-muted-dark)", fontSize: 15, lineHeight: 1.8, maxWidth: 640, marginBottom: 48 }}
-          >
-            Упрощённая публичная структура группы. Каждое направление усиливает общую систему поставок, не раскрывая внутреннюю управленческую модель.
-          </motion.p>
-
-          <div className="ng-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
-            {ENTITIES.map((e, i) => (
-              <motion.div
-                key={e.name}
-                initial={{ opacity: 0, y: 24 }}
-                animate={entInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.12 + i * 0.06 }}
-                style={{
-                  border: "1px solid rgba(255,255,255,0.07)",
                   borderLeft: "3px solid #D5A251",
-                  background: "rgba(30,28,24,0.65)",
-                  padding: "24px 22px",
+                  padding: "20px 18px",
+                  display: "block",
                 }}
               >
-                <div style={{ color: "#FFFFFF", fontSize: 17, fontWeight: 700, marginBottom: 6 }}>{e.name}</div>
-                <div style={{ color: "#C9A24B", fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 12 }}>{e.role.toUpperCase()}</div>
-                <p style={{ color: "var(--ng-muted-dark)", fontSize: 13, lineHeight: 1.7, margin: 0 }}>{e.focus}</p>
-              </motion.div>
+                <div style={{ color: "#C9A24B", fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", marginBottom: 8 }}>{d.number}</div>
+                <div style={{ color: "#FFFFFF", fontSize: 16, fontWeight: 700 }}>{d.name}</div>
+              </motion.a>
             ))}
           </div>
         </div>
@@ -182,14 +62,14 @@ export function BusinessPage() {
 
       <MegaStats
         items={[
-          { n: "4", l: "Бизнес-направления" },
-          { n: "6+", l: "Продуктовых категорий" },
-          { n: "50+", l: "Поставщиков" },
-          { n: "15+", l: "Брендов в портфеле" },
+          { n: "5", l: "Направлений" },
+          { n: "2 500+", l: "SKU" },
+          { n: "120+", l: "Внешних партнёров" },
+          { n: "3 000+", l: "Клиентов B2B" },
         ]}
       />
 
-      <BrandsPortfolio />
+      <BrandsPortfolio showCta={false} />
 
       <QuoteBand
         quote="Опыт работы с крупными объёмами, региональная сеть и гибкая партнёрская модель — наша операционная сила."
@@ -212,7 +92,7 @@ export function BusinessPage() {
             ))}
           </div>
           <Link
-            to="/partnership"
+            to="/partnership#partner-form"
             style={{
               display: "inline-block",
               background: "#C9A24B",
@@ -224,7 +104,7 @@ export function BusinessPage() {
               padding: "14px 28px",
             }}
           >
-            СТАТЬ ПАРТНЁРОМ →
+            ОБСУДИТЬ СОТРУДНИЧЕСТВО →
           </Link>
         </div>
       </section>

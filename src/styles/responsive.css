@@ -110,6 +110,12 @@ html, body { overflow-x: hidden; max-width: 100%; }
 @media (max-width: 1024px) {
   .ng-teaser-grid > div:nth-child(1) { order: 1 !important; }
   .ng-teaser-grid > div:nth-child(2) { order: 2 !important; margin-top: 8px; }
+  .ng-biz-mosaic { grid-template-columns: 1fr 1fr !important; }
+  .ng-biz-mosaic > * { grid-column: span 1 !important; }
+}
+
+@media (max-width: 680px) {
+  .ng-biz-mosaic { grid-template-columns: 1fr !important; gap: 12px !important; }
 }
 
 @media (max-width: 680px) {

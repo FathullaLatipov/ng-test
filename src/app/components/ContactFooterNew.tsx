@@ -16,36 +16,38 @@ const FOOTER_COLS: { title: string; links: { label: string; to?: string }[] }[] 
   {
     title: "О группе",
     links: [
-      { label: "О компании", to: "/#about" },
-      { label: "История компании", to: "/history" },
-      { label: "Миссия и ценности", to: "/history" },
+      { label: "О компании", to: "/about" },
+      { label: "История", to: "/history" },
       { label: "Главная", to: "/" },
+      { label: "Новости", to: "/news" },
     ],
   },
   {
     title: "Бизнес",
     links: [
-      { label: "Импорт и закупки", to: "/business" },
-      { label: "Дистрибуция", to: "/business" },
-      { label: "HoReCa-поставки", to: "/business" },
-      { label: "Развитие брендов", to: "/business" },
+      { label: "Импорт и дистрибуция", to: "/business#import" },
+      { label: "Производство", to: "/business#production" },
+      { label: "HoReCa", to: "/business#horeca" },
+      { label: "Международная торговля", to: "/business#trade" },
+      { label: "Инвестиционные проекты", to: "/business#invest" },
     ],
   },
   {
-    title: "Партнёрство",
+    title: "Партнёрам",
     links: [
-      { label: "Для поставщиков", to: "/partnership" },
-      { label: "Для дистрибьюторов", to: "/partnership" },
-      { label: "Для HoReCa", to: "/partnership" },
-      { label: "Стать партнёром", to: "/contacts" },
+      { label: "Производителям", to: "/partnership" },
+      { label: "Торговым сетям", to: "/partnership" },
+      { label: "Дистрибьюторам", to: "/partnership" },
+      { label: "HoReCa", to: "/partnership" },
+      { label: "Инвесторам", to: "/partnership" },
     ],
   },
   {
     title: "Компания",
     links: [
+      { label: "Бренды", to: "/brands" },
       { label: "Карьера", to: "/careers" },
       { label: "География", to: "/geography" },
-      { label: "Категории продукции", to: "/business" },
       { label: "Контакты", to: "/contacts" },
     ],
   },
@@ -55,7 +57,7 @@ const FOOTER_COLS: { title: string; links: { label: string; to?: string }[] }[] 
       { label: "Ташкент, Узбекистан", to: "/contacts" },
       { label: "+998 71 000 00 00" },
       { label: "info@nobelgroup.uz" },
-      { label: "Запросы на партнёрство", to: "/contacts" },
+      { label: "Обсудить сотрудничество", to: "/partnership#partner-form" },
     ],
   },
 ];
@@ -173,10 +175,10 @@ export function ContactFooterNew() {
           <div className="ng-grid-2" style={{ display: "grid", gridTemplateColumns: "220px 1fr", gap: 72, marginBottom: 48, paddingBottom: 48, borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-                <img src={nobelLogo} alt="Nobel Group" style={{ width: 32, height: 32, objectFit: "contain", flexShrink: 0 }} />
+                <img src={nobelLogo} alt="Nobel Group" style={{ width: 48, height: 48, objectFit: "contain", flexShrink: 0 }} />
                 <div>
-                  <div style={{ color: "#FFFFFF", fontSize: 14, fontWeight: 800, letterSpacing: "0.12em" }}>NOBEL</div>
-                  <div style={{ color: "#C9A24B", fontSize: 8, fontWeight: 500, letterSpacing: "0.3em", marginTop: 1 }}>GROUP</div>
+                  <div style={{ color: "#FFFFFF", fontSize: 17, fontWeight: 800, letterSpacing: "0.12em" }}>NOBEL</div>
+                  <div style={{ color: "#C9A24B", fontSize: 10, fontWeight: 600, letterSpacing: "0.32em", marginTop: 2 }}>GROUP</div>
                 </div>
               </div>
               <p style={{ color: "#9A9A9A", fontSize: 12, fontWeight: 400, lineHeight: 1.7, marginBottom: 22 }}>
