@@ -1,23 +1,14 @@
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
 import { Link } from "react-router";
-
-const TEAM_IMG = "https://images.unsplash.com/photo-1758518731468-98e90ffd7430?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200";
-
-const OPEN_ROLES = [
-  { title: "Менеджер по ключевым клиентам", dept: "Продажи и торговля", type: "Полная занятость", location: "Ташкент" },
-  { title: "Координатор дистрибуционной логистики", dept: "Операции", type: "Полная занятость", location: "Ташкент" },
-  { title: "Представитель HoReCa", dept: "Подразделение HoReCa", type: "Полная занятость", location: "Ташкент / Самарканд" },
-  { title: "Специалист по импорту и закупкам", dept: "Nobel group", type: "Полная занятость", location: "Ташкент" },
-];
-
-const VALUES_CAREERS = [
-  { n: "1", title: "Профессиональный рост", desc: "Структурированные пути развития и программы обучения по всем направлениям бизнеса." },
-  { n: "2", title: "Реальная ответственность", desc: "С первого дня — управление реальными клиентами, партнёрами и бизнес-результатами." },
-  { n: "3", title: "Стабильность", desc: "Растущий, прибыльный бизнес с 12-летней историей и чёткой долгосрочной стратегией." },
-];
+import { useCms } from "../cms/store";
 
 export function CareersSection() {
+  const { data } = useCms();
+  const careers = data.careers;
+  const roles = [...careers.roles]
+    .filter((r) => r.published)
+    .sort((a, b) => a.order - b.order);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   return (
@@ -29,20 +20,20 @@ export function CareersSection() {
           <div>
             <motion.div initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
               <div style={{ width: 24, height: 1, background: "#C9A24B" }} />
-              <span style={{ color: "#C9A24B", fontSize: 11, fontWeight: 600, letterSpacing: "0.26em" }}>КАРЬЕРА</span>
+              <span style={{ color: "#C9A24B", fontSize: 11, fontWeight: 600, letterSpacing: "0.26em" }}>{careers.eyebrow}</span>
             </motion.div>
             <motion.h2 initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }} style={{ fontSize: "clamp(28px, 3.2vw, 44px)", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: 22 }}>
-              РАСТЁМ ВМЕСТЕ
-              <br /><span style={{ color: "#C9A24B" }}>С NOBEL GROUP.</span>
+              {careers.title}
+              <br /><span style={{ color: "#C9A24B" }}>{careers.titleAccent}</span>
             </motion.h2>
             <motion.p initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }} style={{ color: "#9A9A9A", fontSize: 15, fontWeight: 400, lineHeight: 1.8, marginBottom: 36 }}>
-              Мы уверены, что успех компании начинается с сильной команды. Мы создаём возможности для профессионального развития специалистов в сфере продаж, логистики, закупок, дистрибуции и управления.
+              {careers.lead}
             </motion.p>
             <div style={{ display: "flex", flexDirection: "column", gap: 18, marginBottom: 36 }}>
-              {VALUES_CAREERS.map((v, i) => (
-                <motion.div key={v.title} initial={{ opacity: 0, x: -16 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.3 + i * 0.1 }}
+              {careers.values.map((v, i) => (
+                <motion.div key={v.id} initial={{ opacity: 0, x: -16 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.3 + i * 0.1 }}
                   style={{ display: "flex", gap: 18, alignItems: "flex-start" }}>
-                  <div style={{ width: 36, height: 36, border: "1px solid rgba(201,162,75,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#C9A24B", fontSize: 14, fontWeight: 700, flexShrink: 0 }}>{v.n}</div>
+                  <div style={{ width: 36, height: 36, border: "1px solid rgba(201,162,75,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#C9A24B", fontSize: 14, fontWeight: 700, flexShrink: 0 }}>{i + 1}</div>
                   <div>
                     <div style={{ color: "#FFFFFF", fontSize: 14, fontWeight: 700, marginBottom: 4 }}>{v.title}</div>
                     <div style={{ color: "#9A9A9A", fontSize: 13, lineHeight: 1.65 }}>{v.desc}</div>
@@ -52,9 +43,9 @@ export function CareersSection() {
             </div>
             <motion.div initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.5 }}
               style={{ height: 210, overflow: "hidden", position: "relative", border: "1px solid rgba(255,255,255,0.08)" }}>
-              <div style={{ width: "100%", height: "100%", backgroundImage: `url(${TEAM_IMG})`, backgroundSize: "cover", backgroundPosition: "center top", filter: "brightness(0.45) saturate(0.6)" }} />
+              <div style={{ width: "100%", height: "100%", backgroundImage: `url(${careers.teamImage})`, backgroundSize: "cover", backgroundPosition: "center top", filter: "brightness(0.45) saturate(0.6)" }} />
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(13,13,13,0.6), transparent)" }} />
-              <div style={{ position: "absolute", bottom: 18, left: 22, color: "#FFFFFF", fontSize: 13, fontWeight: 600 }}>Команда Nobel Group</div>
+              <div style={{ position: "absolute", bottom: 18, left: 22, color: "#FFFFFF", fontSize: 13, fontWeight: 600 }}>{careers.teamCaption}</div>
             </motion.div>
           </div>
 
@@ -62,11 +53,11 @@ export function CareersSection() {
           <div>
             <motion.div initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 }}
               style={{ color: "#9A9A9A", fontSize: 11, fontWeight: 600, letterSpacing: "0.18em", marginBottom: 18, paddingBottom: 12, borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
-              ОТКРЫТЫЕ ВАКАНСИИ
+              {careers.rolesHeading}
             </motion.div>
             <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 28 }}>
-              {OPEN_ROLES.map((role, i) => (
-                <motion.div key={role.title} initial={{ opacity: 0, x: 20 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.35 + i * 0.08 }}
+              {roles.map((role, i) => (
+                <motion.div key={role.id} initial={{ opacity: 0, x: 20 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.35 + i * 0.08 }}
                   style={{ background: "#111111", border: "1px solid rgba(255,255,255,0.07)", padding: "18px 22px", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" }}
                   whileHover={{ borderColor: "rgba(201,162,75,0.35)", x: 2 }}>
                   <div>

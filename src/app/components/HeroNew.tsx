@@ -4,11 +4,11 @@ import { Link } from "react-router";
 import { HeroNetwork } from "./HeroNetwork";
 import { IbmGrid } from "./BrandDecor";
 import { useMediaQuery } from "../hooks/useMediaQuery";
-
-const HERO_PHOTO =
-  "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=2000&q=80";
+import { useCms } from "../cms/store";
 
 export function HeroNew() {
+  const { data } = useCms();
+  const h = data.homeHero;
   const ref = useRef<HTMLElement>(null);
   const hideNetwork = useMediaQuery("(max-width: 900px)");
 
@@ -28,7 +28,7 @@ export function HeroNew() {
         style={{
           position: "absolute",
           inset: "-8% 0",
-          backgroundImage: `url(${HERO_PHOTO})`,
+          backgroundImage: `url(${h.photoUrl})`,
           backgroundSize: "cover",
           backgroundPosition: "center 40%",
           filter: "brightness(0.38) saturate(0.75)",
@@ -55,7 +55,7 @@ export function HeroNew() {
       >
         <div style={{ width: 16, height: 1, background: "var(--ng-gold)", opacity: 0.6 }} />
         <span style={{ color: "rgba(232,201,122,0.85)", fontSize: 9, fontWeight: 600, letterSpacing: "0.28em", textShadow: "0 0 12px rgba(213,162,81,0.5)" }}>
-          NOBEL GROUP · УЗБЕКИСТАН
+          {h.badge}
         </span>
       </motion.div>
 
@@ -71,7 +71,7 @@ export function HeroNew() {
           style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 28 }}
         >
           <div style={{ width: 30, height: 1, background: "var(--ng-gold)", flexShrink: 0 }} />
-          <span style={{ color: "var(--ng-gold)", fontSize: 11, fontWeight: 600, letterSpacing: "0.28em" }}>FMCG · ЦЕНТРАЛЬНАЯ АЗИЯ</span>
+          <span style={{ color: "var(--ng-gold)", fontSize: 11, fontWeight: 600, letterSpacing: "0.28em" }}>{h.eyebrow}</span>
         </motion.div>
 
         <div style={{ overflow: "hidden" }}>
@@ -90,11 +90,11 @@ export function HeroNew() {
               maxWidth: 640,
             }}
           >
-            Создаем надежную
+            {h.titleLine1}
             <br />
-            <span className="text-gold-glow" style={{ color: "var(--ng-gold)" }}>FMCG-платформу</span>
+            <span className="text-gold-glow" style={{ color: "var(--ng-gold)" }}>{h.titleAccent}</span>
             <br />
-            в Центральной Азии
+            {h.titleLine3}
           </motion.h1>
         </div>
 
@@ -104,7 +104,7 @@ export function HeroNew() {
           transition={{ delay: 0.75, duration: 0.7 }}
           style={{ color: "rgba(255,255,255,0.7)", fontSize: 16, fontWeight: 300, lineHeight: 1.75, marginTop: 24, marginBottom: 18, maxWidth: 540 }}
         >
-          Импорт, производство и дистрибуция продуктов питания на всей территории Узбекистана.
+          {h.subtitle}
         </motion.p>
 
         <motion.p
@@ -113,7 +113,7 @@ export function HeroNew() {
           transition={{ delay: 0.9, duration: 0.65 }}
           style={{ color: "rgba(255,255,255,0.48)", fontSize: 14, fontWeight: 300, lineHeight: 1.75, marginBottom: 40, maxWidth: 560 }}
         >
-          Nobel Group — группа компаний в сфере производства, импорта и дистрибуции продуктов питания в Узбекистане. Мы объединяем импорт, собственное производство, оптовую дистрибуцию, HoReCa и развитие потребительских брендов.
+          {h.body}
         </motion.p>
 
         <motion.div
@@ -123,7 +123,7 @@ export function HeroNew() {
           style={{ display: "flex", gap: 14, flexWrap: "wrap" }}
         >
           <Link
-            to="/about"
+            to={h.ctaPrimaryTo}
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -146,13 +146,13 @@ export function HeroNew() {
               e.currentTarget.style.transform = "translateY(0)";
             }}
           >
-            О ГРУППЕ
+            {h.ctaPrimary}
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
           </Link>
           <Link
-            to="/partnership#partner-form"
+            to={h.ctaSecondaryTo}
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -179,7 +179,7 @@ export function HeroNew() {
               e.currentTarget.style.transform = "translateY(0)";
             }}
           >
-            ОБСУДИТЬ СОТРУДНИЧЕСТВО
+            {h.ctaSecondary}
           </Link>
         </motion.div>
       </motion.div>

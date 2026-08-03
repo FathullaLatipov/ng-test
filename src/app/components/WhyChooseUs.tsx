@@ -2,33 +2,7 @@ import { useMemo, useRef, useState } from "react";
 import { motion, useInView, useScroll, useTransform } from "motion/react";
 import { GoldCheck } from "./BrandIcons";
 import { GiantNumber, GiantOutline, IbmGrid, LogisticsMesh } from "./BrandDecor";
-
-const REASONS = [
-  {
-    title: "Собственная региональная система продаж",
-    desc: "Локальные команды и каналы продаж обеспечивают присутствие в регионах Узбекистана и прямую работу с рынком.",
-  },
-  {
-    title: "Прямые контракты с производителями",
-    desc: "Работаем напрямую с заводами и брендами — без лишних звеньев, с контролем качества и стабильности поставок.",
-  },
-  {
-    title: "Опыт импорта и таможенного оформления",
-    desc: "Полный цикл внешнеторговых операций: логистика, таможня, сертификация и вывод товара на склад.",
-  },
-  {
-    title: "Управление запасами и логистикой",
-    desc: "Складская инфраструктура, планирование запасов и маршрутизация поставок под спрос клиентов.",
-  },
-  {
-    title: "Традиционная розница, сети и HoReCa",
-    desc: "Мультиканальная модель: опт, современные сети, традиционная розница и профессиональный сегмент HoReCa.",
-  },
-  {
-    title: "Финансовая и операционная инфраструктура",
-    desc: "Устойчивая платформа для масштабирования партнёрств — от пилота до системного присутствия на рынке.",
-  },
-];
+import { useCms } from "../cms/store";
 
 function prng(i: number) {
   return ((i * 7919 + 1) % 100) / 100;
@@ -70,6 +44,8 @@ function EmberParticles() {
 }
 
 export function WhyChooseUs() {
+  const { data } = useCms();
+  const why = data.why;
   const ref = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
@@ -116,7 +92,7 @@ export function WhyChooseUs() {
       <div style={{ maxWidth: 1400, margin: "0 auto", position: "relative", zIndex: 1 }} ref={ref}>
         <motion.div initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
           <div style={{ width: 24, height: 1, background: "var(--ng-gold)" }} />
-          <span style={{ color: "var(--ng-gold)", fontSize: 11, fontWeight: 600, letterSpacing: "0.28em" }}>ПОЧЕМУ NOBEL GROUP</span>
+          <span style={{ color: "var(--ng-gold)", fontSize: 11, fontWeight: 600, letterSpacing: "0.28em" }}>{why.eyebrow}</span>
         </motion.div>
         <motion.h2
           initial={{ opacity: 0, y: 24 }}
@@ -124,15 +100,15 @@ export function WhyChooseUs() {
           transition={{ delay: 0.1 }}
           style={{ fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: 48, maxWidth: 720 }}
         >
-          Операционная сила,
+          {why.title}
           <br />
-          <span className="text-gold-glow">на которой можно строить партнёрство.</span>
+          <span className="text-gold-glow">{why.titleAccent}</span>
         </motion.h2>
 
         <div className="ng-grid-3 ng-grid-cards2" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
-          {REASONS.map((r, i) => (
+          {why.reasons.map((r, i) => (
             <motion.div
-              key={r.title}
+              key={r.id}
               initial={{ opacity: 0, y: 28 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.12 + i * 0.07, duration: 0.6 }}

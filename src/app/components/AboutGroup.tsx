@@ -2,16 +2,18 @@ import { useRef, useState } from "react";
 import { motion, useInView, useScroll, useTransform } from "motion/react";
 import { GoldCheck } from "./BrandIcons";
 import { GiantNumber, GiantOutline, IbmGrid, LogisticsMesh, DrawLine } from "./BrandDecor";
+import { useCms } from "../cms/store";
 
-const CAPABILITIES = [
-  { id: "import",      label: "Импорт и дистрибуция",                  icon: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" },
-  { id: "production",  label: "Собственное производство",              icon: "M14.7 6.3a1 1 0 010 1.4l-8 8a1 1 0 01-.4.25l-3 1a1 1 0 01-1.25-1.25l1-3a1 1 0 01.25-.4l8-8a1 1 0 011.4 0z" },
-  { id: "horeca",      label: "HoReCa-поставки",                       icon: "M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z" },
-  { id: "trade",       label: "Международная торговля",                icon: "M1 3h15v13H1zM16 8l4 2v6h-4z" },
-  { id: "invest",      label: "Инвестиционные проекты",                icon: "M3 7h18M3 12h18M3 17h12" },
-  { id: "brand",       label: "Развитие потребительских брендов",      icon: "M22 7 13.5 15.5 8.5 10.5 2 17M16 7h6v6" },
-  { id: "logistics",   label: "Логистика и складская инфраструктура",  icon: "M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18" },
-];
+/** Icon paths kept for CAP_NODES diagram only */
+const CAP_ICONS: Record<string, string> = {
+  import: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5",
+  production: "M14.7 6.3a1 1 0 010 1.4l-8 8a1 1 0 01-.4.25l-3 1a1 1 0 01-1.25-1.25l1-3a1 1 0 01.25-.4l8-8a1 1 0 011.4 0z",
+  horeca: "M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z",
+  trade: "M1 3h15v13H1zM16 8l4 2v6h-4z",
+  invest: "M3 7h18M3 12h18M3 17h12",
+  brand: "M22 7 13.5 15.5 8.5 10.5 2 17M16 7h6v6",
+  logistics: "M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18",
+};
 
 const CAP_NODES = [
   { id: "import",     label: "Импорт и\nдистрибуция", x: 50,   y: 10 },
@@ -41,7 +43,7 @@ function NodeDot({ cap, inView, delay }: { cap: typeof CAP_NODES[0]; inView: boo
         style={{ width: 44, height: 44, border: "1px solid rgba(213,162,81,0.3)", background: "#12110F", display: "flex", alignItems: "center", justifyContent: "center" }}
       >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={hovered ? "#D5A251" : "#C9A24B"} strokeWidth="1.2" strokeLinecap="round">
-          <path d={CAPABILITIES.find(c => c.id === cap.id)?.icon || ""} />
+          <path d={CAP_ICONS[cap.id] || ""} />
         </svg>
       </motion.div>
       <div style={{ position: "absolute", top: "calc(100% + 8px)", left: "50%", transform: "translateX(-50%)", width: 100, textAlign: "center", color: hovered ? "#FFFFFF" : "rgba(255,255,255,0.75)", fontSize: 10, fontWeight: 600, lineHeight: 1.35, whiteSpace: "pre-line", transition: "color 0.3s" }}>
@@ -64,6 +66,8 @@ function EnergyPulse({ node, delay }: { node: typeof CAP_NODES[0]; delay: number
 }
 
 export function AboutGroup() {
+  const { data } = useCms();
+  const about = data.about;
   const ref = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
@@ -82,31 +86,31 @@ export function AboutGroup() {
           <div>
             <motion.div initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
               <div style={{ width: 24, height: 1, background: "var(--ng-gold)" }} />
-              <span style={{ color: "var(--ng-gold)", fontSize: 11, fontWeight: 600, letterSpacing: "0.28em" }}>О КОМПАНИИ</span>
+              <span style={{ color: "var(--ng-gold)", fontSize: 11, fontWeight: 600, letterSpacing: "0.28em" }}>{about.eyebrow}</span>
             </motion.div>
             <motion.h2 initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }}
               style={{ fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: 24 }}>
-              ОДНА ГРУППА.
-              <br /><span className="text-gold-glow">МНОЖЕСТВО ВОЗМОЖНОСТЕЙ.</span>
+              {about.title}
+              <br /><span className="text-gold-glow">{about.titleAccent}</span>
             </motion.h2>
             <motion.p initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }}
               style={{ color: "var(--ng-muted-dark)", fontSize: 15, fontWeight: 300, lineHeight: 1.82, marginBottom: 10 }}>
-              Nobel Group — группа компаний в сфере производства, импорта и дистрибуции продуктов питания в Узбекистане.
+              {about.body}
             </motion.p>
             <motion.p initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.25 }}
               style={{ color: "var(--ng-muted-dark)", fontSize: 14, fontWeight: 300, lineHeight: 1.82, marginBottom: 28 }}>
-              Мы объединяем импорт, собственное производство, оптовую дистрибуцию, HoReCa и развитие потребительских брендов.
+              {about.body2}
             </motion.p>
 
             <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.3 }} style={{ marginBottom: 28 }}>
               <DrawLine label="ЭКОСИСТЕМА" inView={inView} />
             </motion.div>
 
-            {CAPABILITIES.map((cap, i) => (
-              <motion.div key={cap.id} initial={{ opacity: 0, x: -16 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.32 + i * 0.07 }}
+            {about.capabilities.map((label, i) => (
+              <motion.div key={label} initial={{ opacity: 0, x: -16 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.32 + i * 0.07 }}
                 style={{ display: "flex", alignItems: "center", gap: 14, padding: "11px 0", borderBottom: "1px solid rgba(255,255,255,0.06)", cursor: "default" }}>
                 <GoldCheck size={15} />
-                <span style={{ color: "#FFFFFF", fontSize: 14, fontWeight: 500 }}>{cap.label}</span>
+                <span style={{ color: "#FFFFFF", fontSize: 14, fontWeight: 500 }}>{label}</span>
               </motion.div>
             ))}
           </div>
@@ -198,17 +202,17 @@ export function AboutGroup() {
           <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.65 }}
             style={{ background: "var(--ng-elevated)", border: "1px solid rgba(255,255,255,0.07)", borderLeft: "2px solid #D5A251", padding: "28px 28px" }}>
             <div style={{ color: "#D5A251", fontSize: 10, fontWeight: 600, letterSpacing: "0.24em", marginBottom: 14 }}>МИССИЯ</div>
-            <div style={{ color: "#FFFFFF", fontSize: 16, fontWeight: 700, marginBottom: 12, lineHeight: 1.3 }}>Наша миссия</div>
+            <div style={{ color: "#FFFFFF", fontSize: 16, fontWeight: 700, marginBottom: 12, lineHeight: 1.3 }}>{about.missionTitle}</div>
             <p style={{ color: "var(--ng-muted-dark)", fontSize: 13, fontWeight: 300, lineHeight: 1.82, margin: 0 }}>
-              Обеспечивать рынок Узбекистана качественными и доступными продуктами питания через надёжную систему поставок, дистрибуции и долгосрочного партнёрства.
+              {about.missionBody}
             </p>
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.75 }}
             style={{ background: "var(--ng-elevated)", border: "1px solid rgba(255,255,255,0.07)", padding: "28px 28px" }}>
             <div style={{ color: "var(--ng-muted-dark)", fontSize: 10, fontWeight: 600, letterSpacing: "0.24em", marginBottom: 14 }}>ЦЕННОСТИ</div>
-            <div style={{ color: "#FFFFFF", fontSize: 16, fontWeight: 700, marginBottom: 16, lineHeight: 1.3 }}>Принципы нашей работы</div>
+            <div style={{ color: "#FFFFFF", fontSize: 16, fontWeight: 700, marginBottom: 16, lineHeight: 1.3 }}>{about.valuesTitle}</div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-              {["Надёжность", "Ответственность", "Качество", "Партнёрство", "Оперативность", "Развитие"].map((v) => (
+              {about.values.map((v) => (
                 <div key={v} style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <GoldCheck size={14} />
                   <span style={{ color: "#FFFFFF", fontSize: 12, fontWeight: 500 }}>{v}</span>

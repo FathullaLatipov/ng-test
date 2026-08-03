@@ -1,36 +1,7 @@
 import { useRef } from "react";
 import { Link } from "react-router";
 import { motion, useInView } from "motion/react";
-
-const OWN_BRANDS = [
-  { name: "EcoBorn", cat: "Экопродукты", desc: "Премиальная линейка экосертифицированных продуктов" },
-  { name: "Rimada", cat: "Потребительский бренд", desc: "Собственное продуктовое направление внутри группы" },
-  { name: "Elite Daily", cat: "Everyday FMCG", desc: "Линейка повседневного спроса для розницы" },
-];
-
-const EXCLUSIVE = [
-  { name: "International Oils Co.", cat: "Растительные масла" },
-  { name: "Cocoa Partners", cat: "Какао-продукты" },
-  { name: "Palm Solutions", cat: "Пальмовая продукция" },
-];
-
-const DISTRIBUTED = [
-  { name: "Global Dairy Ingredients", cat: "Молочные ингредиенты" },
-  { name: "Starch Industry Group", cat: "Крахмалы" },
-  { name: "FMCG Alliance", cat: "Мультикатегорийный портфель" },
-  { name: "Asia Food Trade", cat: "Оптовые поставки" },
-];
-
-const CATEGORIES = [
-  "Растительные масла",
-  "Пальмовая продукция",
-  "Какао-продукты",
-  "Крахмал и производные",
-  "Молочные ингредиенты",
-  "Пищевое сырьё",
-  "FMCG-продукция",
-  "HoReCa-ассортимент",
-];
+import { useCms } from "../cms/store";
 
 function SectionLabel({ children, accent = false }: { children: string; accent?: boolean }) {
   return (
@@ -55,6 +26,11 @@ function SectionLabel({ children, accent = false }: { children: string; accent?:
 }
 
 export function BrandsPortfolio({ showCta = true }: { showCta?: boolean }) {
+  const { data } = useCms();
+  const brands = data.brands;
+  const own = [...brands.own].sort((a, b) => a.order - b.order);
+  const exclusive = [...brands.exclusive].sort((a, b) => a.order - b.order);
+  const distributed = [...brands.distributed].sort((a, b) => a.order - b.order);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -66,7 +42,7 @@ export function BrandsPortfolio({ showCta = true }: { showCta?: boolean }) {
           <div>
             <motion.div initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
               <div style={{ width: 24, height: 1, background: "#C9A24B" }} />
-              <span style={{ color: "#C9A24B", fontSize: 11, fontWeight: 600, letterSpacing: "0.26em" }}>БРЕНДЫ И ПРОДУКЦИЯ</span>
+              <span style={{ color: "#C9A24B", fontSize: 11, fontWeight: 600, letterSpacing: "0.26em" }}>{brands.eyebrow}</span>
             </motion.div>
             <motion.h2
               initial={{ opacity: 0, y: 24 }}
@@ -74,9 +50,9 @@ export function BrandsPortfolio({ showCta = true }: { showCta?: boolean }) {
               transition={{ delay: 0.1 }}
               style={{ fontSize: "clamp(28px, 3.2vw, 44px)", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.1 }}
             >
-              Портфель, который
+              {brands.title}
               <br />
-              <span style={{ color: "#C9A24B" }}>работает на полке.</span>
+              <span style={{ color: "#C9A24B" }}>{brands.titleAccent}</span>
             </motion.h2>
           </div>
           <motion.p
@@ -85,7 +61,7 @@ export function BrandsPortfolio({ showCta = true }: { showCta?: boolean }) {
             transition={{ delay: 0.2 }}
             style={{ color: "#9A9A9A", fontSize: 14, fontWeight: 400, lineHeight: 1.8 }}
           >
-            Собственные бренды, эксклюзивные представительства, дистрибутируемые марки и товарные категории — четыре уровня портфеля Nobel Group.
+            {brands.lead}
           </motion.p>
         </div>
 
@@ -93,9 +69,9 @@ export function BrandsPortfolio({ showCta = true }: { showCta?: boolean }) {
           <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }}>
             <SectionLabel accent>СОБСТВЕННЫЕ БРЕНДЫ</SectionLabel>
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {OWN_BRANDS.map((b) => (
+              {own.map((b) => (
                 <div
-                  key={b.name}
+                  key={b.id}
                   style={{
                     background: "#111111",
                     border: "1px solid rgba(255,255,255,0.07)",
@@ -114,9 +90,9 @@ export function BrandsPortfolio({ showCta = true }: { showCta?: boolean }) {
           <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.28 }}>
             <SectionLabel accent>ЭКСКЛЮЗИВНО ПРЕДСТАВЛЯЕМЫЕ</SectionLabel>
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {EXCLUSIVE.map((b) => (
+              {exclusive.map((b) => (
                 <div
-                  key={b.name}
+                  key={b.id}
                   style={{
                     background: "#111111",
                     border: "1px solid rgba(255,255,255,0.07)",
@@ -142,8 +118,8 @@ export function BrandsPortfolio({ showCta = true }: { showCta?: boolean }) {
           <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.34 }}>
             <SectionLabel>ДИСТРИБУТИРУЕМЫЕ БРЕНДЫ</SectionLabel>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-              {DISTRIBUTED.map((b) => (
-                <div key={b.name} style={{ background: "#111111", border: "1px solid rgba(255,255,255,0.06)", padding: "16px 14px" }}>
+              {distributed.map((b) => (
+                <div key={b.id} style={{ background: "#111111", border: "1px solid rgba(255,255,255,0.06)", padding: "16px 14px" }}>
                   <div style={{ color: "#FFFFFF", fontSize: 13, fontWeight: 700, marginBottom: 4 }}>{b.name}</div>
                   <div style={{ color: "#9A9A9A", fontSize: 11 }}>{b.cat}</div>
                 </div>
@@ -154,7 +130,7 @@ export function BrandsPortfolio({ showCta = true }: { showCta?: boolean }) {
           <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.4 }}>
             <SectionLabel>ТОВАРНЫЕ КАТЕГОРИИ</SectionLabel>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-              {CATEGORIES.map((c) => (
+              {brands.categories.map((c) => (
                 <span
                   key={c}
                   style={{

@@ -3,35 +3,11 @@ import { motion, useInView } from "motion/react";
 import { PageLayout } from "../components/PageLayout";
 import { PageHero } from "../components/PageHero";
 import { SectionDivider, IbmGrid } from "../components/BrandDecor";
-
-const NEWS = [
-  {
-    date: "2026",
-    tag: "Группа",
-    title: "Развитие FMCG-платформы в Центральной Азии",
-    desc: "Nobel Group продолжает усиливать импорт, производство и дистрибуцию продуктов питания на рынке Узбекистана.",
-  },
-  {
-    date: "2025",
-    tag: "География",
-    title: "Расширение регионального покрытия",
-    desc: "Укрепление складской инфраструктуры и дистрибуционной сети в ключевых регионах страны.",
-  },
-  {
-    date: "2025",
-    tag: "Партнёрство",
-    title: "Новые контракты с международными производителями",
-    desc: "Прямые соглашения расширяют ассортимент и повышают устойчивость поставок.",
-  },
-  {
-    date: "2024",
-    tag: "Производство",
-    title: "Дочерние производственные площадки",
-    desc: "Развитие производственных проектов, включая площадки в Казахстане и России.",
-  },
-];
+import { useCms } from "../cms/store";
 
 export function NewsPage() {
+  const { data } = useCms();
+  const news = data.news.filter((n) => n.published).sort((a, b) => a.order - b.order);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -49,9 +25,12 @@ export function NewsPage() {
       <section ref={ref} className="ng-sec-pad" style={{ background: "var(--ng-charcoal)", padding: "90px 80px", position: "relative", overflow: "hidden" }}>
         <IbmGrid opacity={0.02} />
         <div style={{ maxWidth: 1000, margin: "0 auto", position: "relative", zIndex: 1, display: "flex", flexDirection: "column", gap: 14 }}>
-          {NEWS.map((n, i) => (
+          {news.length === 0 && (
+            <div style={{ color: "var(--ng-muted-dark)", padding: 40, textAlign: "center" }}>Новостей пока нет.</div>
+          )}
+          {news.map((n, i) => (
             <motion.article
-              key={n.title}
+              key={n.id}
               initial={{ opacity: 0, y: 22 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.1 + i * 0.08 }}
@@ -71,7 +50,7 @@ export function NewsPage() {
               </div>
               <div>
                 <h3 style={{ color: "#FFFFFF", fontSize: 20, fontWeight: 700, margin: "0 0 10px", letterSpacing: "-0.01em" }}>{n.title}</h3>
-                <p style={{ color: "var(--ng-muted-dark)", fontSize: 14, lineHeight: 1.75, margin: 0 }}>{n.desc}</p>
+                <p style={{ color: "var(--ng-muted-dark)", fontSize: 14, lineHeight: 1.75, margin: 0 }}>{n.description}</p>
               </div>
             </motion.article>
           ))}

@@ -3,12 +3,17 @@ import { motion, useInView } from "motion/react";
 import { Link } from "react-router";
 import { PageLayout } from "../components/PageLayout";
 import { PageHero } from "../components/PageHero";
-import { BusinessDirections, DIRECTIONS } from "../components/BusinessDirections";
+import { BusinessDirections } from "../components/BusinessDirections";
 import { BrandsPortfolio } from "../components/BrandsPortfolio";
 import { SectionDivider, QuoteBand, MegaStats, IbmGrid } from "../components/BrandDecor";
 import { GoldCheck } from "../components/BrandIcons";
+import { useCms } from "../cms/store";
 
 export function BusinessPage() {
+  const { data } = useCms();
+  const directions = [...data.business.directions]
+    .filter((d) => d.published)
+    .sort((a, b) => a.order - b.order);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -36,7 +41,7 @@ export function BusinessPage() {
             Структура направлений
           </motion.h2>
           <div className="ng-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12 }}>
-            {DIRECTIONS.map((d, i) => (
+            {directions.map((d, i) => (
               <motion.a
                 key={d.id}
                 href={`#${d.id}`}

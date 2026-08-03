@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { motion, useInView } from "motion/react";
 import { Link } from "react-router";
 import nobelLogo from "../../assets/nobel-logo.png";
+import { useCms } from "../cms/store";
 
 const LANGS = ["RU", "UZ", "EN"];
 
@@ -17,8 +18,8 @@ const FOOTER_COLS: { title: string; links: { label: string; to?: string }[] }[] 
     title: "О группе",
     links: [
       { label: "О компании", to: "/about" },
+      { label: "Компании группы", to: "/companies" },
       { label: "История", to: "/history" },
-      { label: "Главная", to: "/" },
       { label: "Новости", to: "/news" },
     ],
   },
@@ -63,6 +64,8 @@ const FOOTER_COLS: { title: string; links: { label: string; to?: string }[] }[] 
 ];
 
 export function ContactFooterNew() {
+  const { data } = useCms();
+  const contact = data.contact;
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const [lang, setLang] = useState("RU");
@@ -78,11 +81,11 @@ export function ContactFooterNew() {
           <div style={{ marginBottom: 56 }}>
             <motion.div initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
               <div style={{ width: 24, height: 1, background: "#C9A24B" }} />
-              <span style={{ color: "#C9A24B", fontSize: 11, fontWeight: 600, letterSpacing: "0.26em" }}>КОНТАКТЫ</span>
+              <span style={{ color: "#C9A24B", fontSize: 11, fontWeight: 600, letterSpacing: "0.26em" }}>{contact.eyebrow}</span>
             </motion.div>
             <motion.h2 initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }} style={{ fontSize: "clamp(28px, 3.8vw, 52px)", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.05 }}>
-              ДАВАЙТЕ СТРОИТЬ
-              <br /><span style={{ color: "#C9A24B" }}>БУДУЩЕЕ ВМЕСТЕ.</span>
+              {contact.title}
+              <br /><span style={{ color: "#C9A24B" }}>{contact.titleAccent}</span>
             </motion.h2>
           </div>
 
@@ -105,10 +108,10 @@ export function ContactFooterNew() {
 
               <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.4 }} style={{ display: "flex", flexDirection: "column" }}>
                 {[
-                  { label: "Адрес", value: "100084, Узбекистан, Ташкент\nМирабадский район, ул. Навои, 22А" },
-                  { label: "Телефон", value: "+998 71 000 00 00" },
-                  { label: "Email", value: "info@nobelgroup.uz" },
-                  { label: "Часы работы", value: "Пн – Сб: 09:00 – 18:00" },
+                  { label: "Адрес", value: contact.address },
+                  { label: "Телефон", value: contact.phone },
+                  { label: "Email", value: contact.email },
+                  { label: "Часы работы", value: contact.hours },
                 ].map((item) => (
                   <div key={item.label} style={{ display: "grid", gridTemplateColumns: "90px 1fr", gap: 16, padding: "13px 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
                     <span style={{ color: "#9A9A9A", fontSize: 11, fontWeight: 600, letterSpacing: "0.08em" }}>{item.label.toUpperCase()}</span>
@@ -182,7 +185,7 @@ export function ContactFooterNew() {
                 </div>
               </div>
               <p style={{ color: "#9A9A9A", fontSize: 12, fontWeight: 400, lineHeight: 1.7, marginBottom: 22 }}>
-                Диверсифицированная группа компаний в сфере продовольственной промышленности. Импорт, опт, дистрибуция, HoReCa и развитие брендов в Узбекистане.
+                {contact.footerBlurb}
               </p>
               <div style={{ display: "flex", gap: 4 }}>
                 {LANGS.map((l) => (
@@ -221,7 +224,7 @@ export function ContactFooterNew() {
             </div>
           </div>
           <div className="ng-stack ng-stack-center ng-footer-bottom" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <div style={{ color: "#9A9A9A", fontSize: 11 }}>© 2024 Nobel Group. Все права защищены. Ташкент, Узбекистан.</div>
+            <div style={{ color: "#9A9A9A", fontSize: 11 }}>{contact.copyright}</div>
             <div style={{ display: "flex", gap: 22 }}>
               {["Политика конфиденциальности", "Условия использования"].map((item) => (
                 <a key={item} href="#" style={{ color: "#9A9A9A", textDecoration: "none", fontSize: 11, transition: "color 0.25s" }}

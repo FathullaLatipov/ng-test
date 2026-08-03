@@ -9,6 +9,8 @@ import { PartnershipPage } from "./pages/PartnershipPage";
 import { NewsPage } from "./pages/NewsPage";
 import { CareersPage } from "./pages/CareersPage";
 import { ContactsPage } from "./pages/ContactsPage";
+import { CompaniesPage } from "./pages/CompaniesPage";
+import { AdminPage } from "./pages/AdminPage";
 import { RouteWipe } from "./components/PageTransition";
 import { ScrollToTop } from "./components/ScrollToTop";
 
@@ -20,6 +22,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/companies" element={<CompaniesPage />} />
         <Route path="/business" element={<BusinessPage />} />
         <Route path="/brands" element={<BrandsPage />} />
         <Route path="/history" element={<HistoryPage />} />
@@ -28,6 +31,7 @@ export default function App() {
         <Route path="/news" element={<NewsPage />} />
         <Route path="/careers" element={<CareersPage />} />
         <Route path="/contacts" element={<ContactsPage />} />
+        <Route path="/admin" element={<AdminPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

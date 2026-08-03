@@ -2,60 +2,10 @@ import { useRef, useState, type CSSProperties } from "react";
 import { motion, useInView } from "motion/react";
 import { GoldCheck } from "./BrandIcons";
 import { LogisticsMesh, IbmGrid } from "./BrandDecor";
+import { useCms } from "../cms/store";
+import type { AudienceItem } from "../cms/types";
 
-const AUDIENCE = [
-  {
-    id: "producers",
-    label: "Производителям",
-    subtitle: "Выход на рынок Узбекистана",
-    img: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1000&q=80",
-    desc: "Импорт, дистрибуция, таможенное сопровождение и локальное продвижение вашей продукции.",
-    benefits: ["Прямой выход на рынок", "Региональная сеть продаж", "Управление категорией"],
-  },
-  {
-    id: "retail",
-    label: "Торговым сетям",
-    subtitle: "Стабильные поставки",
-    img: "https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=1000&q=80",
-    desc: "Мультикатегорийный портфель, надёжный график поставок и поддержка на полке.",
-    benefits: ["Широкий ассортимент", "Стабильное наличие", "Работа с ключевыми сетями"],
-  },
-  {
-    id: "distributors",
-    label: "Дистрибьюторам",
-    subtitle: "Оптовое партнёрство",
-    img: "https://images.unsplash.com/photo-1578574577315-52f121f77a3f?auto=format&fit=crop&w=1000&q=80",
-    desc: "Доступ к портфелю продуктов питания через одного надёжного оптового партнёра.",
-    benefits: ["Конкурентные условия", "Выделенный менеджер", "Региональная поддержка"],
-  },
-  {
-    id: "horeca",
-    label: "HoReCa",
-    subtitle: "Рестораны, отели, кафе",
-    img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1000&q=80",
-    desc: "Специализированный ассортимент и гибкие поставки для профессионального сегмента.",
-    benefits: ["Ассортимент для HoReCa", "Гибкий минимальный заказ", "Приоритетная доставка"],
-  },
-  {
-    id: "investors",
-    label: "Инвесторам",
-    subtitle: "Стратегический рост",
-    img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=80",
-    desc: "Инвестиционные проекты в производство, инфраструктуру и расширение FMCG-платформы.",
-    benefits: ["Производственные проекты", "Складская инфраструктура", "Региональное масштабирование"],
-  },
-];
-
-const COOP_TYPES = [
-  "Производитель / поставщик",
-  "Торговая сеть",
-  "Дистрибьютор",
-  "HoReCa",
-  "Инвестор",
-  "Другое",
-];
-
-function AudienceCard({ aud, index, inView }: { aud: (typeof AUDIENCE)[0]; index: number; inView: boolean }) {
+function AudienceCard({ aud, index, inView }: { aud: AudienceItem; index: number; inView: boolean }) {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -110,13 +60,13 @@ function AudienceCard({ aud, index, inView }: { aud: (typeof AUDIENCE)[0]; index
   );
 }
 
-function PartnerForm() {
+function PartnerForm({ coopTypes }: { coopTypes: string[] }) {
   const [sent, setSent] = useState(false);
   const [form, setForm] = useState({
     name: "",
     company: "",
     country: "",
-    type: COOP_TYPES[0],
+    type: coopTypes[0] ?? "",
     contact: "",
     message: "",
   });
@@ -196,7 +146,7 @@ function PartnerForm() {
           onChange={(e) => setForm((p) => ({ ...p, type: e.target.value }))}
           style={{ ...fieldStyle, cursor: "pointer" }}
         >
-          {COOP_TYPES.map((t) => (
+          {coopTypes.map((t) => (
             <option key={t} value={t}>
               {t}
             </option>
@@ -238,6 +188,11 @@ function PartnerForm() {
 }
 
 export function PartnershipSection({ showForm = true }: { showForm?: boolean }) {
+  const { data } = useCms();
+  const p = data.partnership;
+  const audiences = [...p.audiences]
+    .filter((a) => a.published)
+    .sort((a, b) => a.order - b.order);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -248,7 +203,7 @@ export function PartnershipSection({ showForm = true }: { showForm?: boolean }) 
         <div style={{ textAlign: "center", marginBottom: 52 }}>
           <motion.div initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} style={{ display: "flex", alignItems: "center", gap: 12, justifyContent: "center", marginBottom: 20 }}>
             <div style={{ width: 24, height: 1, background: "var(--ng-gold)" }} />
-            <span style={{ color: "var(--ng-gold)", fontSize: 11, fontWeight: 600, letterSpacing: "0.26em" }}>ПАРТНЁРАМ</span>
+            <span style={{ color: "var(--ng-gold)", fontSize: 11, fontWeight: 600, letterSpacing: "0.26em" }}>{p.eyebrow}</span>
             <div style={{ width: 24, height: 1, background: "var(--ng-gold)" }} />
           </motion.div>
           <motion.h2
@@ -257,7 +212,7 @@ export function PartnershipSection({ showForm = true }: { showForm?: boolean }) 
             transition={{ delay: 0.1 }}
             style={{ fontSize: "clamp(28px, 3.2vw, 44px)", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: 16 }}
           >
-            Сценарии сотрудничества
+            {p.title}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 16 }}
@@ -265,17 +220,17 @@ export function PartnershipSection({ showForm = true }: { showForm?: boolean }) 
             transition={{ delay: 0.18 }}
             style={{ color: "var(--ng-muted-dark)", fontSize: 15, fontWeight: 300, lineHeight: 1.75, maxWidth: 620, margin: "0 auto" }}
           >
-            Отдельные модели для производителей, торговых сетей, дистрибьюторов, HoReCa и инвесторов.
+            {p.lead}
           </motion.p>
         </div>
 
         <div className="ng-grid-3 ng-grid-cards2" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
-          {AUDIENCE.slice(0, 3).map((aud, i) => (
+          {audiences.slice(0, 3).map((aud, i) => (
             <AudienceCard key={aud.id} aud={aud} index={i} inView={inView} />
           ))}
         </div>
         <div className="ng-grid-2 ng-grid-cards2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginTop: 16, maxWidth: 920, marginLeft: "auto", marginRight: "auto" }}>
-          {AUDIENCE.slice(3).map((aud, i) => (
+          {audiences.slice(3).map((aud, i) => (
             <AudienceCard key={aud.id} aud={aud} index={i + 3} inView={inView} />
           ))}
         </div>
@@ -286,14 +241,14 @@ export function PartnershipSection({ showForm = true }: { showForm?: boolean }) 
           <IbmGrid opacity={0.025} />
           <LogisticsMesh opacity={0.08} />
           <div className="ng-side-pad" style={{ position: "relative", maxWidth: 900, margin: "0 auto", padding: "72px 80px" }}>
-            <div style={{ color: "var(--ng-gold)", fontSize: 11, fontWeight: 600, letterSpacing: "0.28em", marginBottom: 14 }}>ОБСУДИТЬ СОТРУДНИЧЕСТВО</div>
+            <div style={{ color: "var(--ng-gold)", fontSize: 11, fontWeight: 600, letterSpacing: "0.28em", marginBottom: 14 }}>{p.formEyebrow}</div>
             <h3 style={{ color: "#FFFFFF", fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1.15, margin: "0 0 12px" }}>
-              Короткая заявка — быстрый ответ
+              {p.formTitle}
             </h3>
             <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 14, lineHeight: 1.7, marginBottom: 32 }}>
-              Заполните форму: имя, компания, страна, тип сотрудничества, контакты и сообщение.
+              {p.formLead}
             </p>
-            <PartnerForm />
+            <PartnerForm coopTypes={p.coopTypes} />
           </div>
         </div>
       )}

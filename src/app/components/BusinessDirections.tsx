@@ -2,49 +2,8 @@ import { useRef, useState } from "react";
 import { Link } from "react-router";
 import { motion, useInView } from "motion/react";
 import { GiantNumber, GiantOutline, GiantWord, HoneycombPattern } from "./BrandDecor";
-
-export const DIRECTIONS = [
-  {
-    id: "import",
-    number: "01",
-    name: "Импорт и дистрибуция",
-    tagline: "Поставки и покрытие рынка",
-    desc: "Прямые контракты с производителями, таможенное оформление и региональная дистрибуция продуктов питания по всей территории Узбекистана.",
-    img: "https://images.unsplash.com/photo-1578574577315-52f121f77a3f?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    id: "production",
-    number: "02",
-    name: "Производство",
-    tagline: "Собственные мощности",
-    desc: "Развитие производственной базы и фасовочных проектов — от сырья до готовой продукции для локального и экспортного рынков.",
-    img: "https://images.unsplash.com/photo-1565793298595-6a879b1d9492?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    id: "horeca",
-    number: "03",
-    name: "HoReCa",
-    tagline: "Рестораны, отели, кафе",
-    desc: "Комплексное снабжение сегмента HoReCa: специализированный ассортимент, стабильный график поставок и выделенная поддержка.",
-    img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    id: "trade",
-    number: "04",
-    name: "Международная торговля",
-    tagline: "Экспорт и кросс-бордер",
-    desc: "Внешнеторговые операции, работа с партнёрами в регионе и развитие экспортных маршрутов через Центральную Азию.",
-    img: "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    id: "invest",
-    number: "05",
-    name: "Инвестиционные проекты",
-    tagline: "Рост и инфраструктура",
-    desc: "Инвестиции в складскую инфраструктуру, производственные мощности и стратегические партнёрства для масштабирования группы.",
-    img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
-  },
-];
+import { useCms } from "../cms/store";
+import type { DirectionItem } from "../cms/types";
 
 function DirectionPhotoCard({
   dir,
@@ -52,7 +11,7 @@ function DirectionPhotoCard({
   inView,
   featured,
 }: {
-  dir: (typeof DIRECTIONS)[0];
+  dir: DirectionItem;
   index: number;
   inView: boolean;
   featured?: boolean;
@@ -127,9 +86,14 @@ export function BusinessDirections({
   limit?: number;
   showAllLink?: boolean;
 }) {
+  const { data } = useCms();
+  const biz = data.business;
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
-  const items = limit ? DIRECTIONS.slice(0, limit) : DIRECTIONS;
+  const directions = [...biz.directions]
+    .filter((d) => d.published)
+    .sort((a, b) => a.order - b.order);
+  const items = limit ? directions.slice(0, limit) : directions;
 
   return (
     <section
@@ -162,7 +126,7 @@ export function BusinessDirections({
               style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}
             >
               <div style={{ width: 24, height: 1, background: "var(--ng-gold)" }} />
-              <span style={{ color: "var(--ng-gold)", fontSize: 11, fontWeight: 600, letterSpacing: "0.28em" }}>НАПРАВЛЕНИЯ БИЗНЕСА</span>
+              <span style={{ color: "var(--ng-gold)", fontSize: 11, fontWeight: 600, letterSpacing: "0.28em" }}>{biz.eyebrow}</span>
             </motion.div>
             <motion.h2
               initial={{ opacity: 0, y: 24 }}
@@ -170,9 +134,9 @@ export function BusinessDirections({
               transition={{ delay: 0.1 }}
               style={{ fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.1 }}
             >
-              Пять направлений.
+              {biz.title}
               <br />
-              <span className="text-gold-glow">Одна платформа.</span>
+              <span className="text-gold-glow">{biz.titleAccent}</span>
             </motion.h2>
           </div>
           <motion.p
@@ -181,7 +145,7 @@ export function BusinessDirections({
             transition={{ delay: 0.2 }}
             style={{ color: "var(--ng-muted-dark)", fontSize: 14, fontWeight: 300, lineHeight: 1.82 }}
           >
-            Импорт и дистрибуция, производство, HoReCa, международная торговля и инвестиционные проекты — связанные звенья единой FMCG-экосистемы Nobel Group.
+            {biz.lead}
           </motion.p>
         </div>
 

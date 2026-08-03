@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>О нас — Nobel Group</title>
+
+<!--
+  ==========================================================================
+  NOBEL GROUP — страница "О нас" (макет / прототип для разработчика)
+  ==========================================================================
+  Структура: 1 вводная секция (о холдинге) + 4 секции по дочерним компаниям,
+  скролл-снап на весь экран, боковая навигация-точки, шапка с логотипом.
+
+  Что нужно заменить разработчику перед продакшеном:
+  1. Домены компаний — см. переменную companyLinks в конце файла (сейчас
+     подтверждён только nobeltrade.uz, остальные — предположительные).
+  2. Тексты-описания компаний — сейчас черновые, согласовать с маркетингом.
+  3. Фоны секций сейчас — это <canvas>-анимации (нарисованные на JS), которые
+     крутятся в цикле как видео: льющееся масло (Nobel Trade), покачивающиеся
+     пальмы и свет (Rimado), льющееся молоко + пудра (Elite Dairy), капли
+     патоки + крупа крахмала (Gold Ingredients). Реального видео здесь нет —
+     у меня нет доступа к лицензированным съёмкам ваших производств, а
+     скачивать случайные ролики из интернета для сайта клиента нельзя
+     (авторские права). Когда появится настоящее видео — в каждой секции
+     есть комментарий над <canvas id="canvas-..."> с местом для
+     <video autoplay muted loop playsinline> (canvas тогда просто убрать).
+  5. Шрифты подключены с Google Fonts по CDN — если нужен self-host, скачать.
+  ==========================================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --ink:#141210;
+    --paper:#f4efe4;
+    --gold:#c9a227;
+    --gold-light:#e9cf7a;
+    --line: rgba(244,239,228,0.18);
+
+    /* per-company accent colors */
+    --nobel-a:#3a2a08; --nobel-b:#8a5a12; --nobel-c:#f0c14b;
+    --rimado-a:#3a1408; --rimado-b:#9a3d1a; --rimado-c:#e88a45;
+    --dairy-a:#0e2230;  --dairy-b:#2f5f77; --dairy-c:#eaf4f8;
+    --gold-i-a:#2e2308; --gold-i-b:#8a6a1e; --gold-i-c:#e9cf7a;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Inter',sans-serif;
+    scroll-snap-type:y mandatory;
+    overflow-x:hidden;
+  }
+  h1,h2,h3, .display{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    letter-spacing:0.2px;
+  }
+
+  /* ---------- top progress + header ---------- */
+  #progress{
+    position:fixed; top:0; left:0; height:3px; width:0%;
+    background:linear-gradient(90deg,var(--gold),var(--gold-light));
+    z-index:60; transition:width .08s linear;
+  }
+  header.site-head{
+    position:fixed; top:0; left:0; width:100%; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 44px;
+    font-family:'Fraunces',serif;
+    mix-blend-mode:normal;
+    pointer-events:none;
+  }
+  header.site-head .brand{
+    font-size:19px; letter-spacing:3px; font-weight:600; color:var(--paper);
+    text-shadow:0 2px 10px rgba(0,0,0,0.4);
+  }
+  header.site-head .brand span{color:var(--gold-light);}
+  header.site-head nav{
+    font-family:'Inter',sans-serif; font-size:12px; letter-spacing:1.5px;
+    color:rgba(244,239,228,0.75); text-transform:uppercase;
+  }
+
+  /* ---------- side dot navigation ---------- */
+  #dotnav{
+    position:fixed; right:34px; top:50%; transform:translateY(-50%);
+    z-index:55; display:flex; flex-direction:column; gap:16px;
+  }
+  #dotnav button{
+    width:10px; height:10px; border-radius:50%;
+    border:1.5px solid rgba(244,239,228,0.55);
+    background:transparent; cursor:pointer; padding:0;
+    transition:all .25s;
+    position:relative;
+  }
+  #dotnav button::after{
+    content:attr(data-label);
+    position:absolute; right:22px; top:50%; transform:translateY(-50%);
+    font-size:11px; letter-spacing:1px; white-space:nowrap;
+    color:rgba(244,239,228,0.75);
+    opacity:0; transition:opacity .2s; pointer-events:none;
+    font-family:'Inter',sans-serif;
+  }
+  #dotnav button:hover::after{opacity:1;}
+  #dotnav button.active{
+    background:var(--gold-light); border-color:var(--gold-light);
+    box-shadow:0 0 0 4px rgba(233,207,122,0.18);
+  }
+
+  /* ---------- sections ---------- */
+  section{
+    position:relative;
+    min-height:100vh;
+    scroll-snap-align:start;
+    display:flex;
+    align-items:center;
+    overflow:hidden;
+    padding:0 8vw;
+  }
+  .overlay{
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.75) 100%);
+    z-index:1;
+  }
+  .bg-art{ position:absolute; inset:0; z-index:0; overflow:hidden; }
+  .bg-canvas{ position:absolute; inset:0; width:100%; height:100%; display:block; }
+
+  .content{
+    position:relative; z-index:2; max-width:640px;
+  }
+  .eyebrow{
+    font-size:12px; letter-spacing:4px; text-transform:uppercase;
+    color:var(--gold-light); margin-bottom:18px; display:flex; align-items:center; gap:12px;
+  }
+  .eyebrow::before{ content:''; width:34px; height:1px; background:var(--gold-light); display:inline-block;}
+  .content h2{
+    font-size:clamp(38px,6vw,68px);
+    line-height:1.02;
+    margin:0 0 20px 0;
+    color:var(--paper);
+  }
+  .content p{
+    font-size:16.5px; line-height:1.75; color:rgba(244,239,228,0.88);
+    max-width:520px; margin:0 0 22px 0;
+  }
+  .tags{ display:flex; flex-wrap:wrap; gap:9px; margin-bottom:32px;}
+  .tags span{
+    font-size:11.5px; letter-spacing:0.5px; padding:7px 13px;
+    border:1px solid var(--line); border-radius:100px;
+    color:rgba(244,239,228,0.85);
+    background:rgba(244,239,228,0.04);
+  }
+  .cta{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:'Inter',sans-serif; font-weight:600; font-size:14px; letter-spacing:0.5px;
+    color:var(--ink); background:var(--gold-light);
+    padding:15px 26px; border-radius:3px; text-decoration:none;
+    transition:transform .25s, box-shadow .25s;
+  }
+  .cta:hover{ transform:translateY(-2px); box-shadow:0 10px 26px rgba(233,207,122,0.35); }
+  .cta svg{ width:15px; height:15px; transition:transform .25s; }
+  .cta:hover svg{ transform:translate(3px,-3px); }
+
+  .num-mark{
+    position:absolute; right:8vw; bottom:8vh; z-index:2;
+    font-family:'Fraunces',serif; font-size:15vw; font-weight:300;
+    color:rgba(244,239,228,0.06); line-height:1; user-select:none;
+  }
+
+  /* reveal-on-scroll */
+  .content > *{ opacity:0; transform:translateY(26px); transition:opacity .8s ease, transform .8s ease; }
+  section.inview .content > *{ opacity:1; transform:translateY(0); }
+  .content > *:nth-child(1){transition-delay:.02s;}
+  .content > *:nth-child(2){transition-delay:.10s;}
+  .content > *:nth-child(3){transition-delay:.18s;}
+  .content > *:nth-child(4){transition-delay:.26s;}
+  .content > *:nth-child(5){transition-delay:.34s;}
+
+  /* ================= HERO ================= */
+  #hero{ justify-content:center; text-align:left; background:#0f0d0a; }
+  #hero .bg-art{
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(201,162,39,0.16), transparent 55%),
+      radial-gradient(ellipse at 85% 80%, rgba(154,61,26,0.14), transparent 50%),
+      linear-gradient(160deg,#0f0d0a 0%, #17130d 100%);
+  }
+  #hero .content{ max-width:760px; }
+  #hero .eyebrow{ margin-bottom:26px;}
+  #hero h1{
+    font-size:clamp(42px,7vw,84px); line-height:1.03; margin:0 0 26px 0;
+  }
+  #hero h1 em{ font-style:italic; color:var(--gold-light); }
+  #hero p.lead{ font-size:18px; line-height:1.8; color:rgba(244,239,228,0.85); max-width:600px; margin-bottom:20px;}
+  #hero .brands-strip{ display:flex; gap:28px; flex-wrap:wrap; margin-top:36px; }
+  #hero .brands-strip div{
+    font-family:'Fraunces',serif; font-size:14px; letter-spacing:1px;
+    color:rgba(244,239,228,0.55); padding-bottom:10px; border-bottom:1px solid var(--line);
+  }
+  .scrolldown{
+    position:absolute; left:8vw; bottom:6vh; z-index:2;
+    display:flex; align-items:center; gap:10px;
+    font-size:11px; letter-spacing:2px; text-transform:uppercase; color:rgba(244,239,228,0.6);
+  }
+  .scrolldown .line{ width:1px; height:38px; background:linear-gradient(180deg, var(--gold-light), transparent); animation:scrollpulse 1.8s infinite; }
+  @keyframes scrollpulse{ 0%{opacity:.2;} 50%{opacity:1;} 100%{opacity:.2;} }
+
+  /* ================= NOBEL TRADE — подсолнечное масло ================= */
+  #nobel{ background:linear-gradient(200deg,var(--nobel-a),var(--nobel-b)); }
+  #nobel .bg-art svg{ position:absolute; inset:0; width:100%; height:100%; }
+  .oil-drop{ animation:oilfall linear infinite; }
+  @keyframes oilfall{
+    0%{ transform:translateY(-10vh) scale(1); opacity:0; }
+    10%{opacity:.6;}
+    100%{ transform:translateY(110vh) scale(1.1); opacity:0; }
+  }
+  .oil-wave{ animation:oilwave 9s ease-in-out infinite; transform-origin:center; }
+  @keyframes oilwave{ 0%,100%{ d:path("M0,560 C 300,520 900,600 1600,540 L1600,900 L0,900 Z"); } 50%{ d:path("M0,540 C 300,600 900,500 1600,580 L1600,900 L0,900 Z"); } }
+
+  /* ================= RIMADO — пальмовое масло ================= */
+  #rimado{ background:linear-gradient(200deg,var(--rimado-a),var(--rimado-b)); }
+  .palm-leaf{
+    position:absolute; transform-origin:bottom center;
+    animation:sway 6s ease-in-out infinite;
+  }
+  @keyframes sway{ 0%,100%{ transform:rotate(-4deg);} 50%{ transform:rotate(5deg);} }
+  .sun-glow{
+    position:absolute; border-radius:50%;
+    background:radial-gradient(circle, rgba(232,138,69,0.55), transparent 70%);
+    filter:blur(6px);
+    animation:pulseGlow 5s ease-in-out infinite;
+  }
+  @keyframes pulseGlow{ 0%,100%{opacity:.5;} 50%{opacity:.9;} }
+
+  /* ================= ELITE DAIRY — сухое молоко ================= */
+  #dairy{ background:linear-gradient(200deg,var(--dairy-a),var(--dairy-b)); }
+  .dust{
+    position:absolute; border-radius:50%; background:rgba(234,244,248,0.75);
+    animation:drift linear infinite;
+  }
+  @keyframes drift{
+    0%{ transform:translate(0,0); opacity:0;}
+    15%{opacity:.85;}
+    100%{ transform:translate(var(--dx,40px),-120vh); opacity:0;}
+  }
+  .milk-pour{
+    position:absolute; top:-10%; background:linear-gradient(180deg, rgba(234,244,248,0.9), rgba(234,244,248,0));
+    filter:blur(1px);
+    animation:pour 4.5s ease-in-out infinite;
+  }
+  @keyframes pour{ 0%,100%{ height:35%;} 50%{ height:55%;} }
+
+  /* ================= GOLD INGREDIENTS — крахмал и патока ================= */
+  #goldi{ background:linear-gradient(200deg,var(--gold-i-a),var(--gold-i-b)); }
+  .grain{ position:absolute; background:rgba(233,207,122,0.55); border-radius:1px; }
+  .syrup-drop{
+    position:absolute; border-radius:50% 50% 50% 0; transform:rotate(45deg);
+    background:linear-gradient(160deg, var(--gold-i-c), #b8862f);
+    animation:dripfall 3.6s cubic-bezier(.6,0,.8,1) infinite;
+  }
+  @keyframes dripfall{
+    0%{ transform:translateY(-40px) rotate(45deg) scale(0.6); opacity:0;}
+    8%{opacity:1;}
+    70%{ transform:translateY(60vh) rotate(45deg) scale(1); opacity:1;}
+    78%{ transform:translateY(63vh) rotate(45deg) scaleY(1.5) scaleX(0.7); }
+    86%{ transform:translateY(64vh) rotate(45deg) scaleY(0.8) scaleX(1.3); opacity:1;}
+    100%{ opacity:0; transform:translateY(64vh) rotate(45deg) scaleX(1.6) scaleY(0.4);}
+  }
+
+  footer{
+    scroll-snap-align:start;
+    min-height:40vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    background:#0f0d0a; text-align:center; padding:60px 24px; gap:16px;
+  }
+  footer .display{ font-size:26px; color:var(--gold-light); }
+  footer p{ color:rgba(244,239,228,0.6); font-size:13.5px; max-width:460px; line-height:1.7; }
+
+  @media (max-width:720px){
+    header.site-head{ padding:16px 20px; }
+    section{ padding:0 6vw; }
+    #dotnav{ right:14px; }
+    #dotnav button::after{ display:none; }
+    .num-mark{ font-size:26vw; right:4vw; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<header class="site-head">
+  <div class="brand">NOBEL <span>GROUP</span></div>
+  <nav>Холдинговая компания · Ташкент</nav>
+</header>
+
+<div id="dotnav">
+  <button data-target="hero" data-label="О холдинге" class="active"></button>
+  <button data-target="nobel" data-label="Nobel Trade"></button>
+  <button data-target="rimado" data-label="Rimado"></button>
+  <button data-target="dairy" data-label="Elite Dairy"></button>
+  <button data-target="goldi" data-label="Gold Ingredients"></button>
+</div>
+
+<!-- ============ HERO / О ХОЛДИНГЕ ============ -->
+<section id="hero">
+  <div class="bg-art"></div>
+  <div class="overlay"></div>
+  <div class="content">
+    <div class="eyebrow">О нас</div>
+    <h1>Мы объединяем компании,<br> которые <em>кормят регион</em>.</h1>
+    <p class="lead">Nobel Group — холдинг, в состав которого входят производственные и торговые компании
+      полного цикла: от растительных масел и жиров до сухих молочных продуктов и крахмалопаточной
+      продукции. Каждая компания — самостоятельный бренд со своим рынком и клиентами.</p>
+    <div class="brands-strip">
+      <div>Nobel Trade</div>
+      <div>Rimado</div>
+      <div>Elite Dairy</div>
+      <div>Gold Ingredients</div>
+    </div>
+  </div>
+  <div class="scrolldown"><span class="line"></span> Листайте вниз</div>
+</section>
+
+<!-- ============ NOBEL TRADE ============ -->
+<section id="nobel">
+  <div class="bg-art">
+    <!-- Placeholder: если появится реальное видео с производства/розлива масла,
+         вставить сюда <video autoplay muted loop playsinline> и убрать canvas ниже. -->
+    <canvas class="bg-canvas" id="canvas-nobel"></canvas>
+  </div>
+  <div class="overlay"></div>
+  <div class="num-mark">01</div>
+  <div class="content">
+    <div class="eyebrow">Компания холдинга — 01</div>
+    <h2>Nobel Trade</h2>
+    <p>Производство и торговля растительным маслом. Полный цикл — от закупки и переработки
+      масличного сырья до фасовки и поставки готовой продукции оптовым и розничным клиентам
+      в Узбекистане и странах региона.</p>
+    <div class="tags"><span>Подсолнечное масло</span><span>Переработка сырья</span><span>Оптовые поставки</span></div>
+    <a class="cta" href="https://nobeltrade.uz" target="_blank" rel="noopener">
+      Перейти на nobeltrade.uz
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ============ RIMADO ============ -->
+<section id="rimado">
+  <div class="bg-art">
+    <!-- Placeholder: реальное видео пальмовой плантации/производства встанет сюда так же. -->
+    <canvas class="bg-canvas" id="canvas-rimado"></canvas>
+  </div>
+  <div class="overlay"></div>
+  <div class="num-mark">02</div>
+  <div class="content">
+    <div class="eyebrow">Компания холдинга — 02</div>
+    <h2>Rimado</h2>
+    <p>Поставка и переработка пальмового масла и его фракций. Работаем с пищевой и
+      промышленной отраслями, обеспечивая стабильное качество сырья для производственных
+      партнёров.</p>
+    <div class="tags"><span>Пальмовое масло</span><span>Фракции и жиры</span><span>Промышленное сырьё</span></div>
+    <a class="cta" href="https://rimado.uz" target="_blank" rel="noopener">
+      Перейти на rimado.uz
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ============ ELITE DAIRY ============ -->
+<section id="dairy">
+  <div class="bg-art">
+    <!-- Placeholder: видео линии сушки/фасовки молока встанет сюда так же. -->
+    <canvas class="bg-canvas" id="canvas-dairy"></canvas>
+  </div>
+  <div class="overlay"></div>
+  <div class="num-mark">03</div>
+  <div class="content">
+    <div class="eyebrow">Компания холдинга — 03</div>
+    <h2>Elite Dairy</h2>
+    <p>Производство сухих молочных продуктов и молочных ингредиентов для пищевой
+      промышленности. Современные стандарты хранения и контроля качества на всех этапах —
+      от сырья до готовой упаковки.</p>
+    <div class="tags"><span>Сухое молоко</span><span>Молочные ингредиенты</span><span>Контроль качества</span></div>
+    <a class="cta" href="https://elitedairy.uz" target="_blank" rel="noopener">
+      Перейти на elitedairy.uz
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ============ GOLD INGREDIENTS ============ -->
+<section id="goldi">
+  <div class="bg-art">
+    <!-- Placeholder: видео линии крахмала/патоки встанет сюда так же. -->
+    <canvas class="bg-canvas" id="canvas-goldi"></canvas>
+  </div>
+  <div class="overlay"></div>
+  <div class="num-mark">04</div>
+  <div class="content">
+    <div class="eyebrow">Компания холдинга — 04</div>
+    <h2>Gold Ingredients</h2>
+    <p>Производство и поставка крахмала, патоки и продуктов на их основе для кондитерской,
+      пищевой и смежных отраслей промышленности. Сырьевая база и рецептуры, подобранные под
+      задачи производственных партнёров.</p>
+    <div class="tags"><span>Крахмал</span><span>Патока</span><span>Кондитерское сырьё</span></div>
+    <a class="cta" href="https://goldingredients.uz" target="_blank" rel="noopener">
+      Перейти на goldingredients.uz
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="display">NOBEL GROUP</div>
+  <p>Данная страница — прототип для разработки. Тексты, ссылки и фоновые анимации
+    являются черновыми и подлежат согласованию перед публикацией.</p>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  // ---- scroll progress bar ----
+  const progress = document.getElementById('progress');
+  function updateProgress(){
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progress.style.width = scrolled + '%';
+  }
+  window.addEventListener('scroll', updateProgress, {passive:true});
+
+  // ---- reveal-on-scroll + active dot tracking ----
+  const sections = Array.from(document.querySelectorAll('section'));
+  const dots = Array.from(document.querySelectorAll('#dotnav button'));
+
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('inview');
+        const id = entry.target.id;
+        dots.forEach(d=>d.classList.toggle('active', d.dataset.target===id));
+      }
+    });
+  }, {threshold:0.5});
+  sections.forEach(s=>io.observe(s));
+
+  // ---- dot nav click -> smooth scroll ----
+  dots.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const el = document.getElementById(btn.dataset.target);
+      if(el) el.scrollIntoView({behavior:'smooth'});
+    });
+  });
+
+  // ==========================================================================
+  // CANVAS BACKGROUND ENGINE — "video-like" looping motion graphics
+  // per subsidiary, since no licensed footage is available for the mock-up.
+  // Each section pauses its own canvas when off-screen (via IntersectionObserver)
+  // to keep the page light. Swap any of these for a real <video> tag later —
+  // see the HTML comments above each <canvas> for exactly where.
+  // ==========================================================================
+
+  function setupCanvas(id){
+    const canvas = document.getElementById(id);
+    if(!canvas) return null;
+    const ctx = canvas.getContext('2d');
+    let w,h,dpr;
+    function resize(){
+      dpr = Math.min(window.devicePixelRatio||1, 2);
+      w = canvas.clientWidth; h = canvas.clientHeight;
+      canvas.width = w*dpr; canvas.height = h*dpr;
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+    return { canvas, ctx, get w(){return w;}, get h(){return h;} };
+  }
+
+  function rand(a,b){ return a+Math.random()*(b-a); }
+
+  // ---------- 1. NOBEL TRADE — pouring sunflower oil ----------
+  function makeOilScene(id){
+    const c = setupCanvas(id); if(!c) return null;
+    const {ctx} = c;
+    const streams = [0.28,0.5,0.74].map(px=>({
+      px, amp:rand(6,14), speed:rand(0.6,1.1), phase:rand(0,10), width:rand(5,9)
+    }));
+    let ripples = [];
+    let rippleTimer = 0;
+    function frame(t){
+      const w=c.w, h=c.h;
+      ctx.clearRect(0,0,w,h);
+      const poolY = h*0.82;
+      // glow pool
+      const poolGrad = ctx.createLinearGradient(0,poolY,0,h);
+      poolGrad.addColorStop(0,'rgba(240,193,75,0.30)');
+      poolGrad.addColorStop(1,'rgba(240,193,75,0.05)');
+      ctx.fillStyle = poolGrad;
+      ctx.fillRect(0,poolY,w,h-poolY);
+
+      // pouring streams
+      streams.forEach(s=>{
+        const x0 = w*s.px;
+        ctx.beginPath();
+        ctx.moveTo(x0,-10);
+        for(let y=0;y<=poolY;y+=14){
+          const wob = Math.sin(t*s.speed + y*0.02 + s.phase)*s.amp*(y/poolY);
+          ctx.lineTo(x0+wob, y);
+        }
+        ctx.strokeStyle = 'rgba(240,193,75,0.5)';
+        ctx.lineWidth = s.width;
+        ctx.lineCap='round';
+        ctx.stroke();
+        // glossy highlight
+        ctx.strokeStyle='rgba(255,235,180,0.35)';
+        ctx.lineWidth = s.width*0.35;
+        ctx.stroke();
+      });
+
+      // ripple rings spawn at pool line
+      rippleTimer += 1;
+      if(rippleTimer>26){
+        rippleTimer=0;
+        const s = streams[Math.floor(Math.random()*streams.length)];
+        ripples.push({x:c.w*s.px, y:poolY, r:4, a:0.5});
+      }
+      ripples.forEach(r=>{ r.r += 0.7; r.a -= 0.008; });
+      ripples = ripples.filter(r=>r.a>0);
+      ripples.forEach(r=>{
+        ctx.beginPath();
+        ctx.ellipse(r.x, r.y, r.r, r.r*0.28, 0, 0, Math.PI*2);
+        ctx.strokeStyle = `rgba(255,224,140,${r.a})`;
+        ctx.lineWidth = 1.4;
+        ctx.stroke();
+      });
+    }
+    return {c, frame};
+  }
+
+  // ---------- 2. RIMADO — palm plantation, wind & light ----------
+  function makePalmScene(id){
+    const c = setupCanvas(id); if(!c) return null;
+    const {ctx} = c;
+    const palms = [0.08,0.30,0.55,0.80,0.94].map((px,i)=>({
+      px, depth: i%2===0?0.6:1, phase:rand(0,10), speed:rand(0.5,0.9), scale:rand(0.7,1.25)
+    }));
+    const pollen = Array.from({length:22}, ()=>({
+      x:rand(0,1), y:rand(0,1), r:rand(1,2.6), speed:rand(6,16), drift:rand(-8,8)
+    }));
+    function leaf(ctx,cx,cy,scale,angle,alpha){
+      ctx.save();
+      ctx.translate(cx,cy);
+      ctx.rotate(angle);
+      ctx.scale(scale,scale);
+      ctx.beginPath();
+      ctx.moveTo(0,0);
+      ctx.bezierCurveTo(-14,-40,-46,-58,-70,-46);
+      ctx.bezierCurveTo(-40,-38,-16,-24,0,0);
+      ctx.bezierCurveTo(16,-24,40,-38,70,-46);
+      ctx.bezierCurveTo(46,-58,14,-40,0,0);
+      ctx.closePath();
+      ctx.fillStyle = `rgba(154,61,26,${alpha})`;
+      ctx.fill();
+      ctx.restore();
+    }
+    function frame(t){
+      const w=c.w,h=c.h;
+      ctx.clearRect(0,0,w,h);
+      // drifting sun glow
+      const gx = w*0.78 + Math.sin(t*0.15)*30;
+      const gy = h*0.22 + Math.cos(t*0.1)*14;
+      const glow = ctx.createRadialGradient(gx,gy,0,gx,gy,w*0.32);
+      glow.addColorStop(0,'rgba(232,138,69,0.45)');
+      glow.addColorStop(1,'rgba(232,138,69,0)');
+      ctx.fillStyle = glow;
+      ctx.fillRect(0,0,w,h);
+
+      // palms swaying, back-to-front
+      palms.slice().sort((a,b)=>a.depth-b.depth).forEach(p=>{
+        const cx = w*p.px, cy = h*(0.55+ (1-p.depth)*0.25);
+        const sway = Math.sin(t*p.speed + p.phase)*0.18;
+        const alpha = 0.25 + p.depth*0.35;
+        for(let k=-2;k<=2;k++){
+          leaf(ctx, cx, cy, p.scale*(60+p.depth*40)/60, sway + k*0.55, alpha);
+        }
+        ctx.beginPath();
+        ctx.moveTo(cx,cy); ctx.lineTo(cx-6*p.depth, cy+70*p.depth);
+        ctx.strokeStyle = `rgba(58,20,8,${0.3+p.depth*0.3})`;
+        ctx.lineWidth = 5*p.depth;
+        ctx.stroke();
+      });
+
+      // drifting pollen / dust in the light
+      pollen.forEach(pt=>{
+        pt.y -= (pt.speed/2000);
+        pt.x += Math.sin(t+pt.drift)*0.0006;
+        if(pt.y< -0.05) pt.y = 1.05;
+        ctx.beginPath();
+        ctx.arc(pt.x*w, pt.y*h, pt.r, 0, Math.PI*2);
+        ctx.fillStyle = 'rgba(255,210,150,0.5)';
+        ctx.fill();
+      });
+    }
+    return {c, frame};
+  }
+
+  // ---------- 3. ELITE DAIRY — pouring milk, powder drift ----------
+  function makeMilkScene(id){
+    const c = setupCanvas(id); if(!c) return null;
+    const {ctx} = c;
+    const streams = [0.35,0.62].map(px=>({px, amp:rand(3,7), speed:rand(0.7,1.1), phase:rand(0,10), width:rand(7,11)}));
+    let powder = Array.from({length:40}, ()=>({x:rand(0,1), y:rand(0,1), r:rand(1,2.4), speed:rand(4,10), drift:rand(-6,6)}));
+    let ripples = [];
+    let rippleTimer=0;
+    function frame(t){
+      const w=c.w,h=c.h;
+      ctx.clearRect(0,0,w,h);
+      const poolY = h*0.8;
+      const poolGrad = ctx.createLinearGradient(0,poolY,0,h);
+      poolGrad.addColorStop(0,'rgba(234,244,248,0.28)');
+      poolGrad.addColorStop(1,'rgba(234,244,248,0.05)');
+      ctx.fillStyle = poolGrad;
+      ctx.fillRect(0,poolY,w,h-poolY);
+
+      streams.forEach(s=>{
+        const x0=w*s.px;
+        ctx.beginPath();
+        ctx.moveTo(x0,-10);
+        for(let y=0;y<=poolY;y+=14){
+          const wob = Math.sin(t*s.speed+y*0.025+s.phase)*s.amp*(y/poolY);
+          ctx.lineTo(x0+wob,y);
+        }
+        ctx.strokeStyle='rgba(234,244,248,0.55)';
+        ctx.lineWidth=s.width;
+        ctx.lineCap='round';
+        ctx.stroke();
+        ctx.strokeStyle='rgba(255,255,255,0.4)';
+        ctx.lineWidth=s.width*0.3;
+        ctx.stroke();
+      });
+
+      rippleTimer++;
+      if(rippleTimer>22){
+        rippleTimer=0;
+        const s = streams[Math.floor(Math.random()*streams.length)];
+        ripples.push({x:w*s.px,y:poolY,r:4,a:0.5});
+      }
+      ripples.forEach(r=>{ r.r+=0.75; r.a-=0.009; });
+      ripples = ripples.filter(r=>r.a>0);
+      ripples.forEach(r=>{
+        ctx.beginPath();
+        ctx.ellipse(r.x,r.y,r.r,r.r*0.28,0,0,Math.PI*2);
+        ctx.strokeStyle=`rgba(255,255,255,${r.a})`;
+        ctx.lineWidth=1.3;
+        ctx.stroke();
+      });
+
+      powder.forEach(pt=>{
+        pt.y -= pt.speed/3000;
+        pt.x += Math.sin(t*0.5+pt.drift)*0.0004;
+        if(pt.y<-0.05) pt.y=1.05;
+        ctx.beginPath();
+        ctx.arc(pt.x*w,pt.y*h,pt.r,0,Math.PI*2);
+        ctx.fillStyle='rgba(234,244,248,0.65)';
+        ctx.fill();
+      });
+    }
+    return {c, frame};
+  }
+
+  // ---------- 4. GOLD INGREDIENTS — starch/molasses drip & grain ----------
+  function makeSyrupScene(id){
+    const c = setupCanvas(id); if(!c) return null;
+    const {ctx} = c;
+    const drips = [0.22,0.5,0.76].map((px,i)=>({px, phase: i*1.6, speed: rand(0.35,0.5), size: rand(9,15)}));
+    const grains = Array.from({length:50}, ()=>({x:rand(0,1), y:rand(0,1), w:rand(2,4), h:rand(4,8), rot:rand(0,6.28), a:rand(0.2,0.55)}));
+    function frame(t){
+      const w=c.w,h=c.h;
+      ctx.clearRect(0,0,w,h);
+
+      grains.forEach(g=>{
+        ctx.save();
+        ctx.translate(g.x*w, g.y*h);
+        ctx.rotate(g.rot + t*0.05);
+        ctx.fillStyle = `rgba(233,207,122,${g.a})`;
+        ctx.fillRect(-g.w/2,-g.h/2,g.w,g.h);
+        ctx.restore();
+      });
+
+      drips.forEach(d=>{
+        const cycle = (t*d.speed + d.phase) % 4;
+        const x = w*d.px;
+        if(cycle < 2.6){
+          const y = -20 + (cycle/2.6)*(h*0.62);
+          const stretch = 1 + cycle*0.15;
+          ctx.save();
+          ctx.translate(x,y);
+          ctx.scale(1, stretch);
+          ctx.beginPath();
+          ctx.arc(0,0,d.size,0,Math.PI*2);
+          ctx.fillStyle = 'rgba(233,207,122,0.85)';
+          ctx.fill();
+          ctx.restore();
+          // trailing thread
+          ctx.strokeStyle='rgba(233,207,122,0.4)';
+          ctx.lineWidth = d.size*0.35;
+          ctx.beginPath(); ctx.moveTo(x,-20); ctx.lineTo(x,y); ctx.stroke();
+        } else {
+          const settle = (cycle-2.6)/1.4;
+          const y = h*0.64;
+          const spreadX = d.size*(1+settle*1.8);
+          const spreadY = d.size*(0.6-settle*0.3);
+          ctx.beginPath();
+          ctx.ellipse(x,y,spreadX,Math.max(2,spreadY),0,0,Math.PI*2);
+          ctx.fillStyle = `rgba(184,134,47,${0.5*(1-settle)})`;
+          ctx.fill();
+        }
+      });
+    }
+    return {c, frame};
+  }
+
+  // ---------- engine: run only visible scenes ----------
+  const scenes = [
+    makeOilScene('canvas-nobel'),
+    makePalmScene('canvas-rimado'),
+    makeMilkScene('canvas-dairy'),
+    makeSyrupScene('canvas-goldi')
+  ].filter(Boolean);
+
+  const visibility = new Map();
+  scenes.forEach(s=>visibility.set(s.c.canvas, false));
+  const visIO = new IntersectionObserver(entries=>{
+    entries.forEach(en=> visibility.set(en.target, en.isIntersecting));
+  }, {threshold:0.05});
+  scenes.forEach(s=> visIO.observe(s.c.canvas));
+
+  let clock = 0;
+  function tick(){
+    clock += 0.016;
+    scenes.forEach(s=>{ if(visibility.get(s.c.canvas)) s.frame(clock); });
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+})();
+</script>
+</body>
+</html>

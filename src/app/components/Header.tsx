@@ -14,6 +14,7 @@ const BUSINESS_LINKS = [
 const NAV = [
   { label: "Главная", to: "/" },
   { label: "О группе", to: "/about" },
+  { label: "Компании", to: "/companies" },
   { label: "Направления бизнеса", to: "/business", children: BUSINESS_LINKS },
   { label: "Бренды", to: "/brands" },
   { label: "Партнерам", to: "/partnership" },

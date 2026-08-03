@@ -1,19 +1,11 @@
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
 import { IbmGrid, GiantWord } from "./BrandDecor";
-
-const STATS = [
-  { n: "17+", l: "Лет на рынке" },
-  { n: "14", l: "Регионов Узбекистана" },
-  { n: "2 500+", l: "SKU в портфеле" },
-  { n: "120+", l: "Внешних партнёров" },
-  { n: "3 000+", l: "Клиентов B2B" },
-  { n: "25 000 м²", l: "Складской инфраструктуры" },
-  { n: "800+", l: "Сотрудников" },
-  { n: "20+", l: "Стран-поставщиков" },
-];
+import { useCms } from "../cms/store";
 
 export function KeyStats() {
+  const { data } = useCms();
+  const ks = data.keyStats;
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -41,7 +33,7 @@ export function KeyStats() {
           style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}
         >
           <div style={{ width: 24, height: 1, background: "#C9A24B" }} />
-          <span style={{ color: "#C9A24B", fontSize: 11, fontWeight: 600, letterSpacing: "0.26em" }}>NOBEL GROUP В ЦИФРАХ</span>
+          <span style={{ color: "#C9A24B", fontSize: 11, fontWeight: 600, letterSpacing: "0.26em" }}>{ks.eyebrow}</span>
         </motion.div>
         <motion.h2
           initial={{ opacity: 0, y: 22 }}
@@ -57,18 +49,18 @@ export function KeyStats() {
             maxWidth: 640,
           }}
         >
-          Масштаб, на котором
+          {ks.title}
           <br />
-          <span style={{ color: "#C9A24B" }}>строится FMCG-платформа.</span>
+          <span style={{ color: "#C9A24B" }}>{ks.titleAccent}</span>
         </motion.h2>
 
         <div
           className="ng-grid-4 ng-grid-cards2"
           style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14 }}
         >
-          {STATS.map((s, i) => (
+          {ks.items.map((s, i) => (
             <motion.div
-              key={s.l}
+              key={s.id}
               initial={{ opacity: 0, y: 28 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.1 + i * 0.05, duration: 0.55 }}
