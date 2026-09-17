@@ -26,8 +26,8 @@ const FOOTER_COLS: { title: string; links: { label: string; to?: string }[] }[] 
   {
     title: "Бизнес",
     links: [
-      { label: "Импорт и дистрибуция", to: "/business#import" },
-      { label: "Производство", to: "/business#production" },
+      { label: "Импорт и дистрибуция", to: "/business/import" },
+      { label: "Производство", to: "/business/jib" },
       { label: "HoReCa", to: "/business#horeca" },
       { label: "Международная торговля", to: "/business#trade" },
       { label: "Инвестиционные проекты", to: "/business#invest" },

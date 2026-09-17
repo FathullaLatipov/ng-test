@@ -15,6 +15,7 @@ import {
   Contact,
   Layers,
   Factory,
+  Droplet,
   Newspaper,
   ExternalLink,
   LogOut,
@@ -59,6 +60,7 @@ type Tab =
   | "contact"
   | "companies"
   | "companiesHero"
+  | "jib"
   | "news";
 
 const TABS: { id: Tab; label: string; group: string; Icon: LucideIcon }[] = [
@@ -76,6 +78,7 @@ const TABS: { id: Tab; label: string; group: string; Icon: LucideIcon }[] = [
   { id: "news", label: "Новости", group: "Страницы", Icon: Newspaper },
   { id: "companiesHero", label: "Компании — вступление", group: "Холдинг", Icon: Layers },
   { id: "companies", label: "Компании группы", group: "Холдинг", Icon: Factory },
+  { id: "jib", label: "J.I.B. / Завод", group: "Холдинг", Icon: Droplet },
 ];
 
 const BG_OPTIONS: { value: CompanyBgKind; label: string }[] = [
@@ -1235,6 +1238,153 @@ export function AdminPage() {
           </div>
         )}
 
+        {tab === "jib" && (
+          <>
+            <Card title="Hero / Шапка страницы" actions={<SaveBtn onClick={saved} />}>
+              <Field lab="Eyebrow" value={data.jib.eyebrow} onChange={(v) => patch("jib", { ...data.jib, eyebrow: v })} />
+              <Field lab="Заголовок" value={data.jib.title} onChange={(v) => patch("jib", { ...data.jib, title: v })} />
+              <Field lab="Акцент (подзаголовок)" value={data.jib.titleAccent} onChange={(v) => patch("jib", { ...data.jib, titleAccent: v })} />
+              <Field lab="Описание в hero" value={data.jib.heroSubtitle} onChange={(v) => patch("jib", { ...data.jib, heroSubtitle: v })} multiline />
+              <Field lab="Фон hero (URL)" value={data.jib.heroImage} onChange={(v) => patch("jib", { ...data.jib, heroImage: v })} />
+              <Field lab="Логотип (URL)" value={data.jib.logoUrl} onChange={(v) => patch("jib", { ...data.jib, logoUrl: v })} />
+              <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 12 }}>
+                <Field lab="Сайт завода (URL)" value={data.jib.website} onChange={(v) => patch("jib", { ...data.jib, website: v })} />
+                <Field lab="Подпись ссылки" value={data.jib.websiteLabel} onChange={(v) => patch("jib", { ...data.jib, websiteLabel: v })} />
+              </div>
+            </Card>
+
+            <Card title="О заводе" actions={<SaveBtn onClick={saved} />}>
+              <Field lab="Заголовок раздела" value={data.jib.aboutTitle} onChange={(v) => patch("jib", { ...data.jib, aboutTitle: v })} />
+              <Field lab="Абзац 1" value={data.jib.about} onChange={(v) => patch("jib", { ...data.jib, about: v })} multiline rows={4} />
+              <Field lab="Абзац 2" value={data.jib.about2} onChange={(v) => patch("jib", { ...data.jib, about2: v })} multiline rows={4} />
+              <Field lab="Миссия" value={data.jib.mission} onChange={(v) => patch("jib", { ...data.jib, mission: v })} multiline />
+              <Field lab="Фото раздела (URL)" value={data.jib.aboutImage} onChange={(v) => patch("jib", { ...data.jib, aboutImage: v })} />
+            </Card>
+
+            <Card
+              title="Цифры"
+              actions={
+                <button
+                  onClick={() => {
+                    const item: StatItem = { id: uid("jstat"), n: "0", l: "Новая метрика" };
+                    patch("jib", { ...data.jib, stats: [...data.jib.stats, item] });
+                    saved();
+                  }}
+                  style={{ background: "transparent", border: "1px solid rgba(201,162,75,0.4)", color: "#C9A24B", padding: "6px 10px", cursor: "pointer", fontSize: 12 }}
+                >
+                  +
+                </button>
+              }
+            >
+              {data.jib.stats.map((item) => (
+                <div key={item.id} style={{ display: "grid", gridTemplateColumns: "1fr 2fr auto", gap: 8 }}>
+                  <input
+                    value={item.n}
+                    onChange={(e) => patch("jib", { ...data.jib, stats: data.jib.stats.map((x) => (x.id === item.id ? { ...x, n: e.target.value } : x)) })}
+                    style={field}
+                    placeholder="Значение"
+                  />
+                  <input
+                    value={item.l}
+                    onChange={(e) => patch("jib", { ...data.jib, stats: data.jib.stats.map((x) => (x.id === item.id ? { ...x, l: e.target.value } : x)) })}
+                    style={field}
+                    placeholder="Подпись"
+                  />
+                  <DangerBtn onClick={() => { patch("jib", { ...data.jib, stats: data.jib.stats.filter((x) => x.id !== item.id) }); saved(); }}>×</DangerBtn>
+                </div>
+              ))}
+              <SaveBtn onClick={saved} />
+            </Card>
+
+            <Card
+              title="История (timeline)"
+              actions={
+                <button
+                  onClick={() => {
+                    const item = { id: uid("jhist"), year: "20—", title: "Новый этап", desc: "", order: data.jib.history.length + 1 };
+                    patch("jib", { ...data.jib, history: [...data.jib.history, item] });
+                    saved();
+                  }}
+                  style={{ background: "transparent", border: "1px solid rgba(201,162,75,0.4)", color: "#C9A24B", padding: "6px 10px", cursor: "pointer", fontSize: 12 }}
+                >
+                  +
+                </button>
+              }
+            >
+              {data.jib.history.slice().sort((a, b) => a.order - b.order).map((item) => (
+                <div key={item.id} style={{ border: "1px solid var(--admin-border)", borderRadius: 10, padding: 12, display: "grid", gap: 8 }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "120px 1fr auto", gap: 8 }}>
+                    <input value={item.year} onChange={(e) => patch("jib", { ...data.jib, history: data.jib.history.map((x) => (x.id === item.id ? { ...x, year: e.target.value } : x)) })} style={field} placeholder="Год" />
+                    <input value={item.title} onChange={(e) => patch("jib", { ...data.jib, history: data.jib.history.map((x) => (x.id === item.id ? { ...x, title: e.target.value } : x)) })} style={field} placeholder="Заголовок" />
+                    <DangerBtn onClick={() => { patch("jib", { ...data.jib, history: data.jib.history.filter((x) => x.id !== item.id) }); saved(); }}>×</DangerBtn>
+                  </div>
+                  <textarea rows={2} value={item.desc} onChange={(e) => patch("jib", { ...data.jib, history: data.jib.history.map((x) => (x.id === item.id ? { ...x, desc: e.target.value } : x)) })} style={{ ...field, resize: "vertical" }} placeholder="Описание" />
+                </div>
+              ))}
+              <SaveBtn onClick={saved} />
+            </Card>
+
+            <Card
+              title="Продукция (марки)"
+              actions={
+                <button
+                  onClick={() => {
+                    const item = { id: uid("jprod"), name: "Новая марка", note: "", img: "", order: data.jib.products.length + 1 };
+                    patch("jib", { ...data.jib, products: [...data.jib.products, item] });
+                    saved();
+                  }}
+                  style={{ background: "transparent", border: "1px solid rgba(201,162,75,0.4)", color: "#C9A24B", padding: "6px 10px", cursor: "pointer", fontSize: 12 }}
+                >
+                  +
+                </button>
+              }
+            >
+              <Field lab="Заголовок раздела" value={data.jib.productsTitle} onChange={(v) => patch("jib", { ...data.jib, productsTitle: v })} />
+              <Field lab="Лид раздела" value={data.jib.productsLead} onChange={(v) => patch("jib", { ...data.jib, productsLead: v })} multiline />
+              {data.jib.products.slice().sort((a, b) => a.order - b.order).map((item) => (
+                <div key={item.id} style={{ border: "1px solid var(--admin-border)", borderRadius: 10, padding: 12, display: "grid", gap: 8 }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 8 }}>
+                    <input value={item.name} onChange={(e) => patch("jib", { ...data.jib, products: data.jib.products.map((x) => (x.id === item.id ? { ...x, name: e.target.value } : x)) })} style={field} placeholder="Название марки" />
+                    <DangerBtn onClick={() => { patch("jib", { ...data.jib, products: data.jib.products.filter((x) => x.id !== item.id) }); saved(); }}>×</DangerBtn>
+                  </div>
+                  <textarea rows={2} value={item.note} onChange={(e) => patch("jib", { ...data.jib, products: data.jib.products.map((x) => (x.id === item.id ? { ...x, note: e.target.value } : x)) })} style={{ ...field, resize: "vertical" }} placeholder="Описание" />
+                  <input value={item.img} onChange={(e) => patch("jib", { ...data.jib, products: data.jib.products.map((x) => (x.id === item.id ? { ...x, img: e.target.value } : x)) })} style={field} placeholder="Изображение (URL)" />
+                </div>
+              ))}
+              <SaveBtn onClick={saved} />
+            </Card>
+
+            <Card title="Побочная продукция, возможности, стандарты, CTA" actions={<SaveBtn onClick={saved} />}>
+              <Field lab="Побочная — заголовок" value={data.jib.byproductsTitle} onChange={(v) => patch("jib", { ...data.jib, byproductsTitle: v })} />
+              <Field
+                lab="Побочная продукция (каждая с новой строки)"
+                value={data.jib.byproducts.join("\n")}
+                onChange={(v) => patch("jib", { ...data.jib, byproducts: v.split("\n").map((s) => s.trim()).filter(Boolean) })}
+                multiline
+                rows={4}
+              />
+              <Field lab="Возможности — заголовок" value={data.jib.capabilitiesTitle} onChange={(v) => patch("jib", { ...data.jib, capabilitiesTitle: v })} />
+              <Field
+                lab="Возможности (каждая с новой строки)"
+                value={data.jib.capabilities.join("\n")}
+                onChange={(v) => patch("jib", { ...data.jib, capabilities: v.split("\n").map((s) => s.trim()).filter(Boolean) })}
+                multiline
+                rows={5}
+              />
+              <Field lab="Стандарты — заголовок" value={data.jib.standardsTitle} onChange={(v) => patch("jib", { ...data.jib, standardsTitle: v })} />
+              <Field
+                lab="Стандарты (каждый с новой строки)"
+                value={data.jib.standards.join("\n")}
+                onChange={(v) => patch("jib", { ...data.jib, standards: v.split("\n").map((s) => s.trim()).filter(Boolean) })}
+                multiline
+                rows={4}
+              />
+              <Field lab="CTA — заголовок" value={data.jib.ctaTitle} onChange={(v) => patch("jib", { ...data.jib, ctaTitle: v })} />
+              <Field lab="CTA — текст" value={data.jib.ctaLead} onChange={(v) => patch("jib", { ...data.jib, ctaLead: v })} multiline />
+            </Card>
+          </>
+        )}
+
         {tab === "news" && (
           <>
             <button
@@ -1331,6 +1481,7 @@ function DirectionEditor({
       <Field lab="Tagline" value={d.tagline} onChange={(v) => setD({ ...d, tagline: v })} />
       <Field lab="Описание" value={d.desc} onChange={(v) => setD({ ...d, desc: v })} multiline />
       <Field lab="Фото URL" value={d.img} onChange={(v) => setD({ ...d, img: v })} />
+      <Field lab="Ссылка «Подробнее» (напр. /business/jib)" value={d.detailTo || ""} onChange={(v) => setD({ ...d, detailTo: v })} />
       <label style={{ display: "flex", gap: 8, fontSize: 13, color: "#4A4640" }}>
         <input type="checkbox" checked={d.published} onChange={(e) => setD({ ...d, published: e.target.checked })} />
         Опубликовано

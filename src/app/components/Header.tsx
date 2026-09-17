@@ -4,8 +4,8 @@ import { Link, NavLink, useLocation } from "react-router";
 import nobelLogo from "../../assets/nobel-logo.png";
 
 const BUSINESS_LINKS = [
-  { label: "Импорт и дистрибуция", to: "/business#import" },
-  { label: "Производство", to: "/business#production" },
+  { label: "Импорт и дистрибуция", to: "/business/import" },
+  { label: "Производство", to: "/business/jib" },
   { label: "HoReCa", to: "/business#horeca" },
   { label: "Международная торговля", to: "/business#trade" },
   { label: "Инвестиционные проекты", to: "/business#invest" },
@@ -45,9 +45,25 @@ export function Header() {
   const { pathname, hash } = useLocation();
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 70);
-    window.addEventListener("scroll", fn, { passive: true });
-    return () => window.removeEventListener("scroll", fn);
+    const fn = () => {
+      // The document root/body can become the scroll container (html/body have
+      // height:100% + overflow-x:hidden), so window.scrollY may stay 0. Read the
+      // offset from whichever element actually scrolls.
+      const y =
+        window.scrollY ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop ||
+        0;
+      setScrolled(y > 70);
+    };
+    fn();
+    // capture:true so scrolls from inner scroll containers are caught (scroll doesn't bubble)
+    window.addEventListener("scroll", fn, { passive: true, capture: true });
+    document.addEventListener("scroll", fn, { passive: true, capture: true });
+    return () => {
+      window.removeEventListener("scroll", fn, true);
+      document.removeEventListener("scroll", fn, true);
+    };
   }, []);
 
   useEffect(() => {

@@ -73,6 +73,16 @@ export function mergeCms(parsed: Partial<CmsData> | null | undefined): CmsData {
     companiesHero: { ...base.companiesHero, ...parsed.companiesHero },
     companies: parsed.companies?.length ? parsed.companies : base.companies,
     news: parsed.news?.length ? parsed.news : base.news,
+    jib: {
+      ...base.jib,
+      ...parsed.jib,
+      stats: parsed.jib?.stats?.length ? parsed.jib.stats : base.jib.stats,
+      history: parsed.jib?.history?.length ? parsed.jib.history : base.jib.history,
+      products: parsed.jib?.products?.length ? parsed.jib.products : base.jib.products,
+      byproducts: parsed.jib?.byproducts?.length ? parsed.jib.byproducts : base.jib.byproducts,
+      capabilities: parsed.jib?.capabilities?.length ? parsed.jib.capabilities : base.jib.capabilities,
+      standards: parsed.jib?.standards?.length ? parsed.jib.standards : base.jib.standards,
+    },
   };
 }
 

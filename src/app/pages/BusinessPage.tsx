@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { PageLayout } from "../components/PageLayout";
 import { PageHero } from "../components/PageHero";
 import { BusinessDirections } from "../components/BusinessDirections";
@@ -16,6 +16,7 @@ export function BusinessPage() {
     .sort((a, b) => a.order - b.order);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const navigate = useNavigate();
 
   return (
     <PageLayout>
@@ -44,7 +45,8 @@ export function BusinessPage() {
             {directions.map((d, i) => (
               <motion.a
                 key={d.id}
-                href={`#${d.id}`}
+                href={d.detailTo || `#${d.id}`}
+                onClick={d.detailTo ? (e) => { e.preventDefault(); navigate(d.detailTo!); } : undefined}
                 initial={{ opacity: 0, y: 18 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.08 + i * 0.05 }}

@@ -40,7 +40,12 @@ export type DirectionItem = {
   img: string;
   order: number;
   published: boolean;
+  /** Optional deep-link for "Подробнее" (e.g. "/business/jib") */
+  detailTo?: string;
 };
+
+export type JibHistoryItem = { id: string; year: string; title: string; desc: string; order: number };
+export type JibProduct = { id: string; name: string; note: string; img: string; order: number };
 
 export type BrandItem = {
   id: string;
@@ -155,4 +160,33 @@ export type CmsData = {
   companiesHero: SectionHeader & { lead: string };
   companies: CompanyItem[];
   news: NewsItem[];
+
+  jib: {
+    eyebrow: string;
+    title: string;
+    titleAccent: string;
+    heroSubtitle: string;
+    heroImage: string;
+    logoUrl: string;
+    aboutTitle: string;
+    about: string;
+    about2: string;
+    mission: string;
+    aboutImage: string;
+    stats: StatItem[];
+    history: JibHistoryItem[];
+    productsTitle: string;
+    productsLead: string;
+    products: JibProduct[];
+    byproductsTitle: string;
+    byproducts: string[];
+    capabilitiesTitle: string;
+    capabilities: string[];
+    standardsTitle: string;
+    standards: string[];
+    ctaTitle: string;
+    ctaLead: string;
+    website: string;
+    websiteLabel: string;
+  };
 };

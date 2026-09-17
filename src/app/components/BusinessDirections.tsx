@@ -58,7 +58,7 @@ function DirectionPhotoCard({
         <div style={{ color: "#FFFFFF", fontSize: featured ? 26 : 22, fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 12, lineHeight: 1.15 }}>{dir.name}</div>
         <p style={{ color: "rgba(255,255,255,0.68)", fontSize: 14, lineHeight: 1.7, margin: 0, maxWidth: 420 }}>{dir.desc}</p>
         <Link
-          to={`/business#${dir.id}`}
+          to={dir.detailTo || (dir.id === "production" ? "/business/jib" : dir.id === "import" ? "/business/import" : `/business#${dir.id}`)}
           style={{
             marginTop: 18,
             display: "inline-flex",
