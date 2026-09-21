@@ -59,7 +59,7 @@ export function BrandsPortfolio({ showCta = true }: { showCta?: boolean }) {
             initial={{ opacity: 0, y: 16 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.2 }}
-            style={{ color: "#9A9A9A", fontSize: 14, fontWeight: 400, lineHeight: 1.8 }}
+            style={{ color: "#FFFFFF", fontSize: 16, fontWeight: 400, lineHeight: 1.8 }}
           >
             {brands.lead}
           </motion.p>
@@ -77,6 +77,8 @@ export function BrandsPortfolio({ showCta = true }: { showCta?: boolean }) {
                     border: "1px solid rgba(255,255,255,0.07)",
                     borderLeft: "2px solid #C9A24B",
                     padding: "18px 20px",
+                    minHeight: 100,
+                    boxSizing: "border-box",
                   }}
                 >
                   <div style={{ color: "#FFFFFF", fontSize: 17, fontWeight: 800 }}>{b.name}</div>
@@ -96,18 +98,14 @@ export function BrandsPortfolio({ showCta = true }: { showCta?: boolean }) {
                   style={{
                     background: "#111111",
                     border: "1px solid rgba(255,255,255,0.07)",
+                    borderLeft: "2px solid #C9A24B",
                     padding: "18px 20px",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    gap: 12,
+                    minHeight: 100,
+                    boxSizing: "border-box",
                   }}
                 >
-                  <div>
-                    <div style={{ color: "#FFFFFF", fontSize: 15, fontWeight: 700 }}>{b.name}</div>
-                    <div style={{ color: "#9A9A9A", fontSize: 12, marginTop: 4 }}>{b.cat}</div>
-                  </div>
-                  <span style={{ color: "#C9A24B", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", flexShrink: 0 }}>EXCLUSIVE</span>
+                  <div style={{ color: "#FFFFFF", fontSize: 17, fontWeight: 800 }}>{b.name}</div>
+                  <div style={{ color: "#C9A24B", fontSize: 10, fontWeight: 600, letterSpacing: "0.1em", marginTop: 4 }}>{b.cat.toUpperCase()}</div>
                 </div>
               ))}
             </div>

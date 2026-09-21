@@ -96,7 +96,7 @@ function TravelDot({
       }}
       transition={{
         duration: dur,
-        delay: delay + 1.2,
+        delay: delay + 0.5,
         repeat: Infinity,
         ease: "linear",
         times: [0, 0.05, 0.5, 0.95, 1],
@@ -226,7 +226,7 @@ export function GeographyMap({
           strokeLinejoin="round"
           initial={{ pathLength: 0, opacity: 0 }}
           animate={active ? { pathLength: 1, opacity: 1 } : {}}
-          transition={{ delay: 0.3, duration: 1.8, ease: "easeInOut" }}
+          transition={{ delay: 0.1, duration: 0.9, ease: "easeInOut" }}
         />
         <motion.path
           d={UZ_PATH}
@@ -234,7 +234,7 @@ export function GeographyMap({
           stroke="none"
           initial={{ opacity: 0 }}
           animate={active ? { opacity: 1 } : {}}
-          transition={{ delay: 1.6 }}
+          transition={{ delay: 0.7 }}
         />
 
         {[100, 200, 300].map((y) => (
@@ -260,7 +260,7 @@ export function GeographyMap({
               strokeDasharray="4 6"
               initial={{ pathLength: 0, opacity: 0 }}
               animate={active ? { pathLength: 1, opacity: 1 } : {}}
-              transition={{ delay: 0.8 + i * 0.05, duration: 0.5 }}
+              transition={{ delay: 0.35 + i * 0.03, duration: 0.4 }}
             />
           );
         })}
@@ -270,7 +270,7 @@ export function GeographyMap({
         ))}
 
         {CITIES.map((city, i) => (
-          <CityMarker key={city.id} city={city} active={active} delay={1.2 + i * 0.06} compact={compact} />
+          <CityMarker key={city.id} city={city} active={active} delay={0.5 + i * 0.04} compact={compact} />
         ))}
       </svg>
     </div>

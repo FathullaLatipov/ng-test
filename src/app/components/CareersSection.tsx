@@ -26,7 +26,7 @@ export function CareersSection() {
               {careers.title}
               <br /><span style={{ color: "#C9A24B" }}>{careers.titleAccent}</span>
             </motion.h2>
-            <motion.p initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }} style={{ color: "#9A9A9A", fontSize: 15, fontWeight: 400, lineHeight: 1.8, marginBottom: 36 }}>
+            <motion.p initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }} style={{ color: "rgba(255,255,255,0.8)", fontSize: 15, fontWeight: 400, lineHeight: 1.8, marginBottom: 36 }}>
               {careers.lead}
             </motion.p>
             <div style={{ display: "flex", flexDirection: "column", gap: 18, marginBottom: 36 }}>
@@ -36,7 +36,7 @@ export function CareersSection() {
                   <div style={{ width: 36, height: 36, border: "1px solid rgba(201,162,75,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#C9A24B", fontSize: 14, fontWeight: 700, flexShrink: 0 }}>{i + 1}</div>
                   <div>
                     <div style={{ color: "#FFFFFF", fontSize: 14, fontWeight: 700, marginBottom: 4 }}>{v.title}</div>
-                    <div style={{ color: "#9A9A9A", fontSize: 13, lineHeight: 1.65 }}>{v.desc}</div>
+                    <div style={{ color: "rgba(255,255,255,0.72)", fontSize: 13, lineHeight: 1.65 }}>{v.desc}</div>
                   </div>
                 </motion.div>
               ))}
@@ -52,7 +52,7 @@ export function CareersSection() {
           {/* Right: Openings */}
           <div>
             <motion.div initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 }}
-              style={{ color: "#9A9A9A", fontSize: 11, fontWeight: 600, letterSpacing: "0.18em", marginBottom: 18, paddingBottom: 12, borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+              style={{ color: "rgba(201,162,75,0.9)", fontSize: 11, fontWeight: 600, letterSpacing: "0.18em", marginBottom: 18, paddingBottom: 12, borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
               {careers.rolesHeading}
             </motion.div>
             <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 28 }}>
@@ -64,8 +64,8 @@ export function CareersSection() {
                     <div style={{ color: "#FFFFFF", fontSize: 14, fontWeight: 600, marginBottom: 6 }}>{role.title}</div>
                     <div style={{ display: "flex", gap: 10 }}>
                       <span style={{ background: "rgba(201,162,75,0.1)", color: "#C9A24B", fontSize: 10, fontWeight: 600, letterSpacing: "0.1em", padding: "2px 8px" }}>{role.dept.toUpperCase()}</span>
-                      <span style={{ color: "#9A9A9A", fontSize: 12 }}>{role.type}</span>
-                      <span style={{ color: "#9A9A9A", fontSize: 12 }}>· {role.location}</span>
+                      <span style={{ color: "rgba(255,255,255,0.6)", fontSize: 12 }}>{role.type}</span>
+                      <span style={{ color: "rgba(255,255,255,0.6)", fontSize: 12 }}>· {role.location}</span>
                     </div>
                   </div>
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ color: "#C9A24B", flexShrink: 0 }}><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" /></svg>
@@ -75,7 +75,7 @@ export function CareersSection() {
             <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.7 }}
               style={{ background: "#111111", border: "1px solid rgba(201,162,75,0.2)", padding: "26px 26px" }}>
               <div style={{ color: "#FFFFFF", fontSize: 15, fontWeight: 700, marginBottom: 8 }}>Не нашли подходящую вакансию?</div>
-              <p style={{ color: "#9A9A9A", fontSize: 13, lineHeight: 1.7, marginBottom: 18 }}>
+              <p style={{ color: "rgba(255,255,255,0.72)", fontSize: 13, lineHeight: 1.7, marginBottom: 18 }}>
                 Мы всегда ищем опытных специалистов в области продаж, логистики, операций и торговли. Пришлите резюме — мы свяжемся, когда появится подходящая возможность.
               </p>
               <Link to="/careers#resume"

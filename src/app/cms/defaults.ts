@@ -5,6 +5,8 @@ import jibOilBottles from "../../assets/jib/oil-bottles.jpg";
 import markSemeynoe from "../../assets/jib/mark-semeynoe.png";
 import markDonchanka from "../../assets/jib/mark-donchanka.png";
 import markDonola from "../../assets/jib/mark-donola.png";
+import ecobornDist from "../../assets/ecoborn-5.jpg";
+import ecobornWarehouse from "../../assets/ecoborn-1.jpg";
 
 export const DEFAULT_CMS: CmsData = {
   updatedAt: new Date().toISOString(),
@@ -75,40 +77,40 @@ export const DEFAULT_CMS: CmsData = {
         name: "Импорт и дистрибуция",
         tagline: "Поставки и покрытие рынка",
         desc: "Прямые контракты с производителями, таможенное оформление и региональная дистрибуция продуктов питания по всей территории Узбекистана.",
-        img: "https://images.unsplash.com/photo-1578574577315-52f121f77a3f?auto=format&fit=crop&w=1200&q=80",
+        img: ecobornDist,
         order: 1,
         published: true,
         detailTo: "/business/import",
       },
       {
         id: "production",
-        number: "02",
+        number: "04",
         name: "Производство",
         tagline: "Собственные мощности",
         desc: "Собственный маслоперерабатывающий завод J.I.B. INVEST (ВМПЗ): полный цикл переработки подсолнечника — от сырья до фасованного масла для локального и экспортного рынков.",
         img: "https://images.unsplash.com/photo-1565793298595-6a879b1d9492?auto=format&fit=crop&w=1200&q=80",
-        order: 2,
+        order: 4,
         published: true,
         detailTo: "/business/jib",
       },
       {
         id: "horeca",
-        number: "03",
+        number: "02",
         name: "HoReCa",
         tagline: "Рестораны, отели, кафе",
         desc: "Комплексное снабжение сегмента HoReCa: специализированный ассортимент, стабильный график поставок и выделенная поддержка.",
         img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200&q=80",
-        order: 3,
+        order: 2,
         published: true,
       },
       {
         id: "trade",
-        number: "04",
+        number: "03",
         name: "Международная торговля",
         tagline: "Экспорт и кросс-бордер",
         desc: "Внешнеторговые операции, работа с партнёрами в регионе и развитие экспортных маршрутов через Центральную Азию.",
         img: "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=1200&q=80",
-        order: 4,
+        order: 3,
         published: true,
       },
       {
@@ -131,7 +133,7 @@ export const DEFAULT_CMS: CmsData = {
     lead: "Собственные бренды, эксклюзивные представительства, дистрибутируемые марки и товарные категории — четыре уровня портфеля Nobel Group.",
     own: [
       { id: "b1", name: "EcoBorn", cat: "Экопродукты", desc: "Премиальная линейка экосертифицированных продуктов", order: 1 },
-      { id: "b2", name: "Rimada", cat: "Потребительский бренд", desc: "Собственное продуктовое направление внутри группы", order: 2 },
+      { id: "b2", name: "Rimado", cat: "Потребительский бренд", desc: "Собственное продуктовое направление внутри группы", order: 2 },
       { id: "b3", name: "Elite Daily", cat: "Everyday FMCG", desc: "Линейка повседневного спроса для розницы", order: 3 },
     ],
     exclusive: [
@@ -221,7 +223,7 @@ export const DEFAULT_CMS: CmsData = {
         id: "distributors",
         label: "Дистрибьюторам",
         subtitle: "Оптовое партнёрство",
-        img: "https://images.unsplash.com/photo-1578574577315-52f121f77a3f?auto=format&fit=crop&w=1000&q=80",
+        img: ecobornWarehouse,
         desc: "Доступ к портфелю продуктов питания через одного надёжного оптового партнёра.",
         benefits: ["Конкурентные условия", "Выделенный менеджер", "Региональная поддержка"],
         order: 3,

@@ -101,3 +101,15 @@ html { scroll-behavior: smooth; font-family: 'Manrope', sans-serif; }
   0%   { left: -60%; }
   100% { left: 140%; }
 }
+
+/* ─── Section eyebrow labels — enlarge site-wide (11px → 15px) ─── */
+/* Matches the small tracked gold section labels (font-size 11px + wide letter-spacing),
+   without touching nav links, badges or corner captions. */
+[style*="font-size: 11px"][style*="letter-spacing: 0.24em"],
+[style*="font-size: 11px"][style*="letter-spacing: 0.26em"],
+[style*="font-size: 11px"][style*="letter-spacing: 0.28em"],
+[style*="font-size:11px"][style*="letter-spacing:0.24em"],
+[style*="font-size:11px"][style*="letter-spacing:0.26em"],
+[style*="font-size:11px"][style*="letter-spacing:0.28em"] {
+  font-size: 15px !important;
+}

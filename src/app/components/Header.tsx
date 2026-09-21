@@ -5,16 +5,15 @@ import nobelLogo from "../../assets/nobel-logo.png";
 
 const BUSINESS_LINKS = [
   { label: "Импорт и дистрибуция", to: "/business/import" },
-  { label: "Производство", to: "/business/jib" },
   { label: "HoReCa", to: "/business#horeca" },
   { label: "Международная торговля", to: "/business#trade" },
+  { label: "Производство", to: "/business/jib" },
   { label: "Инвестиционные проекты", to: "/business#invest" },
 ];
 
 const NAV = [
   { label: "Главная", to: "/" },
   { label: "О группе", to: "/about" },
-  { label: "Компании", to: "/companies" },
   { label: "Направления бизнеса", to: "/business", children: BUSINESS_LINKS },
   { label: "Бренды", to: "/brands" },
   { label: "Партнерам", to: "/partnership" },
@@ -27,13 +26,15 @@ const LANGS = ["RU", "UZ", "EN"];
 
 function navStyle(active: boolean): CSSProperties {
   return {
-    color: active ? "#C9A24B" : "#9A9A9A",
+    color: active ? "#C9A24B" : "#FFFFFF",
     textDecoration: "none",
-    fontSize: 12,
-    fontWeight: active ? 600 : 500,
-    letterSpacing: "0.04em",
+    fontSize: 14,
+    fontWeight: active ? 700 : 500,
+    letterSpacing: "0.03em",
     transition: "color 0.25s",
     whiteSpace: "nowrap",
+    display: "inline-flex",
+    alignItems: "center",
   };
 }
 
@@ -124,13 +125,13 @@ export function Header() {
               return (
                 <div
                   key={item.label}
-                  style={{ position: "relative" }}
+                  style={{ position: "relative", display: "inline-flex", alignItems: "center" }}
                   onMouseEnter={() => setBizOpen(true)}
                   onMouseLeave={() => setBizOpen(false)}
                 >
-                  <NavLink to={item.to} style={navStyle(active)} onMouseEnter={(e) => { e.currentTarget.style.color = "#FFFFFF"; }} onMouseLeave={(e) => { e.currentTarget.style.color = active ? "#C9A24B" : "#9A9A9A"; }}>
+                  <NavLink to={item.to} style={navStyle(active)} onMouseEnter={(e) => { e.currentTarget.style.color = "#C9A24B"; }} onMouseLeave={(e) => { e.currentTarget.style.color = active ? "#C9A24B" : "#FFFFFF"; }}>
                     {item.label}
-                    <span style={{ marginLeft: 4, fontSize: 9, opacity: 0.7 }}>▾</span>
+                    <span style={{ marginLeft: 5, fontSize: 11, opacity: 0.8 }}>▾</span>
                   </NavLink>
                   <AnimatePresence>
                     {bizOpen && (
@@ -197,10 +198,10 @@ export function Header() {
                 to={item.to}
                 end={item.to === "/"}
                 style={({ isActive }) => navStyle(isActive)}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#FFFFFF")}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#C9A24B")}
                 onMouseLeave={(e) => {
                   const on = pathname === item.to || (item.to === "/" && pathname === "/");
-                  e.currentTarget.style.color = on ? "#C9A24B" : "#9A9A9A";
+                  e.currentTarget.style.color = on ? "#C9A24B" : "#FFFFFF";
                 }}
               >
                 {item.label}

@@ -46,7 +46,7 @@ function AudienceCard({ aud, index, inView }: { aud: AudienceItem; index: number
         </div>
       </div>
       <div style={{ padding: "20px 18px 22px" }}>
-        <p className="ng-card-compact-desc" style={{ color: "var(--ng-muted-dark)", fontSize: 13, lineHeight: 1.65, marginBottom: 14 }}>{aud.desc}</p>
+        <p className="ng-card-compact-desc" style={{ color: "rgba(255,255,255,0.9)", fontSize: 14, lineHeight: 1.65, marginBottom: 14 }}>{aud.desc}</p>
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {aud.benefits.map((b) => (
             <div key={b} style={{ display: "flex", alignItems: "center", gap: 8 }}>

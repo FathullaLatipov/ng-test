@@ -124,14 +124,14 @@ export function WhyChooseUs() {
                 minHeight: 200,
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-                <GoldCheck size={16} />
-                <span style={{ color: "rgba(213,162,81,0.5)", fontSize: 12, fontWeight: 700, letterSpacing: "0.14em" }}>{String(i + 1).padStart(2, "0")}</span>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
+                <GoldCheck size={18} />
+                <span style={{ color: "rgba(213,162,81,0.8)", fontSize: 34, fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1 }}>{String(i + 1).padStart(2, "0")}</span>
               </div>
               <div className="ng-card-compact-title" style={{ color: "#FFFFFF", fontSize: 16, fontWeight: 700, marginBottom: 12, lineHeight: 1.35 }}>
                 {r.title}
               </div>
-              <p className="ng-card-compact-desc" style={{ color: "var(--ng-muted-dark)", fontSize: 13, lineHeight: 1.7, margin: 0 }}>
+              <p className="ng-card-compact-desc" style={{ color: "rgba(255,255,255,0.85)", fontSize: 13, lineHeight: 1.7, margin: 0 }}>
                 {r.desc}
               </p>
             </motion.div>

@@ -21,7 +21,7 @@ export function HomePage() {
       <BrandsPortfolio />
       <GeographyNew />
       <WhyChooseUs />
-      <PartnershipSection showForm />
+      <PartnershipSection showForm={false} />
       <SectionDivider mark="hex" />
     </PageLayout>
   );

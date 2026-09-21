@@ -55,25 +55,37 @@ function Frame({
 }
 
 function HistoryVisual() {
-  const years = ["2012", "2015", "2018", "2021", "2024"];
+  // Milestone years, auto-extended to the current year: the newest year is added
+  // at the bottom and the oldest drops off the top so the timeline always fits.
+  const MILESTONES = [2012, 2015, 2018, 2021, 2024, 2026];
+  const MAX_VISIBLE = 6;
+  const current = new Date().getFullYear();
+  const all = [...MILESTONES];
+  for (let y = all[all.length - 1] + 1; y <= current; y++) all.push(y);
+  const years = all.slice(-MAX_VISIBLE).map(String);
+
+  const TOP = 40;
+  const BOTTOM = 320;
+  const step = years.length > 1 ? (BOTTOM - TOP) / (years.length - 1) : 0;
+
   return (
     <Frame>
       <svg viewBox="0 0 360 360" width="100%" height="100%" style={{ overflow: "visible" }}>
         <motion.line
-          x1="90" y1="40" x2="90" y2="320"
+          x1="90" y1={TOP} x2="90" y2={BOTTOM}
           stroke="rgba(213,162,81,0.25)" strokeWidth="2"
           initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
           transition={{ duration: 1.2, delay: 0.4 }}
         />
         <motion.line
-          x1="90" y1="40" x2="90" y2="320"
+          x1="90" y1={TOP} x2="90" y2={BOTTOM}
           stroke={GOLD} strokeWidth="2" strokeLinecap="round"
           initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
           transition={{ duration: 1.4, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
           style={{ filter: "drop-shadow(0 0 8px rgba(213,162,81,0.6))" }}
         />
         {years.map((y, i) => {
-          const cy = 55 + i * 60;
+          const cy = TOP + step * i;
           return (
             <g key={y}>
               <motion.circle
@@ -106,8 +118,8 @@ function HistoryVisual() {
           );
         })}
         <motion.circle
-          cx="90" cy="55" r="4" fill={GOLD_SOFT}
-          animate={{ cy: [55, 295, 55], opacity: [0, 1, 1, 0] }}
+          cx="90" cy={TOP} r="4" fill={GOLD_SOFT}
+          animate={{ cy: [TOP, BOTTOM - 20, TOP], opacity: [0, 1, 1, 0] }}
           transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", times: [0, 0.45, 0.9, 1] }}
           style={{ filter: "drop-shadow(0 0 8px rgba(232,201,122,0.9))" }}
         />

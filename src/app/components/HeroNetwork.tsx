@@ -41,14 +41,14 @@ const CITIES_RAW: { key: string; label: string; lon: number; lat: number; labelD
   { key: "tashkent", label: "ТАШКЕНТ", lon: 69.2401, lat: 41.2995, labelDx: 16, labelDy: -8, order: 0, tier: "primary" },
   { key: "samarkand", label: "САМАРКАНД", lon: 66.9749, lat: 39.6542, labelDx: -14, labelDy: 16, order: 1, tier: "secondary" },
   { key: "fergana", label: "ФЕРГАНА", lon: 71.7843, lat: 40.3894, labelDx: 12, labelDy: 18, order: 2, tier: "secondary" },
-  { key: "bukhara", label: "БУХАРА", lon: 64.4207, lat: 39.768, labelDx: -18, labelDy: -8, order: 3, tier: "tertiary" },
+  { key: "bukhara", label: "БУХАРА", lon: 64.4207, lat: 39.768, labelDx: -52, labelDy: 4, order: 3, tier: "tertiary" },
   { key: "namangan", label: "НАМАНГАН", lon: 71.6726, lat: 40.9983, labelDx: 14, labelDy: -14, order: 4, tier: "tertiary" },
   { key: "andijan", label: "АНДИЖАН", lon: 72.3442, lat: 40.7821, labelDx: 16, labelDy: 8, order: 5, tier: "tertiary" },
-  { key: "nukus", label: "НУКУС", lon: 59.6103, lat: 42.4531, labelDx: -16, labelDy: -6, order: 6, tier: "tertiary" },
+  { key: "nukus", label: "НУКУС", lon: 59.6103, lat: 42.92, labelDx: -12, labelDy: -14, order: 6, tier: "tertiary" },
   { key: "karshi", label: "КАРШИ", lon: 65.7891, lat: 38.8606, labelDx: -14, labelDy: 16, order: 7, tier: "tertiary" },
-  { key: "termez", label: "ТЕРМЕЗ", lon: 67.2783, lat: 37.2242, labelDx: -12, labelDy: -14, order: 8, tier: "tertiary" },
+  { key: "termez", label: "ТЕРМЕЗ", lon: 67.2783, lat: 37.86, labelDx: -12, labelDy: -16, order: 8, tier: "tertiary" },
   { key: "jizzakh", label: "ДЖИЗАК", lon: 67.8422, lat: 40.1158, labelDx: 12, labelDy: -12, order: 9, tier: "tertiary" },
-  { key: "navoi", label: "НАВОИ", lon: 65.3792, lat: 40.0844, labelDx: -16, labelDy: 10, order: 10, tier: "tertiary" },
+  { key: "navoi", label: "НАВОИ", lon: 65.3792, lat: 40.0844, labelDx: 10, labelDy: -14, order: 10, tier: "tertiary" },
 ];
 
 const ROUTES: { a: string; b: string; tier: Tier }[] = [
@@ -68,7 +68,7 @@ const ROUTES: { a: string; b: string; tier: Tier }[] = [
   { a: "bukhara", b: "nukus", tier: "tertiary" },
 ];
 
-const SCALE = 33;
+const SCALE = 42;
 const LON_CENTER = (55.928917 + 73.055417) / 2;
 const LAT_CENTER = (37.144994 + 45.586804) / 2;
 const LAT_COS = Math.cos((LAT_CENTER * Math.PI) / 180);
@@ -151,7 +151,7 @@ function buildMesh() {
       x: p.x,
       y: p.y,
       scatter: { x: Math.cos(angle) * r, y: Math.sin(angle) * r },
-      size: isBorder ? 1.6 + hash(seed * 2.1 + 2) * 0.9 : 1.8 + hash(seed * 2.3 + 3) * 1.6,
+      size: isBorder ? 1.9 + hash(seed * 2.1 + 2) * 0.9 : 1.7 + hash(seed * 2.3 + 3) * 1.3,
       kind: isBorder ? "border" : "fill",
       reserve: !isBorder && i % 7 === 0,
     };
@@ -165,6 +165,8 @@ function buildMesh() {
 const MESH = buildMesh();
 const MESH_NODES = MESH.nodes;
 const MESH_EDGES = MESH.edges;
+/** Edges [0..BORDER_EDGE_COUNT) trace the country outline; the rest are interior fill */
+const BORDER_EDGE_COUNT = MESH_NODES.filter((n) => n.kind === "border").length;
 const RESERVE_IDX = MESH_NODES.map((n, i) => (n.reserve ? i : -1)).filter((i) => i >= 0);
 
 const CITIES = CITIES_RAW.map((c) => {
@@ -185,12 +187,12 @@ function buildWarehouses(): Warehouse[] {
     for (let k = 0; k < n; k++) {
       const seed = 1500 + ci * 37 + k * 11;
       const angle = hash(seed) * Math.PI * 2;
-      const radius = 14 + hash(seed * 1.3 + 2) * 15;
+      const radius = 5 + hash(seed * 1.3 + 2) * 6.5;
       list.push({
         cityIdx: ci,
         x: c.x + Math.cos(angle) * radius,
         y: c.y + Math.sin(angle) * radius,
-        size: 1.5 + hash(seed * 1.9 + 4) * 1.3,
+        size: 1 + hash(seed * 1.9 + 4) * 0.7,
       });
     }
   });
@@ -304,13 +306,13 @@ export function HeroNetwork() {
         if (n.reserve) return;
         const d = hash(i * 1.9 + 21) * 1.9;
         const p = meshPoints[i];
-        track(animate(p.opacity, n.kind === "border" ? 0.58 : 0.38, { duration: 1.4, delay: d, ease: EASE }));
+        track(animate(p.opacity, n.kind === "border" ? 0.9 : 0.32, { duration: 1.4, delay: d, ease: EASE }));
         track(animate(p.scale, 1, { duration: 1.4, delay: d, ease: EASE }));
         track(animate(p.x, n.x, { duration: 1.9, delay: d, ease: EASE }));
         track(animate(p.y, n.y, { duration: 1.9, delay: d, ease: EASE }));
       });
       meshEdgeOpacity.forEach((mv, i) => {
-        track(animate(mv, 0.16, { duration: 0.9, delay: 1 + hash(i * 2.1 + 40) * 1.2, ease: EASE }));
+        track(animate(mv, i < BORDER_EDGE_COUNT ? 0.7 : 0.14, { duration: 0.9, delay: 1 + hash(i * 2.1 + 40) * 1.2, ease: EASE }));
       });
       await wait(2000);
       if (cancelled) return;
@@ -320,15 +322,14 @@ export function HeroNetwork() {
       const cityOrder = CITIES.map((_, i) => i).sort((a, b) => CITIES[a].order - CITIES[b].order);
       cityOrder.forEach((idx, k) => {
         const d = k * 0.16;
-        const tier = CITIES[idx].tier;
-        const peak = tier === "primary" ? 0.85 : tier === "secondary" ? 0.65 : 0.42;
+        const peak = 0.72;
         track(animate(cityPoints[idx].opacity, 1, { duration: 1.1, delay: d, ease: EASE }));
         track(animate(cityPoints[idx].scale, 1, { duration: 1.1, delay: d, ease: EASE }));
         track(animate(cityPoints[idx].x, CITIES[idx].x, { duration: 1.4, delay: d, ease: EASE }));
         track(animate(cityPoints[idx].y, CITIES[idx].y, { duration: 1.4, delay: d, ease: EASE }));
         track(animate(cityGlow[idx], [0, peak, peak * 0.5], { duration: 1.4, delay: d, ease: EASE }));
         track(animate(cityLabel[idx], 1, { duration: 0.9, delay: d + 0.2, ease: EASE }));
-        track(animate(citySize[idx], tier === "primary" ? 1.35 : tier === "secondary" ? 1.22 : 1.1, { duration: 1.1, delay: d, ease: EASE }));
+        track(animate(citySize[idx], 1.15, { duration: 1.1, delay: d, ease: EASE }));
       });
       await wait(2000);
       if (cancelled) return;
@@ -417,7 +418,7 @@ export function HeroNetwork() {
     if (stage !== "alive") return;
     const cycle = 8 * CITIES.length;
     const controls = CITIES.map((c, i) => {
-      const peak = c.tier === "primary" ? 0.9 : c.tier === "secondary" ? 0.72 : 0.5;
+      const peak = 0.75;
       return animate(cityGlow[i], [cityGlow[i].get(), cityGlow[i].get(), peak, cityGlow[i].get()], { duration: cycle, delay: i * 8, repeat: Infinity, ease: EASE });
     });
     return () => controls.forEach((c) => c.stop());
@@ -471,7 +472,7 @@ export function HeroNetwork() {
       >
         <svg width={CANVAS_W} height={CANVAS_H} viewBox={`${-CANVAS_W / 2} ${-CANVAS_H / 2} ${CANVAS_W} ${CANVAS_H}`} style={{ position: "absolute", inset: 0, overflow: "visible" }}>
           {MESH_EDGES.map(([a, b], i) => (
-            <motion.line key={`mesh-${i}`} x1={meshPoints[a].x} y1={meshPoints[a].y} x2={meshPoints[b].x} y2={meshPoints[b].y} stroke={GOLD.primary} strokeWidth={0.4} opacity={meshEdgeOpacity[i]} />
+            <motion.line key={`mesh-${i}`} x1={meshPoints[a].x} y1={meshPoints[a].y} x2={meshPoints[b].x} y2={meshPoints[b].y} stroke={i < BORDER_EDGE_COUNT ? GOLD.highlight : GOLD.primary} strokeWidth={i < BORDER_EDGE_COUNT ? 1.7 : 0.45} opacity={meshEdgeOpacity[i]} style={i < BORDER_EDGE_COUNT ? { filter: "drop-shadow(0 0 3px rgba(241,208,137,0.55))" } : undefined} />
           ))}
           {ROUTE_EDGES.map((r, i) => (
             <motion.line
@@ -481,7 +482,7 @@ export function HeroNetwork() {
               x2={cityPoints[r.b].x}
               y2={cityPoints[r.b].y}
               stroke={GOLD.highlight}
-              strokeWidth={r.tier === "primary" ? 1 : r.tier === "secondary" ? 0.75 : 0.55}
+              strokeWidth={r.tier === "primary" ? 0.9 : r.tier === "secondary" ? 0.7 : 0.5}
               opacity={routeOpacity[i]}
               style={{ filter: "drop-shadow(0 0 3px rgba(241,208,137,0.45))" }}
             />
@@ -533,9 +534,9 @@ export function HeroNetwork() {
 
         {/* major hubs — the beating heart of the network */}
         {CITIES.map((c, i) => {
-          const base = c.tier === "primary" ? 9.5 : c.tier === "secondary" ? 7.5 : 6;
+          const base = 5.5;
           const iconAngle = (i / CITIES.length) * Math.PI * 2 + 0.6;
-          const iconR = 20;
+          const iconR = 14;
           return (
             <motion.div
               key={c.key}
@@ -553,12 +554,12 @@ export function HeroNetwork() {
               <motion.div
                 style={{
                   position: "absolute",
-                  left: -34,
-                  top: -34,
-                  width: 68,
-                  height: 68,
+                  left: -24,
+                  top: -24,
+                  width: 48,
+                  height: 48,
                   borderRadius: "50%",
-                  background: "radial-gradient(circle, rgba(241,208,137,0.8) 0%, rgba(199,155,74,0.2) 45%, transparent 75%)",
+                  background: "radial-gradient(circle, rgba(241,208,137,0.7) 0%, rgba(199,155,74,0.18) 45%, transparent 75%)",
                   opacity: cityGlow[i],
                   pointerEvents: "none",
                 }}
@@ -582,11 +583,11 @@ export function HeroNetwork() {
                   left: c.labelDx,
                   top: c.labelDy,
                   whiteSpace: "nowrap",
-                  fontSize: 8.5,
-                  fontWeight: 700,
-                  letterSpacing: "0.17em",
-                  color: "rgba(241,208,137,0.85)",
-                  textShadow: "0 0 8px rgba(199,155,74,0.5)",
+                  fontSize: 12,
+                  fontWeight: 800,
+                  letterSpacing: "0.14em",
+                  color: "rgba(246,224,155,0.98)",
+                  textShadow: "0 0 3px rgba(10,9,8,0.9), 0 0 11px rgba(199,155,74,0.75)",
                   opacity: cityLabel[i],
                 }}
               >

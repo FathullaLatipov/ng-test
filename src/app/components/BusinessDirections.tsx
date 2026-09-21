@@ -17,8 +17,12 @@ function DirectionPhotoCard({
   featured?: boolean;
 }) {
   const [hovered, setHovered] = useState(false);
+  const to =
+    dir.detailTo ||
+    (dir.id === "production" ? "/business/jib" : dir.id === "import" ? "/business/import" : `/business#${dir.id}`);
 
   return (
+    <Link to={to} style={{ display: "block", textDecoration: "none", color: "inherit" }}>
     <motion.div
       initial={{ opacity: 0, y: 36 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -57,25 +61,9 @@ function DirectionPhotoCard({
         <div style={{ color: "#C9A24B", fontSize: 11, fontWeight: 600, letterSpacing: "0.16em", marginBottom: 8 }}>{dir.tagline.toUpperCase()}</div>
         <div style={{ color: "#FFFFFF", fontSize: featured ? 26 : 22, fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 12, lineHeight: 1.15 }}>{dir.name}</div>
         <p style={{ color: "rgba(255,255,255,0.68)", fontSize: 14, lineHeight: 1.7, margin: 0, maxWidth: 420 }}>{dir.desc}</p>
-        <Link
-          to={dir.detailTo || (dir.id === "production" ? "/business/jib" : dir.id === "import" ? "/business/import" : `/business#${dir.id}`)}
-          style={{
-            marginTop: 18,
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            color: hovered ? "#E8C97A" : "#C9A24B",
-            textDecoration: "none",
-            fontSize: 12,
-            fontWeight: 700,
-            letterSpacing: "0.1em",
-            width: "fit-content",
-          }}
-        >
-          ПОДРОБНЕЕ →
-        </Link>
       </div>
     </motion.div>
+    </Link>
   );
 }
 
@@ -143,7 +131,7 @@ export function BusinessDirections({
             initial={{ opacity: 0, y: 16 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.2 }}
-            style={{ color: "var(--ng-muted-dark)", fontSize: 14, fontWeight: 300, lineHeight: 1.82 }}
+            style={{ color: "#FFFFFF", fontSize: 16, fontWeight: 300, lineHeight: 1.82 }}
           >
             {biz.lead}
           </motion.p>

@@ -35,14 +35,14 @@ function NodeDot({ cap, inView, delay }: { cap: typeof CAP_NODES[0]; inView: boo
       transition={{ delay, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      style={{ position: "absolute", left: `${cap.x}%`, top: `${cap.y}%`, x: "-50%", y: "-50%", width: 44, height: 44, cursor: "default" }}
+      style={{ position: "absolute", left: `${cap.x}%`, top: `${cap.y}%`, x: "-50%", y: "-50%", width: 56, height: 56, cursor: "default" }}
     >
       <motion.div
         animate={{ borderColor: hovered ? "rgba(213,162,81,0.7)" : "rgba(213,162,81,0.3)", background: hovered ? "rgba(213,162,81,0.08)" : "#12110F", boxShadow: hovered ? "0 0 16px rgba(213,162,81,0.25)" : "none" }}
         transition={{ duration: 0.3 }}
-        style={{ width: 44, height: 44, border: "1px solid rgba(213,162,81,0.3)", background: "#12110F", display: "flex", alignItems: "center", justifyContent: "center" }}
+        style={{ width: 56, height: 56, borderRadius: 11, border: "1px solid rgba(213,162,81,0.3)", background: "#12110F", display: "flex", alignItems: "center", justifyContent: "center" }}
       >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={hovered ? "#D5A251" : "#C9A24B"} strokeWidth="1.2" strokeLinecap="round">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={hovered ? "#D5A251" : "#C9A24B"} strokeWidth="1.2" strokeLinecap="round">
           <path d={CAP_ICONS[cap.id] || ""} />
         </svg>
       </motion.div>
@@ -57,11 +57,33 @@ function EnergyPulse({ node, delay }: { node: typeof CAP_NODES[0]; delay: number
   return (
     <motion.circle
       r={0.85}
+      cx={50}
+      cy={50}
       fill="#D5A251"
       style={{ filter: "drop-shadow(0 0 2.5px rgba(213,162,81,0.95))" }}
+      initial={{ cx: 50, cy: 50, opacity: 0 }}
       animate={{ cx: [50, node.x, 50], cy: [50, node.y, 50], opacity: [0, 1, 1, 1, 0] }}
       transition={{ duration: 3, delay, repeat: Infinity, ease: "easeInOut", times: [0, 0.08, 0.45, 0.92, 1] }}
     />
+  );
+}
+
+/** Checkmark that draws its path on scroll-into-view */
+function DrawCheck({ inView, delay, size = 16 }: { inView: boolean; delay: number; size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+      <circle cx="8" cy="8" r="7" stroke="#D5A251" strokeWidth="1.2" opacity="0.4" />
+      <motion.path
+        d="M4.5 8.2l2.4 2.4 4.6-5"
+        stroke="#E8C97A"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={{ pathLength: 0 }}
+        animate={inView ? { pathLength: 1 } : { pathLength: 0 }}
+        transition={{ delay: delay + 0.15, duration: 0.45, ease: "easeInOut" }}
+      />
+    </svg>
   );
 }
 
@@ -94,11 +116,11 @@ export function AboutGroup() {
               <br /><span className="text-gold-glow">{about.titleAccent}</span>
             </motion.h2>
             <motion.p initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }}
-              style={{ color: "var(--ng-muted-dark)", fontSize: 15, fontWeight: 300, lineHeight: 1.82, marginBottom: 10 }}>
+              style={{ color: "#FFFFFF", fontSize: 17, fontWeight: 300, lineHeight: 1.82, marginBottom: 10 }}>
               {about.body}
             </motion.p>
             <motion.p initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.25 }}
-              style={{ color: "var(--ng-muted-dark)", fontSize: 14, fontWeight: 300, lineHeight: 1.82, marginBottom: 28 }}>
+              style={{ color: "#FFFFFF", fontSize: 16, fontWeight: 300, lineHeight: 1.82, marginBottom: 28 }}>
               {about.body2}
             </motion.p>
 
@@ -109,30 +131,13 @@ export function AboutGroup() {
             {about.capabilities.map((label, i) => (
               <motion.div key={label} initial={{ opacity: 0, x: -16 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.32 + i * 0.07 }}
                 style={{ display: "flex", alignItems: "center", gap: 14, padding: "11px 0", borderBottom: "1px solid rgba(255,255,255,0.06)", cursor: "default" }}>
-                <GoldCheck size={15} />
+                <DrawCheck inView={inView} delay={0.32 + i * 0.07} size={16} />
                 <span style={{ color: "#FFFFFF", fontSize: 14, fontWeight: 500 }}>{label}</span>
               </motion.div>
             ))}
           </div>
 
           <motion.div style={{ position: "relative", width: "100%", aspectRatio: "1", maxWidth: 460, margin: "0 auto", y: diagramY }}>
-            <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.9 }}
-              style={{ position: "absolute", top: -8, left: "50%", transform: "translateX(-50%)", color: "rgba(213,162,81,0.5)", fontSize: 9, letterSpacing: "0.2em", fontWeight: 700, zIndex: 3 }}>
-              LOGISTICS
-            </motion.div>
-            <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 1 }}
-              style={{ position: "absolute", bottom: -4, left: "50%", transform: "translateX(-50%)", color: "rgba(213,162,81,0.5)", fontSize: 9, letterSpacing: "0.2em", fontWeight: 700, zIndex: 3 }}>
-              RETAIL
-            </motion.div>
-            <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.95 }}
-              style={{ position: "absolute", left: -4, top: "50%", transform: "translateY(-50%) rotate(-90deg)", color: "rgba(213,162,81,0.5)", fontSize: 9, letterSpacing: "0.2em", fontWeight: 700, zIndex: 3 }}>
-              MANUFACTURE
-            </motion.div>
-            <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 1.05 }}
-              style={{ position: "absolute", right: -16, top: "50%", transform: "translateY(-50%) rotate(90deg)", color: "rgba(213,162,81,0.5)", fontSize: 9, letterSpacing: "0.2em", fontWeight: 700, zIndex: 3 }}>
-              DISTRIBUTION
-            </motion.div>
-
             <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={inView ? { opacity: 1, scale: 1 } : {}} transition={{ delay: 0.4, duration: 0.6 }}
               style={{ position: "absolute", inset: "4%", borderRadius: "50%", border: "1px solid rgba(213,162,81,0.08)" }} />
             <motion.div initial={{ opacity: 0, scale: 0.85 }} animate={inView ? { opacity: 1, scale: 1 } : {}} transition={{ delay: 0.5, duration: 0.6 }}
@@ -189,7 +194,7 @@ export function AboutGroup() {
             </svg>
 
             <motion.div initial={{ opacity: 0, scale: 0.7 }} animate={inView ? { opacity: 1, scale: 1 } : {}} transition={{ delay: 0.5, duration: 0.55 }}
-              style={{ position: "absolute", left: "50%", top: "50%", x: "-50%", y: "-50%", width: 96, height: 96, background: "linear-gradient(135deg, #2F2512 0%, #12110F 100%)", border: "1px solid rgba(213,162,81,0.65)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", zIndex: 2, animation: "glow-pulse 3s ease-in-out infinite", boxShadow: "0 0 32px rgba(213,162,81,0.15)" }}>
+              style={{ position: "absolute", left: "50%", top: "50%", x: "-50%", y: "-50%", width: 112, height: 112, borderRadius: 11, background: "linear-gradient(135deg, #2F2512 0%, #12110F 100%)", border: "1px solid rgba(213,162,81,0.65)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", zIndex: 2, animation: "glow-pulse 3s ease-in-out infinite", boxShadow: "0 0 32px rgba(213,162,81,0.15)" }}>
               <div style={{ color: "#D5A251", fontSize: 9, fontWeight: 600, letterSpacing: "0.22em", marginBottom: 4 }}>NOBEL</div>
               <div style={{ color: "#FFFFFF", fontSize: 14, fontWeight: 800, letterSpacing: "0.08em" }}>GROUP</div>
             </motion.div>
@@ -203,13 +208,13 @@ export function AboutGroup() {
             style={{ background: "var(--ng-elevated)", border: "1px solid rgba(255,255,255,0.07)", borderLeft: "2px solid #D5A251", padding: "28px 28px" }}>
             <div style={{ color: "#D5A251", fontSize: 10, fontWeight: 600, letterSpacing: "0.24em", marginBottom: 14 }}>МИССИЯ</div>
             <div style={{ color: "#FFFFFF", fontSize: 16, fontWeight: 700, marginBottom: 12, lineHeight: 1.3 }}>{about.missionTitle}</div>
-            <p style={{ color: "var(--ng-muted-dark)", fontSize: 13, fontWeight: 300, lineHeight: 1.82, margin: 0 }}>
+            <p style={{ color: "#FFFFFF", fontSize: 13, fontWeight: 300, lineHeight: 1.82, margin: 0 }}>
               {about.missionBody}
             </p>
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.75 }}
-            style={{ background: "var(--ng-elevated)", border: "1px solid rgba(255,255,255,0.07)", padding: "28px 28px" }}>
-            <div style={{ color: "var(--ng-muted-dark)", fontSize: 10, fontWeight: 600, letterSpacing: "0.24em", marginBottom: 14 }}>ЦЕННОСТИ</div>
+            style={{ background: "var(--ng-elevated)", border: "1px solid rgba(255,255,255,0.07)", borderLeft: "2px solid #D5A251", padding: "28px 28px" }}>
+            <div style={{ color: "#D5A251", fontSize: 10, fontWeight: 600, letterSpacing: "0.24em", marginBottom: 14 }}>ЦЕННОСТИ</div>
             <div style={{ color: "#FFFFFF", fontSize: 16, fontWeight: 700, marginBottom: 16, lineHeight: 1.3 }}>{about.valuesTitle}</div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
               {about.values.map((v) => (

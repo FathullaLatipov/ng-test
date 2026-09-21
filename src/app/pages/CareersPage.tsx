@@ -54,7 +54,6 @@ export function CareersPage() {
           { n: "6", l: "Направлений развития" },
           { n: "14+", l: "Лет стабильного бизнеса" },
           { n: "4", l: "Открытых вакансий" },
-          { n: "1", l: "Команда роста" },
         ]}
       />
 
@@ -99,7 +98,7 @@ export function CareersPage() {
               >
                 <div style={{ width: 24, height: 2, background: "#D5A251", marginBottom: 16 }} />
                 <div style={{ color: "#FFFFFF", fontSize: 16, fontWeight: 700, marginBottom: 10 }}>{d.title}</div>
-                <p style={{ color: "var(--ng-muted-dark)", fontSize: 13, lineHeight: 1.7, margin: 0 }}>{d.desc}</p>
+                <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 14, lineHeight: 1.7, margin: 0 }}>{d.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -136,7 +135,7 @@ export function CareersPage() {
             initial={{ opacity: 0, y: 16 }}
             animate={formInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.18 }}
-            style={{ color: "var(--ng-muted-dark)", fontSize: 15, lineHeight: 1.8, marginBottom: 40 }}
+            style={{ color: "rgba(255,255,255,0.8)", fontSize: 15, lineHeight: 1.8, marginBottom: 40 }}
           >
             Заполните форму — HR или ответственный менеджер свяжется с вами при появлении подходящей возможности.
           </motion.p>
@@ -154,7 +153,7 @@ export function CareersPage() {
             >
               <div style={{ color: "#C9A24B", fontSize: 28, marginBottom: 16 }}>✦</div>
               <div style={{ color: "#FFFFFF", fontSize: 20, fontWeight: 700, marginBottom: 10 }}>Резюме получено</div>
-              <p style={{ color: "var(--ng-muted-dark)", fontSize: 14, lineHeight: 1.7, margin: 0 }}>
+              <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 14, lineHeight: 1.7, margin: 0 }}>
                 Спасибо за интерес к Nobel Group. Мы свяжемся с вами, когда появится подходящая вакансия.
               </p>
             </motion.div>
@@ -178,7 +177,7 @@ export function CareersPage() {
                 { key: "experience", label: "Опыт работы", placeholder: "Кратко о опыте", full: true },
               ].map((field) => (
                 <div key={field.key} style={{ gridColumn: field.full ? "1 / -1" : "auto" }}>
-                  <label style={{ display: "block", color: "#9A9A9A", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", marginBottom: 8 }}>
+                  <label style={{ display: "block", color: "rgba(255,255,255,0.6)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", marginBottom: 8 }}>
                     {field.label.toUpperCase()}
                   </label>
                   <input
@@ -202,7 +201,7 @@ export function CareersPage() {
                 </div>
               ))}
               <div style={{ gridColumn: "1 / -1" }}>
-                <label style={{ display: "block", color: "#9A9A9A", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", marginBottom: 8 }}>
+                <label style={{ display: "block", color: "rgba(255,255,255,0.6)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", marginBottom: 8 }}>
                   КОММЕНТАРИЙ
                 </label>
                 <textarea

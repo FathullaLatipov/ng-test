@@ -4,9 +4,8 @@ import { Link } from "react-router";
 import nobelLogo from "../../assets/nobel-logo.png";
 import { useCms } from "../cms/store";
 
-const LANGS = ["RU", "UZ", "EN"];
-
 const INQUIRY_TYPES = [
+  { id: "cooperation", label: "Сотрудничество", icon: "M9 13a5 5 0 0 0 7 0l2-2a5 5 0 1 0-7-7l-1 1M15 11a5 5 0 0 0-7 0l-2 2a5 5 0 1 0 7 7l1-1" },
   { id: "partner", label: "Стать партнёром", icon: "M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" },
   { id: "supplier", label: "Заявка поставщика", icon: "M3 7h18M3 12h18M3 17h12" },
   { id: "horeca", label: "Заявка для HoReCa", icon: "M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z" },
@@ -27,9 +26,9 @@ const FOOTER_COLS: { title: string; links: { label: string; to?: string }[] }[] 
     title: "Бизнес",
     links: [
       { label: "Импорт и дистрибуция", to: "/business/import" },
-      { label: "Производство", to: "/business/jib" },
       { label: "HoReCa", to: "/business#horeca" },
       { label: "Международная торговля", to: "/business#trade" },
+      { label: "Производство", to: "/business/jib" },
       { label: "Инвестиционные проекты", to: "/business#invest" },
     ],
   },
@@ -68,8 +67,7 @@ export function ContactFooterNew() {
   const contact = data.contact;
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
-  const [lang, setLang] = useState("RU");
-  const [selectedType, setSelectedType] = useState("partner");
+  const [selectedType, setSelectedType] = useState("cooperation");
   const [form, setForm] = useState({ name: "", company: "", email: "", message: "" });
   const [sent, setSent] = useState(false);
 
@@ -138,7 +136,7 @@ export function ContactFooterNew() {
                       { key: "email", label: "Email", placeholder: "your@email.com" },
                     ].map((field) => (
                       <div key={field.key}>
-                        <label style={{ display: "block", color: "#9A9A9A", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", marginBottom: 8 }}>{field.label.toUpperCase()}</label>
+                        <label style={{ display: "block", color: "#9A9A9A", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", marginBottom: 14 }}>{field.label.toUpperCase()}</label>
                         <input type={field.key === "email" ? "email" : "text"} placeholder={field.placeholder}
                           value={form[field.key as keyof typeof form]}
                           onChange={(e) => setForm((p) => ({ ...p, [field.key]: e.target.value }))}
@@ -149,7 +147,7 @@ export function ContactFooterNew() {
                       </div>
                     ))}
                     <div>
-                      <label style={{ display: "block", color: "#9A9A9A", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", marginBottom: 8 }}>СООБЩЕНИЕ</label>
+                      <label style={{ display: "block", color: "#9A9A9A", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", marginBottom: 14 }}>СООБЩЕНИЕ</label>
                       <textarea placeholder="Опишите ваш запрос или предложение о сотрудничестве..." rows={5}
                         value={form.message}
                         onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))}
@@ -184,17 +182,9 @@ export function ContactFooterNew() {
                   <div style={{ color: "#C9A24B", fontSize: 10, fontWeight: 600, letterSpacing: "0.32em", marginTop: 2 }}>GROUP</div>
                 </div>
               </div>
-              <p style={{ color: "#9A9A9A", fontSize: 12, fontWeight: 400, lineHeight: 1.7, marginBottom: 22 }}>
+              <p style={{ color: "rgba(255,255,255,0.72)", fontSize: 12, fontWeight: 400, lineHeight: 1.7, marginBottom: 22 }}>
                 {contact.footerBlurb}
               </p>
-              <div style={{ display: "flex", gap: 4 }}>
-                {LANGS.map((l) => (
-                  <button key={l} onClick={() => setLang(l)}
-                    style={{ background: lang === l ? "rgba(201,162,75,0.1)" : "transparent", border: lang === l ? "1px solid rgba(201,162,75,0.35)" : "1px solid rgba(255,255,255,0.08)", cursor: "pointer", fontSize: 10, fontWeight: 600, letterSpacing: "0.06em", color: lang === l ? "#C9A24B" : "#9A9A9A", padding: "4px 12px", transition: "all 0.25s", fontFamily: "Manrope, sans-serif" }}>
-                    {l}
-                  </button>
-                ))}
-              </div>
             </div>
             <div className="ng-grid-5" style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 28 }}>
               {FOOTER_COLS.map((col) => (
@@ -206,14 +196,14 @@ export function ContactFooterNew() {
                         <Link
                           key={link.label}
                           to={link.to}
-                          style={{ color: "#9A9A9A", textDecoration: "none", fontSize: 12, fontWeight: 400, lineHeight: 1.4, transition: "color 0.25s" }}
+                          style={{ color: "rgba(255,255,255,0.78)", textDecoration: "none", fontSize: 12, fontWeight: 400, lineHeight: 1.4, transition: "color 0.25s" }}
                           onMouseEnter={(e) => (e.currentTarget.style.color = "#C9A24B")}
-                          onMouseLeave={(e) => (e.currentTarget.style.color = "#9A9A9A")}
+                          onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.78)")}
                         >
                           {link.label}
                         </Link>
                       ) : (
-                        <span key={link.label} style={{ color: "#9A9A9A", fontSize: 12, fontWeight: 400, lineHeight: 1.4 }}>
+                        <span key={link.label} style={{ color: "rgba(255,255,255,0.78)", fontSize: 12, fontWeight: 400, lineHeight: 1.4 }}>
                           {link.label}
                         </span>
                       )
@@ -224,12 +214,12 @@ export function ContactFooterNew() {
             </div>
           </div>
           <div className="ng-stack ng-stack-center ng-footer-bottom" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <div style={{ color: "#9A9A9A", fontSize: 11 }}>{contact.copyright}</div>
+            <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 11 }}>{contact.copyright}</div>
             <div style={{ display: "flex", gap: 22 }}>
               {["Политика конфиденциальности", "Условия использования"].map((item) => (
-                <a key={item} href="#" style={{ color: "#9A9A9A", textDecoration: "none", fontSize: 11, transition: "color 0.25s" }}
+                <a key={item} href="#" style={{ color: "rgba(255,255,255,0.7)", textDecoration: "none", fontSize: 11, transition: "color 0.25s" }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = "#C9A24B")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "#9A9A9A")}>
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.78)")}>
                   {item}
                 </a>
               ))}

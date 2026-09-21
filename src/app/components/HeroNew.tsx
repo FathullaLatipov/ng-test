@@ -41,7 +41,7 @@ export function HeroNew() {
       <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "28%", zIndex: 3, background: "linear-gradient(to top, #0A0908 0%, transparent 100%)", pointerEvents: "none" }} />
 
       {!hideNetwork && (
-        <motion.div style={{ position: "absolute", inset: 0, opacity: 0.55, zIndex: 2 }}>
+        <motion.div style={{ position: "absolute", inset: 0, opacity: 0.92, zIndex: 2 }}>
           <HeroNetwork />
         </motion.div>
       )}
@@ -111,7 +111,7 @@ export function HeroNew() {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9, duration: 0.65 }}
-          style={{ color: "rgba(255,255,255,0.48)", fontSize: 14, fontWeight: 300, lineHeight: 1.75, marginBottom: 40, maxWidth: 560 }}
+          style={{ color: "#FFFFFF", fontSize: 15, fontWeight: 300, lineHeight: 1.75, marginBottom: 40, maxWidth: 560 }}
         >
           {h.body}
         </motion.p>

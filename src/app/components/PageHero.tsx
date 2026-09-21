@@ -157,7 +157,7 @@ export function PageHero({
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.42, duration: 0.65 }}
             style={{
-              color: "rgba(255,255,255,0.55)",
+              color: "rgba(255,255,255,0.85)",
               fontSize: "clamp(15px, 1.4vw, 18px)",
               fontWeight: 300,
               lineHeight: 1.75,

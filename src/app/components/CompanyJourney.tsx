@@ -32,11 +32,11 @@ function MilestoneCard({
       animate={inView ? { opacity: 1, x: 0 } : {}}
       transition={{ delay: 0.2 + i * 0.08, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
       className="ng-milestone-grid"
-      style={{ display: "grid", gridTemplateColumns: "110px 56px 1fr", gap: "0 20px", alignItems: "flex-start", paddingBottom: i < total - 1 ? 48 : 0 }}
+      style={{ display: "grid", gridTemplateColumns: "110px 56px 1fr", gap: "0 20px", alignItems: "center", paddingBottom: i < total - 1 ? 48 : 0 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div style={{ textAlign: "right", paddingTop: 18 }}>
+      <div style={{ textAlign: "right" }}>
         <span style={{
           color: m.future ? "rgba(213,162,81,0.4)" : active ? "var(--ng-gold)" : "rgba(255,255,255,0.25)",
           fontSize: 22,
@@ -49,32 +49,48 @@ function MilestoneCard({
         </span>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", position: "relative" }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative" }}>
+        {active && !m.future && (
+          <motion.div
+            aria-hidden
+            animate={{ opacity: [0.5, 0], scale: [0.85, 1.8] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
+            style={{ position: "absolute", left: "50%", top: "50%", x: "-50%", y: "-50%", width: 60, height: 60, borderRadius: 10, border: "1.5px solid rgba(213,162,81,0.5)", pointerEvents: "none" }}
+          />
+        )}
         <motion.div
           animate={{
-            scale: active ? 1 : 0.85,
-            boxShadow: active && !m.future ? "0 0 24px rgba(213,162,81,0.55)" : "0 4px 12px rgba(0,0,0,0.3)",
+            scale: hovered ? 1.15 : active ? 1 : 0.85,
+            boxShadow: hovered
+              ? "0 0 32px rgba(213,162,81,0.75)"
+              : active && !m.future
+              ? "0 0 24px rgba(213,162,81,0.55)"
+              : "0 4px 12px rgba(0,0,0,0.3)",
           }}
           transition={{ duration: 0.35 }}
           style={{
-            width: 52, height: 52,
-            marginTop: 8,
+            width: 56, height: 56,
+            boxSizing: "border-box",
             zIndex: 2,
             flexShrink: 0,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             background: active && !m.future ? "linear-gradient(145deg, #2F2512, #1A1814)" : "var(--ng-void)",
-            border: active ? "1.5px solid rgba(213,162,81,0.7)" : "1px solid rgba(255,255,255,0.12)",
+            border: active || hovered ? "1.5px solid rgba(213,162,81,0.7)" : "1px solid rgba(255,255,255,0.12)",
             transition: "background 0.4s, border 0.4s",
           }}
         >
-          <YearIcon size={22} />
+          <YearIcon size={28} />
         </motion.div>
       </div>
 
       <motion.div
-        animate={{ x: hovered ? 4 : 0, borderColor: hovered ? "rgba(213,162,81,0.4)" : "rgba(255,255,255,0.06)" }}
+        animate={{
+          x: hovered ? 6 : 0,
+          borderColor: hovered ? "rgba(213,162,81,0.4)" : "rgba(255,255,255,0.06)",
+          boxShadow: hovered ? "0 16px 40px rgba(0,0,0,0.42)" : "0 0 0 rgba(0,0,0,0)",
+        }}
         transition={{ duration: 0.25 }}
         className="ng-milestone-content"
         style={{

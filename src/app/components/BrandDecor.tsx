@@ -396,8 +396,8 @@ export function QuoteBand({
             transition={{ delay: 0.3, duration: 0.6 }}
             style={{ height: 1, background: "#D5A251", marginLeft: "auto", marginBottom: 12, boxShadow: "0 0 8px rgba(213,162,81,0.6)" }}
           />
-          <div style={{ color: "#E8C97A", fontSize: 13, fontWeight: 700, letterSpacing: "0.06em" }}>{author}</div>
-          <div style={{ color: "rgba(255,255,255,0.55)", fontSize: 12, marginTop: 4, fontWeight: 300 }}>{role}</div>
+          <div style={{ color: "#E8C97A", fontSize: 18, fontWeight: 700, letterSpacing: "0.04em" }}>{author}</div>
+          <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 15, marginTop: 5, fontWeight: 400 }}>{role}</div>
         </div>
       </motion.div>
     </div>
@@ -429,10 +429,16 @@ export function RouteTransition({ label = "ЭКОСИСТЕМА NOBEL GROUP" }: 
             transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
             style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, #8B6914, #D5A251, #E8C97A)", transformOrigin: "left", boxShadow: "0 0 14px rgba(213,162,81,0.5)" }}
           />
+          {/* Running current sheen — continuously sweeps along the line */}
           <motion.div
-            initial={{ left: "0%", opacity: 0 }}
-            animate={inView ? { left: "100%", opacity: [0, 1, 1, 0] } : {}}
-            transition={{ duration: 1.7, ease: "easeInOut", times: [0, 0.15, 0.85, 1] }}
+            animate={inView ? { left: ["-25%", "125%"] } : {}}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            style={{ position: "absolute", top: 0, bottom: 0, width: "25%", background: "linear-gradient(to right, transparent, rgba(255,244,214,0.85), transparent)", filter: "blur(1px)", pointerEvents: "none" }}
+          />
+          {/* Travelling node — flows left ↔ right like electric current */}
+          <motion.div
+            animate={inView ? { left: ["0%", "100%", "0%"] } : {}}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
             style={{ position: "absolute", top: "50%", width: 11, height: 11, borderRadius: "50%", background: "#E8C97A", marginTop: -5.5, marginLeft: -5.5, boxShadow: "0 0 16px rgba(232,201,122,0.95), 0 0 32px rgba(213,162,81,0.5)" }}
           />
         </div>
@@ -621,7 +627,7 @@ export function SectionTeaser({
               initial={{ opacity: 0, y: 16 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.14 }}
-              style={{ color: "var(--ng-muted-dark)", fontSize: 14, lineHeight: 1.75, maxWidth: 480, marginBottom: 26 }}
+              style={{ color: "#FFFFFF", fontSize: 15, lineHeight: 1.75, maxWidth: 480, marginBottom: 26 }}
             >
               {desc}
             </motion.p>
@@ -656,26 +662,35 @@ export function SectionTeaser({
               </Link>
             </motion.div>
           </div>
-          <div style={{ order: reverse ? 1 : 2, display: "flex", flexDirection: "column", gap: 8 }}>
-            {points.map((p, i) => (
-              <motion.div
-                key={p}
-                initial={{ opacity: 0, x: reverse ? -18 : 18 }}
-                animate={inView ? { opacity: 1, x: 0 } : {}}
-                transition={{ delay: 0.15 + i * 0.06 }}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 12,
-                  background: "var(--ng-elevated)",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  padding: "14px 16px",
-                }}
-              >
-                <GoldCheck size={13} />
-                <span style={{ color: "rgba(255,255,255,0.8)", fontSize: 13 }}>{p}</span>
-              </motion.div>
-            ))}
+          <div style={{ order: reverse ? 1 : 2 }}>
+            <motion.div
+              initial={{ opacity: 0, x: reverse ? -18 : 18 }}
+              animate={inView ? { opacity: 1, x: 0 } : {}}
+              transition={{ delay: 0.15 }}
+              style={{
+                background: "var(--ng-elevated)",
+                border: "1px solid rgba(255,255,255,0.07)",
+                padding: "6px 20px",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              {points.map((p, i) => (
+                <div
+                  key={p}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 12,
+                    padding: "15px 0",
+                    borderBottom: i < points.length - 1 ? "1px solid rgba(255,255,255,0.07)" : "none",
+                  }}
+                >
+                  <GoldCheck size={14} />
+                  <span style={{ color: "rgba(255,255,255,0.9)", fontSize: 14, fontWeight: 500 }}>{p}</span>
+                </div>
+              ))}
+            </motion.div>
           </div>
         </div>
       </div>
@@ -718,10 +733,11 @@ export function MegaStats({
           >
             <div
               style={{
-                fontSize: "clamp(56px, 8vw, 96px)",
+                fontSize: "clamp(38px, 4.6vw, 66px)",
                 fontWeight: 800,
                 letterSpacing: "-0.04em",
                 lineHeight: 1,
+                whiteSpace: "nowrap",
                 background: "linear-gradient(135deg, #E8C97A 0%, #D5A251 50%, #8B6914 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
