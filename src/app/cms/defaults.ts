@@ -353,6 +353,21 @@ export const DEFAULT_CMS: CmsData = {
       order: 4,
       published: true,
     },
+    {
+      id: "ecoborn",
+      number: "05",
+      name: "EcoBorn",
+      description: "Маслоэкстракционный комплекс полного цикла: рафинированное, дезодорированное и вымороженное подсолнечное масло и подсолнечный шрот. Собственные бренды (ЛЕККЕР, Златожар, Донской Янтарь и др.) — один из крупнейших экспортёров отрасли в Узбекистане.",
+      tags: ["Подсолнечное масло", "Маслоэкстракция", "Экспорт"],
+      website: "https://ecoborn.uz",
+      websiteLabel: "Перейти на ecoborn.uz",
+      bgKind: "image",
+      imageUrl: ecobornDist,
+      gradientFrom: "#1c2a08",
+      gradientTo: "#5a7a12",
+      order: 5,
+      published: true,
+    },
   ],
 
   news: [

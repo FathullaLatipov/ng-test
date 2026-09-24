@@ -18,10 +18,10 @@ export function AboutPage() {
       <SectionTeaser
         index="02"
         eyebrow="КОМПАНИИ ХОЛДИНГА"
-        title="Четыре компании,"
+        title="Пять компаний,"
         titleAccent="один холдинг."
-        desc="Nobel Trade, Rimado, Elite Dairy и Gold Ingredients — самостоятельные бренды с собственными рынками. На отдельной странице — динамичные фоны по виду деятельности и ссылки на сайты компаний."
-        points={["Nobel Trade", "Rimado", "Elite Dairy", "Gold Ingredients"]}
+        desc="Nobel Trade, Rimado, Elite Dairy, Gold Ingredients и EcoBorn — самостоятельные бренды с собственными рынками. На отдельной странице — динамичные фоны по виду деятельности и ссылки на сайты компаний."
+        points={["Nobel Trade", "Rimado", "Elite Dairy", "Gold Ingredients", "EcoBorn"]}
         ctaLabel="Смотреть компании группы"
         ctaTo="/companies"
         background="var(--ng-void)"
@@ -30,7 +30,7 @@ export function AboutPage() {
       <MegaStats
         items={[
           { n: "17+", l: "Лет на рынке" },
-          { n: "4", l: "Компании холдинга" },
+          { n: "5", l: "Компаний холдинга" },
           { n: "14", l: "Регионов покрытия" },
           { n: "2", l: "Завода за рубежом" },
         ]}
