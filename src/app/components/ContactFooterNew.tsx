@@ -17,7 +17,6 @@ const FOOTER_COLS: { title: string; links: { label: string; to?: string }[] }[] 
     title: "О группе",
     links: [
       { label: "О компании", to: "/about" },
-      { label: "Компании группы", to: "/companies" },
       { label: "История", to: "/history" },
       { label: "Новости", to: "/news" },
     ],

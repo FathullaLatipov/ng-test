@@ -10,7 +10,6 @@ import { PartnershipPage } from "./pages/PartnershipPage";
 import { NewsPage } from "./pages/NewsPage";
 import { CareersPage } from "./pages/CareersPage";
 import { ContactsPage } from "./pages/ContactsPage";
-import { CompaniesPage } from "./pages/CompaniesPage";
 import { JibPage } from "./pages/JibPage";
 import { AdminPage } from "./pages/AdminPage";
 import { RouteWipe } from "./components/PageTransition";
@@ -24,7 +23,6 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/companies" element={<CompaniesPage />} />
         <Route path="/business" element={<BusinessPage />} />
         <Route path="/business/import" element={<ImportPage />} />
         <Route path="/business/jib" element={<JibPage />} />

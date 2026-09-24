@@ -575,8 +575,8 @@ export function SectionTeaser({
   titleAccent?: string;
   desc: string;
   points: string[];
-  ctaLabel: string;
-  ctaTo: string;
+  ctaLabel?: string;
+  ctaTo?: string;
   background?: string;
   reverse?: boolean;
 }) {
@@ -631,6 +631,7 @@ export function SectionTeaser({
             >
               {desc}
             </motion.p>
+            {ctaLabel && ctaTo && (
             <motion.div initial={{ opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }}>
               <Link
                 to={ctaTo}
@@ -661,6 +662,7 @@ export function SectionTeaser({
                 {ctaLabel} →
               </Link>
             </motion.div>
+            )}
           </div>
           <div style={{ order: reverse ? 1 : 2 }}>
             <motion.div

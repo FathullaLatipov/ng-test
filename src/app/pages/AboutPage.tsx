@@ -20,10 +20,8 @@ export function AboutPage() {
         eyebrow="КОМПАНИИ ХОЛДИНГА"
         title="Пять компаний,"
         titleAccent="один холдинг."
-        desc="Nobel Trade, Rimado, Elite Dairy, Gold Ingredients и EcoBorn — самостоятельные бренды с собственными рынками. На отдельной странице — динамичные фоны по виду деятельности и ссылки на сайты компаний."
+        desc="Nobel Trade, Rimado, Elite Dairy, Gold Ingredients и EcoBorn — самостоятельные бренды с собственными рынками, каждый со своей продукцией, клиентами и сайтом."
         points={["Nobel Trade", "Rimado", "Elite Dairy", "Gold Ingredients", "EcoBorn"]}
-        ctaLabel="Смотреть компании группы"
-        ctaTo="/companies"
         background="var(--ng-void)"
       />
 
