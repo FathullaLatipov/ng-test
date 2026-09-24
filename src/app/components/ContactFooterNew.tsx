@@ -182,28 +182,28 @@ export function ContactFooterNew() {
                   <div style={{ color: "#C9A24B", fontSize: 10, fontWeight: 600, letterSpacing: "0.32em", marginTop: 2 }}>GROUP</div>
                 </div>
               </div>
-              <p style={{ color: "rgba(255,255,255,0.72)", fontSize: 12, fontWeight: 400, lineHeight: 1.7, marginBottom: 22 }}>
+              <p style={{ color: "rgba(255,255,255,0.72)", fontSize: 14, fontWeight: 400, lineHeight: 1.75, marginBottom: 22 }}>
                 {contact.footerBlurb}
               </p>
             </div>
             <div className="ng-grid-5" style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 28 }}>
               {FOOTER_COLS.map((col) => (
                 <div key={col.title}>
-                  <div style={{ color: "#FFFFFF", fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", marginBottom: 16 }}>{col.title.toUpperCase()}</div>
+                  <div style={{ color: "#FFFFFF", fontSize: 13, fontWeight: 700, letterSpacing: "0.1em", marginBottom: 16 }}>{col.title.toUpperCase()}</div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                     {col.links.map((link) =>
                       link.to ? (
                         <Link
                           key={link.label}
                           to={link.to}
-                          style={{ color: "rgba(255,255,255,0.78)", textDecoration: "none", fontSize: 12, fontWeight: 400, lineHeight: 1.4, transition: "color 0.25s" }}
+                          style={{ color: "rgba(255,255,255,0.78)", textDecoration: "none", fontSize: 14, fontWeight: 400, lineHeight: 1.5, transition: "color 0.25s" }}
                           onMouseEnter={(e) => (e.currentTarget.style.color = "#C9A24B")}
                           onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.78)")}
                         >
                           {link.label}
                         </Link>
                       ) : (
-                        <span key={link.label} style={{ color: "rgba(255,255,255,0.78)", fontSize: 12, fontWeight: 400, lineHeight: 1.4 }}>
+                        <span key={link.label} style={{ color: "rgba(255,255,255,0.78)", fontSize: 14, fontWeight: 400, lineHeight: 1.5 }}>
                           {link.label}
                         </span>
                       )
@@ -214,10 +214,10 @@ export function ContactFooterNew() {
             </div>
           </div>
           <div className="ng-stack ng-stack-center ng-footer-bottom" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 11 }}>{contact.copyright}</div>
+            <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 13 }}>{contact.copyright}</div>
             <div style={{ display: "flex", gap: 22 }}>
               {["Политика конфиденциальности", "Условия использования"].map((item) => (
-                <a key={item} href="#" style={{ color: "rgba(255,255,255,0.7)", textDecoration: "none", fontSize: 11, transition: "color 0.25s" }}
+                <a key={item} href="#" style={{ color: "rgba(255,255,255,0.7)", textDecoration: "none", fontSize: 13, transition: "color 0.25s" }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = "#C9A24B")}
                   onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.78)")}>
                   {item}
