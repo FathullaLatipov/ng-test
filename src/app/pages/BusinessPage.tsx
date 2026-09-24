@@ -12,6 +12,8 @@ import {
   GiantNumber,
 } from "../components/BrandDecor";
 import { GoldCheck } from "../components/BrandIcons";
+import { ArisSection } from "../components/ArisSection";
+import { SemeySection } from "../components/SemeySection";
 import { useCms } from "../cms/store";
 import type { DirectionItem } from "../cms/types";
 
@@ -324,8 +326,15 @@ export function BusinessPage() {
               </motion.div>
             </>
           )}
+
         </div>
       </section>
+
+      {/* ═══ Производственный комплекс Aris (секция лендинга) ═══ */}
+      <ArisSection />
+
+      {/* ═══ Маслоэкстракционный завод Семей (секция лендинга) ═══ */}
+      <SemeySection />
 
       {/* ═══ 05 · Инвестиционные проекты ═══ */}
       <section id="invest" className="ng-sec-pad" style={{ background: "var(--ng-void)", padding: "100px 80px", position: "relative", overflow: "hidden", scrollMarginTop: 90 }}>
