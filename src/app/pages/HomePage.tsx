@@ -17,7 +17,7 @@ export function HomePage() {
       <SectionDivider mark="diamond" />
       <AboutGroup />
       <RouteTransition label="НАПРАВЛЕНИЯ БИЗНЕСА" />
-      <BusinessDirections limit={4} showAllLink />
+      <BusinessDirections limit={5} showAllLink />
       <BrandsPortfolio />
       <GeographyNew />
       <WhyChooseUs />

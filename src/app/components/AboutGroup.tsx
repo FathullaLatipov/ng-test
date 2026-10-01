@@ -6,27 +6,28 @@ import { useCms } from "../cms/store";
 
 /** Icon paths kept for CAP_NODES diagram only */
 const CAP_ICONS: Record<string, string> = {
-  import: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5",
+  trade: "M1 3h15v13H1zM16 8l4 2v6h-4z",
+  distribution: "M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z",
   production: "M14.7 6.3a1 1 0 010 1.4l-8 8a1 1 0 01-.4.25l-3 1a1 1 0 01-1.25-1.25l1-3a1 1 0 01.25-.4l8-8a1 1 0 011.4 0z",
   horeca: "M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z",
-  trade: "M1 3h15v13H1zM16 8l4 2v6h-4z",
-  invest: "M3 7h18M3 12h18M3 17h12",
   brand: "M22 7 13.5 15.5 8.5 10.5 2 17M16 7h6v6",
   logistics: "M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18",
 };
 
 const CAP_NODES = [
-  { id: "import",     label: "Импорт и\nдистрибуция", x: 50,   y: 10 },
-  { id: "production", label: "Производство",          x: 84.6, y: 30 },
-  { id: "horeca",     label: "HoReCa",                x: 84.6, y: 70 },
-  { id: "brand",      label: "Бренды",                x: 50,   y: 90 },
-  { id: "logistics",  label: "Логистика\nи склад",    x: 15.4, y: 70 },
-  { id: "trade",      label: "Междунар.\nторговля",   x: 15.4, y: 30 },
+  { id: "trade",        label: "Междунар.\nторговля",  x: 50,   y: 10 },
+  { id: "production",   label: "Производство",          x: 84.6, y: 30 },
+  { id: "horeca",       label: "HoReCa",                x: 84.6, y: 70 },
+  { id: "brand",        label: "Бренды",                x: 50,   y: 90 },
+  { id: "logistics",    label: "Склад и\nлогистика",    x: 15.4, y: 70 },
+  { id: "distribution", label: "Дистрибуция",           x: 15.4, y: 30 },
 ];
 
-const CONNS: [number, number][] = [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[0,3],[1,4],[2,5]];
+/** hexagon perimeter (circulating flow) + inner diagonals (structural links) */
+const PERIMETER: [number, number][] = [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0]];
+const DIAG: [number, number][] = [[0,3],[1,4],[2,5]];
 
-function NodeDot({ cap, inView, delay }: { cap: typeof CAP_NODES[0]; inView: boolean; delay: number }) {
+function NodeDot({ cap, inView, delay, floatDelay }: { cap: typeof CAP_NODES[0]; inView: boolean; delay: number; floatDelay: number }) {
   const [hovered, setHovered] = useState(false);
   return (
     <motion.div
@@ -35,35 +36,64 @@ function NodeDot({ cap, inView, delay }: { cap: typeof CAP_NODES[0]; inView: boo
       transition={{ delay, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      style={{ position: "absolute", left: `${cap.x}%`, top: `${cap.y}%`, x: "-50%", y: "-50%", width: 56, height: 56, cursor: "default" }}
+      style={{ position: "absolute", left: `${cap.x}%`, top: `${cap.y}%`, x: "-50%", y: "-50%", width: 58, height: 58, cursor: "default", zIndex: 3 }}
     >
+      {/* gentle floating wrapper */}
       <motion.div
-        animate={{ borderColor: hovered ? "rgba(213,162,81,0.7)" : "rgba(213,162,81,0.3)", background: hovered ? "rgba(213,162,81,0.08)" : "#12110F", boxShadow: hovered ? "0 0 16px rgba(213,162,81,0.25)" : "none" }}
-        transition={{ duration: 0.3 }}
-        style={{ width: 56, height: 56, borderRadius: 11, border: "1px solid rgba(213,162,81,0.3)", background: "#12110F", display: "flex", alignItems: "center", justifyContent: "center" }}
+        animate={inView ? { y: [0, -6, 0] } : {}}
+        transition={{ duration: 4.5, delay: floatDelay, repeat: Infinity, ease: "easeInOut" }}
+        style={{ position: "relative", width: 58, height: 58 }}
       >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={hovered ? "#D5A251" : "#C9A24B"} strokeWidth="1.2" strokeLinecap="round">
-          <path d={CAP_ICONS[cap.id] || ""} />
-        </svg>
+        {/* soft glow halo */}
+        <motion.div
+          animate={{ opacity: hovered ? 0.9 : [0.25, 0.5, 0.25], scale: hovered ? 1.15 : [1, 1.08, 1] }}
+          transition={hovered ? { duration: 0.3 } : { duration: 3.2, delay: floatDelay, repeat: Infinity, ease: "easeInOut" }}
+          style={{ position: "absolute", inset: -6, borderRadius: 16, background: "radial-gradient(circle, rgba(213,162,81,0.38), transparent 70%)", pointerEvents: "none" }}
+        />
+        <motion.div
+          animate={{ borderColor: hovered ? "rgba(232,201,122,0.85)" : "rgba(213,162,81,0.35)", background: hovered ? "rgba(213,162,81,0.12)" : "rgba(18,17,15,0.92)", boxShadow: hovered ? "0 0 22px rgba(213,162,81,0.4)" : "0 6px 18px rgba(0,0,0,0.4)" }}
+          transition={{ duration: 0.3 }}
+          style={{ position: "relative", width: 58, height: 58, borderRadius: 14, border: "1px solid rgba(213,162,81,0.35)", background: "rgba(18,17,15,0.92)", backdropFilter: "blur(2px)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1 }}
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={hovered ? "#E8C97A" : "#C9A24B"} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+            <path d={CAP_ICONS[cap.id] || ""} />
+          </svg>
+        </motion.div>
       </motion.div>
-      <div style={{ position: "absolute", top: "calc(100% + 8px)", left: "50%", transform: "translateX(-50%)", width: 100, textAlign: "center", color: hovered ? "#FFFFFF" : "rgba(255,255,255,0.75)", fontSize: 10, fontWeight: 600, lineHeight: 1.35, whiteSpace: "pre-line", transition: "color 0.3s" }}>
+      <div style={{ position: "absolute", top: "calc(100% + 8px)", left: "50%", transform: "translateX(-50%)", width: 100, textAlign: "center", color: hovered ? "#FFFFFF" : "rgba(255,255,255,0.78)", fontSize: 10, fontWeight: 600, lineHeight: 1.35, whiteSpace: "pre-line", transition: "color 0.3s" }}>
         {cap.label}
       </div>
     </motion.div>
   );
 }
 
+/** Data packet circulating along a hexagon edge pa → pb */
+function EdgeParticle({ a, b, delay }: { a: number; b: number; delay: number }) {
+  const pa = CAP_NODES[a], pb = CAP_NODES[b];
+  return (
+    <motion.circle
+      r={0.9}
+      fill="#E8C97A"
+      style={{ filter: "drop-shadow(0 0 2.5px rgba(232,201,122,0.95))" }}
+      initial={{ cx: pa.x, cy: pa.y, opacity: 0 }}
+      animate={{ cx: [pa.x, pb.x], cy: [pa.y, pb.y], opacity: [0, 1, 1, 0] }}
+      transition={{ duration: 2.4, delay, repeat: Infinity, ease: "linear", times: [0, 0.12, 0.88, 1] }}
+    />
+  );
+}
+
+/** Pulse radiating from the core hub out to a node */
 function EnergyPulse({ node, delay }: { node: typeof CAP_NODES[0]; delay: number }) {
   return (
     <motion.circle
-      r={0.85}
+      r={0.75}
       cx={50}
       cy={50}
       fill="#D5A251"
       style={{ filter: "drop-shadow(0 0 2.5px rgba(213,162,81,0.95))" }}
       initial={{ cx: 50, cy: 50, opacity: 0 }}
-      animate={{ cx: [50, node.x, 50], cy: [50, node.y, 50], opacity: [0, 1, 1, 1, 0] }}
-      transition={{ duration: 3, delay, repeat: Infinity, ease: "easeInOut", times: [0, 0.08, 0.45, 0.92, 1] }}
+      animate={{ cx: [50, node.x], cy: [50, node.y], opacity: [0, 1, 1, 0] }}
+      transition={{ duration: 2.2, delay, repeat: Infinity, ease: "easeIn", times: [0, 0.1, 0.85, 1] }}
     />
   );
 }
@@ -138,11 +168,19 @@ export function AboutGroup() {
           </div>
 
           <motion.div style={{ position: "relative", width: "100%", aspectRatio: "1", maxWidth: 460, margin: "0 auto", y: diagramY }}>
+            {/* static concentric guides */}
             <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={inView ? { opacity: 1, scale: 1 } : {}} transition={{ delay: 0.4, duration: 0.6 }}
               style={{ position: "absolute", inset: "4%", borderRadius: "50%", border: "1px solid rgba(213,162,81,0.08)" }} />
             <motion.div initial={{ opacity: 0, scale: 0.85 }} animate={inView ? { opacity: 1, scale: 1 } : {}} transition={{ delay: 0.5, duration: 0.6 }}
               style={{ position: "absolute", inset: "16%", borderRadius: "50%", border: "1px solid rgba(213,162,81,0.06)" }} />
 
+            {/* radar sweep */}
+            <motion.div
+              initial={{ opacity: 0 }} animate={inView ? { opacity: 1, rotate: 360 } : {}}
+              transition={{ opacity: { delay: 0.6, duration: 1 }, rotate: { duration: 9, repeat: Infinity, ease: "linear" } }}
+              style={{ position: "absolute", inset: "2%", borderRadius: "50%", background: "conic-gradient(from 0deg, rgba(232,201,122,0.20), rgba(213,162,81,0.04) 40deg, transparent 90deg)", WebkitMaskImage: "radial-gradient(circle, #000 34%, transparent 70%)", maskImage: "radial-gradient(circle, #000 34%, transparent 70%)", pointerEvents: "none" }} />
+
+            {/* counter-rotating dashed rings */}
             <motion.div
               initial={{ opacity: 0 }} animate={inView ? { opacity: 1, rotate: 360 } : {}}
               transition={{ opacity: { delay: 0.4, duration: 0.8 }, rotate: { duration: 60, repeat: Infinity, ease: "linear" } }}
@@ -152,6 +190,7 @@ export function AboutGroup() {
               transition={{ opacity: { delay: 0.5, duration: 0.8 }, rotate: { duration: 45, repeat: Infinity, ease: "linear" } }}
               style={{ position: "absolute", inset: "10%", borderRadius: "50%", border: "1px dashed rgba(213,162,81,0.10)" }} />
 
+            {/* orbiting satellites */}
             {[0, 1, 2].map((k) => (
               <motion.div key={k}
                 initial={{ opacity: 0 }} animate={inView ? { opacity: 1, rotate: k % 2 === 0 ? 360 : -360 } : {}}
@@ -162,13 +201,24 @@ export function AboutGroup() {
             ))}
 
             <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", overflow: "visible" }} viewBox="0 0 100 100">
+              <defs>
+                <linearGradient id="ngEdgeFlow" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor="rgba(213,162,81,0.05)" />
+                  <stop offset="50%" stopColor="rgba(232,201,122,0.55)" />
+                  <stop offset="100%" stopColor="rgba(213,162,81,0.05)" />
+                </linearGradient>
+              </defs>
+
+              {/* expanding sonar waves */}
               {inView && [0, 1, 2].map((k) => (
-                <motion.circle key={`wave-${k}`} cx={50} cy={50} fill="none" stroke="rgba(213,162,81,0.25)" strokeWidth="0.3"
+                <motion.circle key={`wave-${k}`} cx={50} cy={50} fill="none" stroke="rgba(213,162,81,0.22)" strokeWidth="0.3"
                   initial={{ r: 8, opacity: 0 }}
-                  animate={{ r: [8, 40], opacity: [0.5, 0] }}
-                  transition={{ duration: 4, delay: k * 1.33, repeat: Infinity, ease: "easeOut" }}
+                  animate={{ r: [8, 42], opacity: [0.5, 0] }}
+                  transition={{ duration: 4.5, delay: k * 1.5, repeat: Infinity, ease: "easeOut" }}
                 />
               ))}
+
+              {/* faint radial spokes core → node */}
               {CAP_NODES.map((node, i) => (
                 <motion.line key={`radial-${i}`} x1={50} y1={50} x2={node.x} y2={node.y}
                   stroke="rgba(213,162,81,0.12)" strokeWidth="0.3"
@@ -177,29 +227,68 @@ export function AboutGroup() {
                   transition={{ delay: 0.6 + i * 0.06, duration: 0.5 }}
                 />
               ))}
-              {CONNS.map(([a, b], i) => {
+
+              {/* inner diagonals */}
+              {DIAG.map(([a, b], i) => {
                 const pa = CAP_NODES[a], pb = CAP_NODES[b];
                 return (
-                  <motion.line key={i} x1={pa.x} y1={pa.y} x2={pb.x} y2={pb.y}
-                    stroke="rgba(213,162,81,0.16)" strokeWidth="0.4"
+                  <motion.line key={`diag-${i}`} x1={pa.x} y1={pa.y} x2={pb.x} y2={pb.y}
+                    stroke="rgba(213,162,81,0.10)" strokeWidth="0.3"
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={inView ? { pathLength: 1, opacity: 1 } : {}}
+                    transition={{ delay: 0.7 + i * 0.07, duration: 0.55 }}
+                  />
+                );
+              })}
+
+              {/* hexagon perimeter — base line + flowing dash overlay */}
+              {PERIMETER.map(([a, b], i) => {
+                const pa = CAP_NODES[a], pb = CAP_NODES[b];
+                return (
+                  <motion.line key={`edge-${i}`} x1={pa.x} y1={pa.y} x2={pb.x} y2={pb.y}
+                    stroke="rgba(213,162,81,0.18)" strokeWidth="0.4"
                     initial={{ pathLength: 0, opacity: 0 }}
                     animate={inView ? { pathLength: 1, opacity: 1 } : {}}
                     transition={{ delay: 0.65 + i * 0.07, duration: 0.55 }}
                   />
                 );
               })}
+              {inView && PERIMETER.map(([a, b], i) => {
+                const pa = CAP_NODES[a], pb = CAP_NODES[b];
+                return (
+                  <motion.line key={`flow-${i}`} x1={pa.x} y1={pa.y} x2={pb.x} y2={pb.y}
+                    stroke="url(#ngEdgeFlow)" strokeWidth="0.7" strokeLinecap="round" strokeDasharray="3 6"
+                    animate={{ strokeDashoffset: [0, -18] }}
+                    transition={{ duration: 1.6, repeat: Infinity, ease: "linear" }}
+                  />
+                );
+              })}
+
+              {/* circulating data packets around the hexagon */}
+              {inView && PERIMETER.map(([a, b], i) => (
+                <EdgeParticle key={`ep-${i}`} a={a} b={b} delay={i * 0.4} />
+              ))}
+
+              {/* pulses radiating from the core */}
               {inView && CAP_NODES.map((node, i) => (
-                <EnergyPulse key={`pulse-${i}`} node={node} delay={1.4 + i * 0.5} />
+                <EnergyPulse key={`pulse-${i}`} node={node} delay={1.4 + i * 0.4} />
               ))}
             </svg>
 
+            {/* rotating gradient ring hugging the core */}
+            <motion.div
+              initial={{ opacity: 0 }} animate={inView ? { opacity: 1, rotate: 360 } : {}}
+              transition={{ opacity: { delay: 0.5, duration: 0.8 }, rotate: { duration: 14, repeat: Infinity, ease: "linear" } }}
+              style={{ position: "absolute", left: "50%", top: "50%", x: "-50%", y: "-50%", width: 150, height: 150, borderRadius: "50%", background: "conic-gradient(from 0deg, transparent, rgba(213,162,81,0.55) 90deg, transparent 180deg)", WebkitMaskImage: "radial-gradient(circle, transparent 58%, #000 60%, #000 70%, transparent 72%)", maskImage: "radial-gradient(circle, transparent 58%, #000 60%, #000 70%, transparent 72%)", zIndex: 1, pointerEvents: "none" }} />
+
             <motion.div initial={{ opacity: 0, scale: 0.7 }} animate={inView ? { opacity: 1, scale: 1 } : {}} transition={{ delay: 0.5, duration: 0.55 }}
-              style={{ position: "absolute", left: "50%", top: "50%", x: "-50%", y: "-50%", width: 112, height: 112, borderRadius: 11, background: "linear-gradient(135deg, #2F2512 0%, #12110F 100%)", border: "1px solid rgba(213,162,81,0.65)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", zIndex: 2, animation: "glow-pulse 3s ease-in-out infinite", boxShadow: "0 0 32px rgba(213,162,81,0.15)" }}>
-              <div style={{ color: "#D5A251", fontSize: 9, fontWeight: 600, letterSpacing: "0.22em", marginBottom: 4 }}>NOBEL</div>
-              <div style={{ color: "#FFFFFF", fontSize: 14, fontWeight: 800, letterSpacing: "0.08em" }}>GROUP</div>
+              style={{ position: "absolute", left: "50%", top: "50%", x: "-50%", y: "-50%", width: 116, height: 116, borderRadius: 16, background: "radial-gradient(120% 120% at 30% 20%, #3A2C14 0%, #1A1712 55%, #12110F 100%)", border: "1px solid rgba(232,201,122,0.7)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", zIndex: 2, animation: "glow-pulse 3s ease-in-out infinite", boxShadow: "0 0 40px rgba(213,162,81,0.22), inset 0 0 20px rgba(213,162,81,0.08)" }}>
+              <div style={{ color: "#E8C97A", fontSize: 9, fontWeight: 600, letterSpacing: "0.24em", marginBottom: 4 }}>NOBEL</div>
+              <div style={{ color: "#FFFFFF", fontSize: 15, fontWeight: 800, letterSpacing: "0.08em" }}>GROUP</div>
+              <div style={{ width: 20, height: 1, background: "rgba(213,162,81,0.6)", marginTop: 7 }} />
             </motion.div>
 
-            {CAP_NODES.map((cap, i) => <NodeDot key={cap.id} cap={cap} inView={inView} delay={0.75 + i * 0.09} />)}
+            {CAP_NODES.map((cap, i) => <NodeDot key={cap.id} cap={cap} inView={inView} delay={0.75 + i * 0.09} floatDelay={i * 0.6} />)}
           </motion.div>
         </div>
 

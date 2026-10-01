@@ -4,11 +4,11 @@ import { Link, NavLink, useLocation } from "react-router";
 import nobelLogo from "../../assets/nobel-logo.png";
 
 const BUSINESS_LINKS = [
-  { label: "Импорт и дистрибуция", to: "/business/import" },
-  { label: "HoReCa", to: "/business#horeca" },
   { label: "Международная торговля", to: "/business#trade" },
-  { label: "Производство", to: "/business/jib" },
-  { label: "Инвестиционные проекты", to: "/business#invest" },
+  { label: "Дистрибуция", to: "/business#distribution" },
+  { label: "HoReCa", to: "/business#horeca" },
+  { label: "Производство", to: "/business#production" },
+  { label: "Склад и логистика", to: "/business#logistics" },
 ];
 
 const NAV = [
@@ -110,11 +110,11 @@ export function Header() {
           <img
             src={nobelLogo}
             alt="Nobel Group"
-            style={{ width: 52, height: 52, objectFit: "contain", flexShrink: 0 }}
+            style={{ width: 68, height: 68, objectFit: "contain", flexShrink: 0 }}
           />
           <div>
-            <div style={{ color: "#FFFFFF", fontSize: 18, fontWeight: 800, letterSpacing: "0.12em", lineHeight: 1 }}>NOBEL</div>
-            <div style={{ color: "#C9A24B", fontSize: 10, fontWeight: 600, letterSpacing: "0.34em", marginTop: 3, lineHeight: 1 }}>GROUP</div>
+            <div style={{ color: "#FFFFFF", fontSize: 23, fontWeight: 800, letterSpacing: "0.12em", lineHeight: 1 }}>NOBEL</div>
+            <div style={{ color: "#C9A24B", fontSize: 12, fontWeight: 600, letterSpacing: "0.34em", marginTop: 4, lineHeight: 1 }}>GROUP</div>
           </div>
         </Link>
 

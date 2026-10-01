@@ -81,27 +81,30 @@ export function GeographyNew() {
               {geo.lead}
             </motion.p>
 
+            {/* Акцент: собственные заводы за рубежом */}
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 }}
+              style={{ marginBottom: 30, display: "flex", flexDirection: "column", gap: 12 }}>
+              <div style={{ color: "#C9A24B", fontSize: 11, fontWeight: 700, letterSpacing: "0.16em" }}>СОБСТВЕННЫЕ ЗАВОДЫ ЗА РУБЕЖОМ</div>
+              {geo.factories.map((f, i) => (
+                <motion.div key={f.id} initial={{ opacity: 0, x: -12 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.36 + i * 0.1 }}
+                  style={{ background: "linear-gradient(135deg, rgba(201,162,75,0.12), var(--ng-elevated))", border: "1px solid rgba(213,162,81,0.35)", borderLeft: "3px solid #D5A251", padding: "16px 18px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <Flag code={f.country} size={30} />
+                    <div style={{ color: "#FFFFFF", fontSize: 17, fontWeight: 800 }}>{f.country}</div>
+                    <span style={{ marginLeft: "auto", color: "#0A0A0A", background: "#C9A24B", fontSize: 9, fontWeight: 700, letterSpacing: "0.08em", padding: "3px 8px" }}>ЗАВОД</span>
+                  </div>
+                  <div style={{ color: "rgba(255,255,255,0.75)", fontSize: 12.5, marginTop: 8 }}>{f.role}</div>
+                </motion.div>
+              ))}
+            </motion.div>
+
             {geo.rows.map((item, i) => (
-              <motion.div key={item.id} initial={{ opacity: 0, x: -12 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.3 + i * 0.08 }}
+              <motion.div key={item.id} initial={{ opacity: 0, x: -12 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.5 + i * 0.08 }}
                 style={{ display: "flex", justifyContent: "space-between", padding: "12px 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
                 <span style={{ color: "rgba(201,162,75,0.9)", fontSize: 12, fontWeight: 500 }}>{item.label}</span>
                 <span style={{ color: "#FFFFFF", fontSize: 12, fontWeight: 600 }}>{item.value}</span>
               </motion.div>
             ))}
-
-            <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.75 }}
-              style={{ marginTop: 28, display: "flex", flexDirection: "column", gap: 10 }}>
-              <div style={{ color: "#C9A24B", fontSize: 11, fontWeight: 700, letterSpacing: "0.16em", marginBottom: 4 }}>ДОЧЕРНИЕ ЗАВОДЫ</div>
-              {geo.factories.map((f) => (
-                <div key={f.id} style={{ background: "var(--ng-elevated)", border: "1px solid rgba(213,162,81,0.25)", borderLeft: "2px solid #D5A251", padding: "14px 16px" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <Flag code={f.country} size={22} />
-                    <div style={{ color: "#FFFFFF", fontSize: 14, fontWeight: 700 }}>{f.country}</div>
-                  </div>
-                  <div style={{ color: "rgba(255,255,255,0.72)", fontSize: 12, marginTop: 4 }}>{f.role}</div>
-                </div>
-              ))}
-            </motion.div>
 
             <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.9 }}
               style={{ marginTop: 24, display: "flex", flexDirection: "column", gap: 8 }}>

@@ -31,7 +31,7 @@ const reveal = {
   viewport: { once: true, margin: "-80px" },
 } as const;
 
-/* ─── EcoBorn (Импорт и дистрибуция) ─────────────────── */
+/* ─── EcoBorn (Производство) ─────────────────── */
 const ECOBORN_FACTS = [
   { n: "2016", l: "Год основания" },
   { n: "72 000 т", l: "Семян в переработку / год" },
@@ -60,16 +60,22 @@ const HORECA_POINTS = [
   "Выделенная поддержка и персональный менеджер",
 ];
 const TRADE_POINTS = [
-  "Внешнеторговые операции и прямые контракты",
-  "Партнёрская сеть в Центральной Азии и СНГ",
-  "Развитие экспортных маршрутов",
-  "Таможенное и логистическое сопровождение",
+  "Прямые контракты с мировыми производителями",
+  "Импорт продуктов питания и таможенное оформление",
+  "Развитие экспортных маршрутов в регион и СНГ",
+  "Полный цикл внешнеторговых и логистических операций",
 ];
-const INVEST_POINTS = [
-  "Инвестиции в складскую инфраструктуру",
-  "Развитие производственных мощностей",
-  "Стратегические партнёрства и M&A",
-  "Масштабирование FMCG-платформы группы",
+const DISTRIBUTION_POINTS = [
+  "Покрытие всех 14 регионов Узбекистана",
+  "Традиционная розница, современные сети и опт",
+  "Локальные команды продаж и прямая работа с рынком",
+  "Широкий портфель SKU под спрос каждого канала",
+];
+const LOGISTICS_POINTS = [
+  "Складская инфраструктура более 25 000 м²",
+  "Планирование и управление запасами",
+  "Маршрутизация и своевременная доставка",
+  "Контроль качества и условий хранения",
 ];
 
 function DirHeader({ dir }: { dir?: DirectionItem }) {
@@ -146,9 +152,9 @@ export function BusinessPage() {
     <PageLayout>
       <PageHero
         eyebrow="НАПРАВЛЕНИЯ БИЗНЕСА"
-        title="Импорт, производство,"
-        titleAccent="дистрибуция и рост."
-        subtitle="Пять направлений Nobel Group — единая FMCG-экосистема: импорт и дистрибуция, HoReCa, международная торговля, производство и инвестиционные проекты."
+        title="Торговля, дистрибуция,"
+        titleAccent="производство и логистика."
+        subtitle="Пять направлений Nobel Group — единая FMCG-экосистема: международная торговля, дистрибуция, HoReCa, собственное производство и логистика."
         crumbs={[{ label: "Направления бизнеса" }]}
         visual="business"
       />
@@ -171,18 +177,46 @@ export function BusinessPage() {
         </div>
       </section>
 
-      {/* ═══ 01 · Импорт и дистрибуция — EcoBorn ═══ */}
-      <section id="import" className="ng-sec-pad" style={{ background: "var(--ng-charcoal)", padding: "100px 80px", position: "relative", overflow: "hidden", scrollMarginTop: 90 }}>
-        <IbmGrid opacity={0.02} />
+      {/* ═══ 01 · Международная торговля (импорт + экспорт) ═══ */}
+      <section id="trade" className="ng-sec-pad" style={{ background: "var(--ng-charcoal)", padding: "100px 80px", position: "relative", overflow: "hidden", scrollMarginTop: 90 }}>
+        <HoneycombPattern opacity={0.03} />
         <div className="ng-decor"><GiantNumber n="01" /></div>
         <div style={{ maxWidth: 1400, margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <DirHeader dir={dir("import")} />
+          <InfoDirection dir={dir("trade")} points={TRADE_POINTS} img={dir("trade")?.img} />
+        </div>
+      </section>
 
-          <motion.div {...reveal} style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 26 }}>
+      {/* ═══ 02 · Дистрибуция ═══ */}
+      <section id="distribution" className="ng-sec-pad" style={{ background: "var(--ng-void)", padding: "100px 80px", position: "relative", overflow: "hidden", scrollMarginTop: 90 }}>
+        <IbmGrid opacity={0.02} />
+        <div className="ng-decor"><GiantNumber n="02" /></div>
+        <div style={{ maxWidth: 1400, margin: "0 auto", position: "relative", zIndex: 1 }}>
+          <InfoDirection dir={dir("distribution")} points={DISTRIBUTION_POINTS} img={dir("distribution")?.img} />
+        </div>
+      </section>
+
+      {/* ═══ 03 · HoReCa ═══ */}
+      <section id="horeca" className="ng-sec-pad" style={{ background: "var(--ng-charcoal)", padding: "100px 80px", position: "relative", overflow: "hidden", scrollMarginTop: 90 }}>
+        <IbmGrid opacity={0.02} />
+        <div className="ng-decor"><GiantNumber n="03" /></div>
+        <div style={{ maxWidth: 1400, margin: "0 auto", position: "relative", zIndex: 1 }}>
+          <InfoDirection dir={dir("horeca")} points={HORECA_POINTS} img={dir("horeca")?.img} />
+        </div>
+      </section>
+
+      {/* ═══ 04 · Производство — EcoBorn + J.I.B. INVEST + Aris + Семей ═══ */}
+      <section id="production" className="ng-sec-pad" style={{ background: "linear-gradient(165deg, #12110F 0%, #1A1712 50%, #12110F 100%)", padding: "100px 80px", position: "relative", overflow: "hidden", scrollMarginTop: 90 }}>
+        <LogisticsMesh opacity={0.06} />
+        <div className="ng-decor"><GiantNumber n="04" /></div>
+        <div style={{ maxWidth: 1400, margin: "0 auto", position: "relative", zIndex: 1 }}>
+          <DirHeader dir={dir("production")} />
+
+          {/* — EcoBorn — */}
+          <motion.div {...reveal} style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 12, marginBottom: 26 }}>
             <img src={ecobornLogo} alt="EcoBorn" style={{ width: 48, height: 48, objectFit: "contain" }} />
             <div>
               <div style={{ color: "#FFFFFF", fontSize: 22, fontWeight: 800 }}>EcoBorn <span style={{ color: "rgba(255,255,255,0.4)", fontWeight: 500, fontSize: 16 }}>INC</span></div>
-              <div style={{ color: "#8FCD1E", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", marginTop: 4 }}>МАСЛОЭКСТРАКЦИОННЫЙ КОМПЛЕКС</div>
+              <div style={{ color: "#8FCD1E", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", marginTop: 4 }}>МАСЛОЭКСТРАКЦИОННЫЙ КОМПЛЕКС · ТАШКЕНТ</div>
             </div>
           </motion.div>
 
@@ -238,38 +272,14 @@ export function BusinessPage() {
             </div>
           </motion.div>
 
-          <motion.div {...reveal}>
+          <motion.div {...reveal} style={{ marginBottom: 8 }}>
             <Link to="/business/import" style={{ display: "inline-flex", alignItems: "center", gap: 8, border: `1px solid rgba(213,162,81,0.5)`, color: GOLD, textDecoration: "none", fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", padding: "13px 26px" }}>
               ПОДРОБНЕЕ О ECOBORN →
             </Link>
           </motion.div>
-        </div>
-      </section>
 
-      {/* ═══ 02 · HoReCa ═══ */}
-      <section id="horeca" className="ng-sec-pad" style={{ background: "var(--ng-void)", padding: "100px 80px", position: "relative", overflow: "hidden", scrollMarginTop: 90 }}>
-        <IbmGrid opacity={0.02} />
-        <div className="ng-decor"><GiantNumber n="02" /></div>
-        <div style={{ maxWidth: 1400, margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <InfoDirection dir={dir("horeca")} points={HORECA_POINTS} img={dir("horeca")?.img} />
-        </div>
-      </section>
-
-      {/* ═══ 03 · Международная торговля ═══ */}
-      <section id="trade" className="ng-sec-pad" style={{ background: "var(--ng-charcoal)", padding: "100px 80px", position: "relative", overflow: "hidden", scrollMarginTop: 90 }}>
-        <HoneycombPattern opacity={0.03} />
-        <div className="ng-decor"><GiantNumber n="03" /></div>
-        <div style={{ maxWidth: 1400, margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <InfoDirection dir={dir("trade")} points={TRADE_POINTS} img={dir("trade")?.img} />
-        </div>
-      </section>
-
-      {/* ═══ 04 · Производство — J.I.B. INVEST ═══ */}
-      <section id="production" className="ng-sec-pad" style={{ background: "linear-gradient(165deg, #12110F 0%, #1A1712 50%, #12110F 100%)", padding: "100px 80px", position: "relative", overflow: "hidden", scrollMarginTop: 90 }}>
-        <LogisticsMesh opacity={0.06} />
-        <div className="ng-decor"><GiantNumber n="04" /></div>
-        <div style={{ maxWidth: 1400, margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <DirHeader dir={dir("production")} />
+          {/* divider between production assets */}
+          <div style={{ height: 1, background: "rgba(255,255,255,0.09)", margin: "56px 0" }} />
 
           {jib && (
             <>
@@ -336,12 +346,12 @@ export function BusinessPage() {
       {/* ═══ Маслоэкстракционный завод Семей (секция лендинга) ═══ */}
       <SemeySection />
 
-      {/* ═══ 05 · Инвестиционные проекты ═══ */}
-      <section id="invest" className="ng-sec-pad" style={{ background: "var(--ng-void)", padding: "100px 80px", position: "relative", overflow: "hidden", scrollMarginTop: 90 }}>
+      {/* ═══ 05 · Склад и логистика ═══ */}
+      <section id="logistics" className="ng-sec-pad" style={{ background: "var(--ng-void)", padding: "100px 80px", position: "relative", overflow: "hidden", scrollMarginTop: 90 }}>
         <IbmGrid opacity={0.02} />
         <div className="ng-decor"><GiantNumber n="05" /></div>
         <div style={{ maxWidth: 1400, margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <InfoDirection dir={dir("invest")} points={INVEST_POINTS} img={dir("invest")?.img} />
+          <InfoDirection dir={dir("logistics")} points={LOGISTICS_POINTS} img={dir("logistics")?.img} />
         </div>
       </section>
 

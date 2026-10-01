@@ -52,6 +52,7 @@ export type BrandItem = {
   name: string;
   cat: string;
   desc?: string;
+  exclusive?: boolean;
   order: number;
 };
 

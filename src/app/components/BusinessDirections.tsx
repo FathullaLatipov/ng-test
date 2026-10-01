@@ -17,9 +17,7 @@ function DirectionPhotoCard({
   featured?: boolean;
 }) {
   const [hovered, setHovered] = useState(false);
-  const to =
-    dir.detailTo ||
-    (dir.id === "production" ? "/business/jib" : dir.id === "import" ? "/business/import" : `/business#${dir.id}`);
+  const to = dir.detailTo || `/business#${dir.id}`;
 
   return (
     <Link to={to} style={{ display: "block", textDecoration: "none", color: "inherit" }}>
@@ -145,16 +143,18 @@ export function BusinessDirections({
             gap: 16,
           }}
         >
-          {items.map((dir, i) => (
-            <div
-              key={dir.id}
-              style={{
-                gridColumn: items.length === 4 ? "span 1" : i < 3 ? "span 2" : "span 3",
-              }}
-            >
-              <DirectionPhotoCard dir={dir} index={i} inView={inView} featured={items.length === 4 || i < 2} />
-            </div>
-          ))}
+          {items.map((dir, i) => {
+            // 4 → 2×2; 5 → 3 сверху + 2 по центру снизу; иначе — ряды по 3
+            let gridColumn = "span 2";
+            if (items.length === 4) gridColumn = "span 1";
+            else if (items.length === 5 && i === 3) gridColumn = "2 / span 2";
+            else if (items.length === 5 && i === 4) gridColumn = "4 / span 2";
+            return (
+              <div key={dir.id} style={{ gridColumn }}>
+                <DirectionPhotoCard dir={dir} index={i} inView={inView} featured={items.length === 4} />
+              </div>
+            );
+          })}
         </div>
 
         {showAllLink && (

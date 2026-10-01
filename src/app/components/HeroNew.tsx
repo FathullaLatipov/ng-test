@@ -53,8 +53,8 @@ export function HeroNew() {
         className="ng-decor"
         style={{ position: "absolute", top: 110, right: 52, zIndex: 10, display: "flex", alignItems: "center", gap: 8 }}
       >
-        <div style={{ width: 16, height: 1, background: "var(--ng-gold)", opacity: 0.6 }} />
-        <span style={{ color: "rgba(232,201,122,0.85)", fontSize: 9, fontWeight: 600, letterSpacing: "0.28em", textShadow: "0 0 12px rgba(213,162,81,0.5)" }}>
+        <div style={{ width: 24, height: 1, background: "var(--ng-gold)", opacity: 0.6 }} />
+        <span style={{ color: "rgba(232,201,122,0.9)", fontSize: 13, fontWeight: 600, letterSpacing: "0.26em", textShadow: "0 0 12px rgba(213,162,81,0.5)" }}>
           {h.badge}
         </span>
       </motion.div>

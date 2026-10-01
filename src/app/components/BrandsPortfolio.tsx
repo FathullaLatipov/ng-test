@@ -28,9 +28,9 @@ function SectionLabel({ children, accent = false }: { children: string; accent?:
 export function BrandsPortfolio({ showCta = true }: { showCta?: boolean }) {
   const { data } = useCms();
   const brands = data.brands;
+  const companies = [...data.companies].filter((c) => c.published).sort((a, b) => a.order - b.order);
   const own = [...brands.own].sort((a, b) => a.order - b.order);
   const exclusive = [...brands.exclusive].sort((a, b) => a.order - b.order);
-  const distributed = [...brands.distributed].sort((a, b) => a.order - b.order);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -38,6 +38,7 @@ export function BrandsPortfolio({ showCta = true }: { showCta?: boolean }) {
     <section id="brands" className="ng-sec-pad-v" style={{ background: "#0D0D0D", padding: "110px 0", position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(to right, transparent, rgba(201,162,75,0.2) 50%, transparent)" }} />
       <div className="ng-side-pad" style={{ padding: "0 80px", maxWidth: 1400, margin: "0 auto" }} ref={ref}>
+        {/* ── header ── */}
         <div className="ng-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "end", marginBottom: 56 }}>
           <div>
             <motion.div initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
@@ -65,87 +66,113 @@ export function BrandsPortfolio({ showCta = true }: { showCta?: boolean }) {
           </motion.p>
         </div>
 
-        <div className="ng-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 28, marginBottom: 28 }}>
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }}>
-            <SectionLabel accent>СОБСТВЕННЫЕ БРЕНДЫ</SectionLabel>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {own.map((b) => (
+        {/* ── Компании группы (фирмы) ── */}
+        <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }} style={{ marginBottom: 48 }}>
+          <SectionLabel accent>КОМПАНИИ ГРУППЫ</SectionLabel>
+          <div className="ng-grid-companies" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
+            {companies.map((c) => (
+              <div
+                key={c.id}
+                style={{
+                  background: "#111111",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                  borderTop: "2px solid #C9A24B",
+                  padding: "22px 22px",
+                  display: "flex",
+                  flexDirection: "column",
+                  boxSizing: "border-box",
+                }}
+              >
+                <div style={{ color: "#FFFFFF", fontSize: 19, fontWeight: 800, marginBottom: 10 }}>{c.name}</div>
+                <p style={{ color: "rgba(255,255,255,0.62)", fontSize: 12.5, lineHeight: 1.65, margin: 0, marginBottom: 14, flex: 1 }}>{c.description}</p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                  {c.tags.map((t) => (
+                    <span key={t} style={{ border: "1px solid rgba(201,162,75,0.3)", color: "#C9A24B", fontSize: 10, fontWeight: 600, letterSpacing: "0.04em", padding: "4px 9px" }}>{t}</span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* ── Бренды группы ── */}
+        <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 }} style={{ marginBottom: exclusive.length ? 36 : 48 }}>
+          <SectionLabel accent>СОБСТВЕННЫЕ БРЕНДЫ</SectionLabel>
+          <div className="ng-grid-brands" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
+            {own.map((b) => {
+              const featured = !!b.desc;
+              return (
                 <div
                   key={b.id}
                   style={{
-                    background: "#111111",
-                    border: "1px solid rgba(255,255,255,0.07)",
+                    background: featured ? "linear-gradient(150deg, rgba(201,162,75,0.14), #111111)" : "#111111",
+                    border: featured ? "1px solid rgba(201,162,75,0.4)" : "1px solid rgba(255,255,255,0.07)",
                     borderLeft: "2px solid #C9A24B",
-                    padding: "18px 20px",
-                    minHeight: 100,
+                    padding: "16px 18px",
                     boxSizing: "border-box",
+                    minHeight: 86,
                   }}
                 >
-                  <div style={{ color: "#FFFFFF", fontSize: 17, fontWeight: 800 }}>{b.name}</div>
-                  <div style={{ color: "#C9A24B", fontSize: 10, fontWeight: 600, letterSpacing: "0.1em", marginTop: 4 }}>{b.cat.toUpperCase()}</div>
-                  <div style={{ color: "#9A9A9A", fontSize: 12, marginTop: 6 }}>{b.desc}</div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
+                    <div style={{ color: "#FFFFFF", fontSize: 17, fontWeight: 800 }}>{b.name}</div>
+                    {featured && <span style={{ color: "#0A0A0A", background: "#C9A24B", fontSize: 9, fontWeight: 700, letterSpacing: "0.06em", padding: "3px 7px", whiteSpace: "nowrap" }}>ФЛАГМАН</span>}
+                  </div>
+                  <div style={{ color: "#C9A24B", fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", marginTop: 6 }}>{b.cat.toUpperCase()}</div>
+                  {b.desc && <div style={{ color: "rgba(255,255,255,0.58)", fontSize: 12, marginTop: 8 }}>{b.desc}</div>}
                 </div>
-              ))}
-            </div>
-          </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.28 }}>
-            <SectionLabel accent>ЭКСКЛЮЗИВНО ПРЕДСТАВЛЯЕМЫЕ</SectionLabel>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {exclusive.length > 0 && (
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.36 }} style={{ marginBottom: 48 }}>
+            <SectionLabel accent>ЭКСКЛЮЗИВНЫЕ ПРАВА</SectionLabel>
+            <div className="ng-grid-brands" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
               {exclusive.map((b) => (
                 <div
                   key={b.id}
                   style={{
                     background: "#111111",
                     border: "1px solid rgba(255,255,255,0.07)",
-                    borderLeft: "2px solid #C9A24B",
-                    padding: "18px 20px",
-                    minHeight: 100,
+                    borderLeft: "2px solid #E8C97A",
+                    padding: "16px 18px",
                     boxSizing: "border-box",
+                    minHeight: 86,
                   }}
                 >
-                  <div style={{ color: "#FFFFFF", fontSize: 17, fontWeight: 800 }}>{b.name}</div>
-                  <div style={{ color: "#C9A24B", fontSize: 10, fontWeight: 600, letterSpacing: "0.1em", marginTop: 4 }}>{b.cat.toUpperCase()}</div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
+                    <div style={{ color: "#FFFFFF", fontSize: 17, fontWeight: 800 }}>{b.name}</div>
+                    <span style={{ color: "#E8C97A", border: "1px solid rgba(232,201,122,0.5)", fontSize: 9, fontWeight: 700, letterSpacing: "0.06em", padding: "3px 7px", whiteSpace: "nowrap" }}>ЭКСКЛЮЗИВ</span>
+                  </div>
+                  <div style={{ color: "#C9A24B", fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", marginTop: 6 }}>{b.cat.toUpperCase()}</div>
                 </div>
               ))}
             </div>
           </motion.div>
-        </div>
+        )}
 
-        <div className="ng-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 28 }}>
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.34 }}>
-            <SectionLabel>ДИСТРИБУТИРУЕМЫЕ БРЕНДЫ</SectionLabel>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-              {distributed.map((b) => (
-                <div key={b.id} style={{ background: "#111111", border: "1px solid rgba(255,255,255,0.06)", padding: "16px 14px" }}>
-                  <div style={{ color: "#FFFFFF", fontSize: 13, fontWeight: 700, marginBottom: 4 }}>{b.name}</div>
-                  <div style={{ color: "#9A9A9A", fontSize: 11 }}>{b.cat}</div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.4 }}>
-            <SectionLabel>ТОВАРНЫЕ КАТЕГОРИИ</SectionLabel>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-              {brands.categories.map((c) => (
-                <span
-                  key={c}
-                  style={{
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    background: "rgba(255,255,255,0.02)",
-                    color: "rgba(255,255,255,0.8)",
-                    fontSize: 12,
-                    fontWeight: 500,
-                    padding: "10px 14px",
-                  }}
-                >
-                  {c}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-        </div>
+        {/* ── Товарные категории ── */}
+        <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.42 }}>
+          <SectionLabel>ТОВАРНЫЕ КАТЕГОРИИ</SectionLabel>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            {brands.categories.map((c) => (
+              <span
+                key={c}
+                style={{
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  background: "rgba(255,255,255,0.02)",
+                  color: "rgba(255,255,255,0.8)",
+                  fontSize: 12,
+                  fontWeight: 500,
+                  padding: "10px 14px",
+                }}
+              >
+                {c}
+              </span>
+            ))}
+          </div>
+        </motion.div>
 
         {showCta && (
           <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.5 }} style={{ marginTop: 40, textAlign: "center" }}>
@@ -167,6 +194,13 @@ export function BrandsPortfolio({ showCta = true }: { showCta?: boolean }) {
           </motion.div>
         )}
       </div>
+
+      <style>{`
+        @media (max-width: 900px) {
+          .ng-grid-companies { grid-template-columns: 1fr !important; }
+          .ng-grid-brands { grid-template-columns: 1fr 1fr !important; }
+        }
+      `}</style>
     </section>
   );
 }
