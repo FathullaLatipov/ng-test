@@ -138,7 +138,7 @@ export function JibPage() {
       </section>
 
       {/* STATS */}
-      <MegaStats items={jib.stats.map((s) => ({ n: s.n, l: s.l }))} />
+      {jib.stats.length > 0 && <MegaStats items={jib.stats.map((s) => ({ n: s.n, l: s.l }))} />}
 
       {/* ABOUT */}
       <section

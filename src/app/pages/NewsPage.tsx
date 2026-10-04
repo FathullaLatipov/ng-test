@@ -12,7 +12,7 @@ export function NewsPage() {
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <PageLayout>
+    <PageLayout title="Новости — Nobel Group" description="Новости Nobel Group публикуются только после подтверждения события, даты и факта.">
       <PageHero
         eyebrow="НОВОСТИ"
         title="События и"
@@ -26,7 +26,9 @@ export function NewsPage() {
         <IbmGrid opacity={0.02} />
         <div style={{ maxWidth: 1000, margin: "0 auto", position: "relative", zIndex: 1, display: "flex", flexDirection: "column", gap: 14 }}>
           {news.length === 0 && (
-            <div style={{ color: "var(--ng-muted-dark)", padding: 40, textAlign: "center" }}>Новостей пока нет.</div>
+            <div style={{ color: "rgba(255,255,255,0.75)", padding: 40, textAlign: "center", fontSize: 16, lineHeight: 1.7 }}>
+              Раздел пуст: публикуются только подтверждённые события с датой и фактом. Пока таких материалов нет, пункт «Новости» убран из меню.
+            </div>
           )}
           {news.map((n, i) => (
             <motion.article

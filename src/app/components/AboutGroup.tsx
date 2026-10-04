@@ -15,12 +15,12 @@ const CAP_ICONS: Record<string, string> = {
 };
 
 const CAP_NODES = [
-  { id: "trade",        label: "Междунар.\nторговля",  x: 50,   y: 10 },
+  { id: "trade",        label: "Импорт и\nдистрибуция", x: 50,   y: 10 },
   { id: "production",   label: "Производство",          x: 84.6, y: 30 },
-  { id: "horeca",       label: "HoReCa",                x: 84.6, y: 70 },
-  { id: "brand",        label: "Бренды",                x: 50,   y: 90 },
-  { id: "logistics",    label: "Склад и\nлогистика",    x: 15.4, y: 70 },
-  { id: "distribution", label: "Дистрибуция",           x: 15.4, y: 30 },
+  { id: "horeca",       label: "HoReCa и B2B",          x: 84.6, y: 70 },
+  { id: "brand",        label: "Проекты",               x: 50,   y: 90 },
+  { id: "logistics",    label: "Логистика",             x: 15.4, y: 70 },
+  { id: "distribution", label: "Междунар.\nторговля",   x: 15.4, y: 30 },
 ];
 
 /** hexagon perimeter (circulating flow) + inner diagonals (structural links) */

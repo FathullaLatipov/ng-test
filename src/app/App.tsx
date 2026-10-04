@@ -12,6 +12,7 @@ import { CareersPage } from "./pages/CareersPage";
 import { ContactsPage } from "./pages/ContactsPage";
 import { JibPage } from "./pages/JibPage";
 import { AdminPage } from "./pages/AdminPage";
+import { PrivacyPage, TermsPage } from "./pages/LegalPage";
 import { RouteWipe } from "./components/PageTransition";
 import { ScrollToTop } from "./components/ScrollToTop";
 
@@ -33,6 +34,8 @@ export default function App() {
         <Route path="/news" element={<NewsPage />} />
         <Route path="/careers" element={<CareersPage />} />
         <Route path="/contacts" element={<ContactsPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/terms" element={<TermsPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

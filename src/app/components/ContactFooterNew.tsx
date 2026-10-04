@@ -3,60 +3,47 @@ import { motion, useInView } from "motion/react";
 import { Link } from "react-router";
 import nobelLogo from "../../assets/nobel-logo.png";
 import { useCms } from "../cms/store";
+import { submitLead } from "../lib/submitLead";
 
-const INQUIRY_TYPES = [
-  { id: "cooperation", label: "Сотрудничество", icon: "M9 13a5 5 0 0 0 7 0l2-2a5 5 0 1 0-7-7l-1 1M15 11a5 5 0 0 0-7 0l-2 2a5 5 0 1 0 7 7l1-1" },
-  { id: "partner", label: "Стать партнёром", icon: "M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" },
-  { id: "supplier", label: "Заявка поставщика", icon: "M3 7h18M3 12h18M3 17h12" },
-  { id: "horeca", label: "Заявка для HoReCa", icon: "M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z" },
-  { id: "career", label: "Отправить резюме", icon: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10" },
-];
+const TOPICS = ["Продажи", "Закупки / поставщики", "Партнёрство", "HoReCa", "Логистика", "Карьера", "СМИ", "Другое"];
 
-const FOOTER_COLS: { title: string; links: { label: string; to?: string }[] }[] = [
+const FOOTER_COLS: { title: string; links: { label: string; to: string }[] }[] = [
   {
-    title: "О группе",
+    title: "Группа",
     links: [
-      { label: "О компании", to: "/about" },
+      { label: "О группе", to: "/about" },
       { label: "История", to: "/history" },
-      { label: "Новости", to: "/news" },
+      { label: "География", to: "/geography" },
     ],
   },
   {
     title: "Бизнес",
     links: [
-      { label: "Импорт и дистрибуция", to: "/business/import" },
-      { label: "HoReCa", to: "/business#horeca" },
+      { label: "Импорт и дистрибуция", to: "/business#import" },
+      { label: "Производство", to: "/business#production" },
+      { label: "Логистика", to: "/business#logistics" },
       { label: "Международная торговля", to: "/business#trade" },
-      { label: "Производство", to: "/business/jib" },
-      { label: "Инвестиционные проекты", to: "/business#invest" },
+      { label: "Проекты", to: "/business#projects" },
     ],
   },
   {
-    title: "Партнёрам",
+    title: "Партнерам",
     links: [
       { label: "Производителям", to: "/partnership" },
-      { label: "Торговым сетям", to: "/partnership" },
-      { label: "Дистрибьюторам", to: "/partnership" },
+      { label: "Сетям и опту", to: "/partnership" },
       { label: "HoReCa", to: "/partnership" },
-      { label: "Инвесторам", to: "/partnership" },
+      { label: "Логистике", to: "/partnership" },
+      { label: "Обсудить", to: "/partnership#partner-form" },
     ],
   },
   {
     title: "Компания",
     links: [
-      { label: "Бренды", to: "/brands" },
+      { label: "Бренды и продукция", to: "/brands" },
       { label: "Карьера", to: "/careers" },
-      { label: "География", to: "/geography" },
       { label: "Контакты", to: "/contacts" },
-    ],
-  },
-  {
-    title: "Контакты",
-    links: [
-      { label: "Ташкент, Узбекистан", to: "/contacts" },
-      { label: "+998 71 000 00 00" },
-      { label: "info@nobelgroup.uz" },
-      { label: "Обсудить сотрудничество", to: "/partnership#partner-form" },
+      { label: "Политика конфиденциальности", to: "/privacy" },
+      { label: "Условия использования", to: "/terms" },
     ],
   },
 ];
@@ -66,9 +53,10 @@ export function ContactFooterNew() {
   const contact = data.contact;
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
-  const [selectedType, setSelectedType] = useState("cooperation");
-  const [form, setForm] = useState({ name: "", company: "", email: "", message: "" });
-  const [sent, setSent] = useState(false);
+  const [selectedType, setSelectedType] = useState(TOPICS[0]);
+  const [form, setForm] = useState({ name: "", company: "", phone: "", email: "", message: "", consent: false });
+  const [sent, setSent] = useState("");
+  const [formError, setFormError] = useState("");
 
   return (
     <>
@@ -92,14 +80,12 @@ export function ContactFooterNew() {
               <motion.div initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }} style={{ marginBottom: 32 }}>
                 <div style={{ color: "#9A9A9A", fontSize: 11, fontWeight: 600, letterSpacing: "0.18em", marginBottom: 14 }}>ВЫБЕРИТЕ ТИП ОБРАЩЕНИЯ</div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  {INQUIRY_TYPES.map((t) => (
-                    <button key={t.id} onClick={() => setSelectedType(t.id)}
-                      style={{ background: selectedType === t.id ? "rgba(201,162,75,0.1)" : "#111111", border: selectedType === t.id ? "1px solid rgba(201,162,75,0.45)" : "1px solid rgba(255,255,255,0.07)", color: selectedType === t.id ? "#FFFFFF" : "#9A9A9A", fontSize: 13, fontWeight: selectedType === t.id ? 600 : 400, padding: "13px 18px", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: 12, transition: "all 0.25s", fontFamily: "Manrope, sans-serif" }}>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={selectedType === t.id ? "#C9A24B" : "#9A9A9A"} strokeWidth="1.3" strokeLinecap="round"><path d={t.icon} /></svg>
-                      {t.label}
-                      {selectedType === t.id && <span style={{ marginLeft: "auto", color: "#C9A24B", fontSize: 13 }}>→</span>}
-                    </button>
-                  ))}
+                  {TOPICS.map((label) => (
+                  <button key={label} type="button" onClick={() => setSelectedType(label)}
+                    style={{ background: selectedType === label ? "rgba(201,162,75,0.1)" : "#111111", border: selectedType === label ? "1px solid rgba(201,162,75,0.45)" : "1px solid rgba(255,255,255,0.07)", color: selectedType === label ? "#FFFFFF" : "#9A9A9A", fontSize: 13, fontWeight: selectedType === label ? 600 : 400, padding: "13px 18px", textAlign: "left", cursor: "pointer", fontFamily: "Manrope, sans-serif" }}>
+                    {label}
+                  </button>
+                ))}
                 </div>
               </motion.div>
 
@@ -109,56 +95,77 @@ export function ContactFooterNew() {
                   { label: "Телефон", value: contact.phone },
                   { label: "Email", value: contact.email },
                   { label: "Часы работы", value: contact.hours },
-                ].map((item) => (
+                ].filter((item) => item.value.trim()).map((item) => (
                   <div key={item.label} style={{ display: "grid", gridTemplateColumns: "90px 1fr", gap: 16, padding: "13px 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
                     <span style={{ color: "#9A9A9A", fontSize: 11, fontWeight: 600, letterSpacing: "0.08em" }}>{item.label.toUpperCase()}</span>
                     <span style={{ color: "#FFFFFF", fontSize: 13, fontWeight: 400, lineHeight: 1.6, whiteSpace: "pre-line" }}>{item.value}</span>
                   </div>
                 ))}
+                {!contact.phone && !contact.email && !contact.address && (
+                  <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 14, lineHeight: 1.7, margin: 0 }}>
+                    Официальные телефон, email и адрес публикуются после утверждённого списка контактов. Пока обращение идёт через форму.
+                  </p>
+                )}
               </motion.div>
             </div>
 
-            {/* Right: Form */}
             <motion.div initial={{ opacity: 0, x: 24 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.3 }}>
               {sent ? (
                 <div style={{ background: "#111111", border: "1px solid rgba(201,162,75,0.3)", padding: "56px 36px", textAlign: "center" }}>
                   <div style={{ color: "#C9A24B", fontSize: 32, marginBottom: 18 }}>✦</div>
-                  <div style={{ color: "#FFFFFF", fontSize: 19, fontWeight: 700, marginBottom: 12 }}>Заявка получена</div>
-                  <p style={{ color: "#9A9A9A", fontSize: 14, lineHeight: 1.7 }}>Спасибо за обращение. Наш менеджер свяжется с вами в течение 1–2 рабочих дней.</p>
+                  <div style={{ color: "#FFFFFF", fontSize: 19, fontWeight: 700, marginBottom: 12 }}>Заявка сохранена</div>
+                  <p style={{ color: "#9A9A9A", fontSize: 14, lineHeight: 1.7 }}>{sent}</p>
                 </div>
               ) : (
-                <form onSubmit={(e) => { e.preventDefault(); setSent(true); }}>
+                <form onSubmit={async (e) => {
+                  e.preventDefault();
+                  setFormError("");
+                  const result = await submitLead({
+                    form: "contact",
+                    name: form.name,
+                    company: form.company,
+                    phone: form.phone,
+                    email: form.email,
+                    topic: selectedType,
+                    message: form.message,
+                    consent: form.consent ? "yes" : "",
+                  });
+                  if (!result.ok) {
+                    setFormError(result.message);
+                    return;
+                  }
+                  setSent("Обращение записано и будет передано ответственному подразделению.");
+                }}>
+                  <input name="website" tabIndex={-1} autoComplete="off" style={{ display: "none" }} aria-hidden />
                   <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
                     {[
-                      { key: "name", label: "Имя", placeholder: "Ваше имя" },
-                      { key: "company", label: "Компания", placeholder: "Название компании" },
-                      { key: "email", label: "Email", placeholder: "your@email.com" },
+                      { key: "name", label: "Имя", placeholder: "Ваше имя", type: "text" },
+                      { key: "company", label: "Компания", placeholder: "Название компании", type: "text" },
+                      { key: "phone", label: "Телефон", placeholder: "+998 …", type: "tel" },
+                      { key: "email", label: "Email", placeholder: "name@company.com", type: "email" },
                     ].map((field) => (
                       <div key={field.key}>
-                        <label style={{ display: "block", color: "#9A9A9A", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", marginBottom: 14 }}>{field.label.toUpperCase()}</label>
-                        <input type={field.key === "email" ? "email" : "text"} placeholder={field.placeholder}
-                          value={form[field.key as keyof typeof form]}
+                        <label style={{ display: "block", color: "#9A9A9A", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", marginBottom: 8 }}>{field.label.toUpperCase()}</label>
+                        <input required={field.key === "name"} type={field.type} placeholder={field.placeholder}
+                          value={form[field.key as "name"]}
                           onChange={(e) => setForm((p) => ({ ...p, [field.key]: e.target.value }))}
-                          style={{ width: "100%", background: "#111111", border: "1px solid rgba(255,255,255,0.1)", color: "#FFFFFF", fontSize: 14, padding: "12px 16px", outline: "none", fontFamily: "Manrope, sans-serif", boxSizing: "border-box", transition: "border-color 0.25s" }}
-                          onFocus={(e) => (e.target.style.borderColor = "rgba(201,162,75,0.45)")}
-                          onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
+                          style={{ width: "100%", background: "#111111", border: "1px solid rgba(255,255,255,0.1)", color: "#FFFFFF", fontSize: 14, padding: "12px 16px", outline: "none", fontFamily: "Manrope, sans-serif", boxSizing: "border-box" }}
                         />
                       </div>
                     ))}
                     <div>
-                      <label style={{ display: "block", color: "#9A9A9A", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", marginBottom: 14 }}>СООБЩЕНИЕ</label>
-                      <textarea placeholder="Опишите ваш запрос или предложение о сотрудничестве..." rows={5}
-                        value={form.message}
+                      <label style={{ display: "block", color: "#9A9A9A", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", marginBottom: 8 }}>СООБЩЕНИЕ</label>
+                      <textarea required placeholder="Опишите обращение" rows={4} value={form.message}
                         onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))}
-                        style={{ width: "100%", background: "#111111", border: "1px solid rgba(255,255,255,0.1)", color: "#FFFFFF", fontSize: 14, padding: "12px 16px", outline: "none", fontFamily: "Manrope, sans-serif", resize: "vertical", boxSizing: "border-box", transition: "border-color 0.25s" }}
-                        onFocus={(e) => (e.target.style.borderColor = "rgba(201,162,75,0.45)")}
-                        onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
+                        style={{ width: "100%", background: "#111111", border: "1px solid rgba(255,255,255,0.1)", color: "#FFFFFF", fontSize: 14, padding: "12px 16px", outline: "none", fontFamily: "Manrope, sans-serif", resize: "vertical", boxSizing: "border-box" }}
                       />
                     </div>
-                    <button type="submit"
-                      style={{ background: "#C9A24B", border: "none", color: "#0A0A0A", fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", padding: "15px 30px", cursor: "pointer", fontFamily: "Manrope, sans-serif", transition: "all 0.3s", alignSelf: "flex-start" }}
-                      onMouseEnter={(e) => { e.currentTarget.style.background = "#D4AF37"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(201,162,75,0.4)"; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.background = "#C9A24B"; e.currentTarget.style.boxShadow = "none"; }}>
+                    <label style={{ display: "flex", gap: 10, alignItems: "flex-start", color: "rgba(255,255,255,0.75)", fontSize: 13, lineHeight: 1.5 }}>
+                      <input type="checkbox" checked={form.consent} onChange={(e) => setForm((p) => ({ ...p, consent: e.target.checked }))} required />
+                      <span>Согласен на обработку данных согласно <Link to="/privacy" style={{ color: "#C9A24B" }}>политике конфиденциальности</Link>.</span>
+                    </label>
+                    {formError && <p style={{ color: "#E8A0A0", fontSize: 13, margin: 0 }}>{formError}</p>}
+                    <button type="submit" style={{ background: "#C9A24B", border: "none", color: "#0A0A0A", fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", padding: "15px 30px", cursor: "pointer", fontFamily: "Manrope, sans-serif", alignSelf: "flex-start" }}>
                       ОТПРАВИТЬ ЗАЯВКУ →
                     </button>
                   </div>
@@ -185,13 +192,12 @@ export function ContactFooterNew() {
                 {contact.footerBlurb}
               </p>
             </div>
-            <div className="ng-grid-5" style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 28 }}>
+            <div className="ng-grid-5" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 28 }}>
               {FOOTER_COLS.map((col) => (
                 <div key={col.title}>
                   <div style={{ color: "#FFFFFF", fontSize: 13, fontWeight: 700, letterSpacing: "0.1em", marginBottom: 16 }}>{col.title.toUpperCase()}</div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                    {col.links.map((link) =>
-                      link.to ? (
+                    {col.links.map((link) => (
                         <Link
                           key={link.label}
                           to={link.to}
@@ -201,12 +207,7 @@ export function ContactFooterNew() {
                         >
                           {link.label}
                         </Link>
-                      ) : (
-                        <span key={link.label} style={{ color: "rgba(255,255,255,0.78)", fontSize: 14, fontWeight: 400, lineHeight: 1.5 }}>
-                          {link.label}
-                        </span>
-                      )
-                    )}
+                    ))}
                   </div>
                 </div>
               ))}
@@ -215,13 +216,8 @@ export function ContactFooterNew() {
           <div className="ng-stack ng-stack-center ng-footer-bottom" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 13 }}>{contact.copyright}</div>
             <div style={{ display: "flex", gap: 22 }}>
-              {["Политика конфиденциальности", "Условия использования"].map((item) => (
-                <a key={item} href="#" style={{ color: "rgba(255,255,255,0.7)", textDecoration: "none", fontSize: 13, transition: "color 0.25s" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "#C9A24B")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.78)")}>
-                  {item}
-                </a>
-              ))}
+              <Link to="/privacy" style={{ color: "rgba(255,255,255,0.7)", textDecoration: "none", fontSize: 13 }}>Политика конфиденциальности</Link>
+              <Link to="/terms" style={{ color: "rgba(255,255,255,0.7)", textDecoration: "none", fontSize: 13 }}>Условия использования</Link>
             </div>
           </div>
         </div>

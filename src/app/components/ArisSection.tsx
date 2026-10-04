@@ -60,7 +60,7 @@ export function ArisSection() {
         <HoneycombPattern opacity={0.03} />
         <div style={{ maxWidth: 1400, margin: "0 auto", position: "relative", zIndex: 1 }}>
           <div style={{ maxWidth: 820, marginBottom: 44 }}>
-            <Reveal><Eyebrow>ПРОИЗВОДСТВО · МАСЛОЖИРОВОЙ КОМПЛЕКС</Eyebrow></Reveal>
+            <Reveal><Eyebrow>ПРОЕКТ В РЕАЛИЗАЦИИ · КАЗАХСТАН</Eyebrow></Reveal>
             <Reveal delay={0.05}>
               <h2 style={{ fontSize: "clamp(28px, 3.4vw, 46px)", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.1, margin: "0 0 18px" }}>
                 Производственный комплекс <span style={{ color: GOLD_LIGHT }}>Aris</span>

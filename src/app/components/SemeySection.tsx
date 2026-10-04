@@ -28,13 +28,6 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
   );
 }
 
-const MARKET = [
-  { n: "1,7 млн га", l: "Под подсолнечник в Казахстане (2025)" },
-  { n: "3,3 млн т", l: "Валовый сбор масличных (2024)" },
-  { n: "88", l: "Предприятий переработки в стране" },
-  { n: "≈4,7 млн т", l: "Совокупная мощность переработки / год" },
-];
-
 const STAGES = [
   { n: "01", t: "Очистка и подготовка сырья", d: "Приёмка семян подсолнечника и подготовка к переработке." },
   { n: "02", t: "Прессово-экстракционный модуль", d: "Глубокая переработка и извлечение масла на современном оборудовании." },
@@ -58,7 +51,7 @@ export function SemeySection() {
         <IbmGrid opacity={0.02} />
         <div style={{ maxWidth: 1400, margin: "0 auto", position: "relative", zIndex: 1 }}>
           <div style={{ maxWidth: 860, marginBottom: 44 }}>
-            <Reveal><Eyebrow>ПРОИЗВОДСТВО · ПРОЕКТ · КАЗАХСТАН</Eyebrow></Reveal>
+            <Reveal><Eyebrow>ПРОЕКТ В РЕАЛИЗАЦИИ · КАЗАХСТАН</Eyebrow></Reveal>
             <Reveal delay={0.05}>
               <h2 style={{ fontSize: "clamp(28px, 3.4vw, 46px)", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.1, margin: "0 0 18px" }}>
                 Маслоэкстракционный завод <span style={{ color: GOLD_LIGHT }}>Семей</span>
@@ -79,7 +72,7 @@ export function SemeySection() {
             </motion.div>
             <Reveal delay={0.1}>
               <p style={{ color: "rgba(255,255,255,0.78)", fontSize: 15.5, lineHeight: 1.85, marginBottom: 18 }}>
-                На Абайскую область приходится около <b style={{ color: "#FFFFFF" }}>10,2 %</b> посевов масличных культур Казахстана. Растущий спрос на растительные масла и благоприятная экспортная конъюнктура формируют устойчивый рынок сбыта масла и шрота.
+                Завод в Семее — проект в реализации. Отраслевые цифры и проектные мощности публикуются только после подтверждения источником.
               </p>
               <p style={{ color: "rgba(255,255,255,0.78)", fontSize: 15.5, lineHeight: 1.85, margin: 0 }}>
                 Государственные и отраслевые инициативы направлены на увеличение глубокой переработки, развитие инфраструктуры и экспортных потоков — отрасль остаётся приоритетной и способствует диверсификации сельского хозяйства и росту внешнеторговой выручки.
@@ -87,17 +80,6 @@ export function SemeySection() {
             </Reveal>
           </div>
 
-          {/* market stats */}
-          <Reveal>
-            <div className="ng-grid-4" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
-              {MARKET.map((m) => (
-                <div key={m.l} style={{ background: "var(--ng-elevated)", border: "1px solid rgba(255,255,255,0.07)", borderTop: `2px solid ${GOLD}`, padding: "22px 20px", boxSizing: "border-box" }}>
-                  <div style={{ fontSize: "clamp(20px, 2.2vw, 28px)", fontWeight: 800, background: "linear-gradient(135deg, #E8C97A, #D5A251 60%, #8B6914)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", whiteSpace: "nowrap", marginBottom: 8 }}>{m.n}</div>
-                  <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 12.5, lineHeight: 1.45 }}>{m.l}</div>
-                </div>
-              ))}
-            </div>
-          </Reveal>
         </div>
       </section>
 

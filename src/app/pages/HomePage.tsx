@@ -11,13 +11,17 @@ import { PageLayout } from "../components/PageLayout";
 
 export function HomePage() {
   return (
-    <PageLayout showContact>
+    <PageLayout
+      showContact
+      title="Nobel Group — производство, дистрибуция и логистика продуктов питания"
+      description="Nobel Group объединяет компании в сфере производства, импорта, дистрибуции, международной торговли и логистики продуктов питания в Узбекистане и Центральной Азии."
+    >
       <HeroNew />
       <KeyStats />
       <SectionDivider mark="diamond" />
       <AboutGroup />
       <RouteTransition label="НАПРАВЛЕНИЯ БИЗНЕСА" />
-      <BusinessDirections limit={5} showAllLink />
+      <BusinessDirections limit={6} showAllLink />
       <BrandsPortfolio />
       <GeographyNew />
       <WhyChooseUs />

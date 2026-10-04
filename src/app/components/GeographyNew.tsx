@@ -84,14 +84,14 @@ export function GeographyNew() {
             {/* Акцент: собственные заводы за рубежом */}
             <motion.div initial={{ opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 }}
               style={{ marginBottom: 30, display: "flex", flexDirection: "column", gap: 12 }}>
-              <div style={{ color: "#C9A24B", fontSize: 11, fontWeight: 700, letterSpacing: "0.16em" }}>СОБСТВЕННЫЕ ЗАВОДЫ ЗА РУБЕЖОМ</div>
+              <div style={{ color: "#C9A24B", fontSize: 11, fontWeight: 700, letterSpacing: "0.16em" }}>АКТИВЫ И ПРОЕКТЫ</div>
               {geo.factories.map((f, i) => (
                 <motion.div key={f.id} initial={{ opacity: 0, x: -12 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.36 + i * 0.1 }}
                   style={{ background: "linear-gradient(135deg, rgba(201,162,75,0.12), var(--ng-elevated))", border: "1px solid rgba(213,162,81,0.35)", borderLeft: "3px solid #D5A251", padding: "16px 18px" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                     <Flag code={f.country} size={30} />
                     <div style={{ color: "#FFFFFF", fontSize: 17, fontWeight: 800 }}>{f.country}</div>
-                    <span style={{ marginLeft: "auto", color: "#0A0A0A", background: "#C9A24B", fontSize: 9, fontWeight: 700, letterSpacing: "0.08em", padding: "3px 8px" }}>ЗАВОД</span>
+                    <span style={{ marginLeft: "auto", color: "#0A0A0A", background: "#C9A24B", fontSize: 9, fontWeight: 700, letterSpacing: "0.08em", padding: "3px 8px" }}>СТАТУС</span>
                   </div>
                   <div style={{ color: "rgba(255,255,255,0.75)", fontSize: 12.5, marginTop: 8 }}>{f.role}</div>
                 </motion.div>
@@ -110,11 +110,11 @@ export function GeographyNew() {
               style={{ marginTop: 24, display: "flex", flexDirection: "column", gap: 8 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#C9A24B", boxShadow: "0 0 6px rgba(201,162,75,0.5)" }} />
-                <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 11 }}>Главный хаб / офис</span>
+                <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 11 }}>Operating — действующий рынок</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <div style={{ width: 7, height: 7, borderRadius: "50%", background: "rgba(201,162,75,0.7)" }} />
-                <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 11 }}>Склад / региональный центр</span>
+                <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 11 }}>Project — проект в реализации</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <div style={{ width: 20, height: 1, borderTop: "1px dashed rgba(201,162,75,0.4)" }} />

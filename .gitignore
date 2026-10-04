@@ -47,3 +47,4 @@ _*.png
 # Local verification screenshots
 /nobel-home.png
 /nobel-admin.png
+.vercel

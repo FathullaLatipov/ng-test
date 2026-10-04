@@ -4,25 +4,22 @@ import { Link, NavLink, useLocation } from "react-router";
 import nobelLogo from "../../assets/nobel-logo.png";
 
 const BUSINESS_LINKS = [
-  { label: "Международная торговля", to: "/business#trade" },
-  { label: "Дистрибуция", to: "/business#distribution" },
-  { label: "HoReCa", to: "/business#horeca" },
+  { label: "Импорт и дистрибуция", to: "/business#import" },
   { label: "Производство", to: "/business#production" },
-  { label: "Склад и логистика", to: "/business#logistics" },
+  { label: "Логистика и инфраструктура", to: "/business#logistics" },
+  { label: "Международная торговля", to: "/business#trade" },
+  { label: "HoReCa и B2B", to: "/business#horeca" },
+  { label: "Инвестиционные проекты", to: "/business#projects" },
 ];
 
 const NAV = [
-  { label: "Главная", to: "/" },
   { label: "О группе", to: "/about" },
-  { label: "Направления бизнеса", to: "/business", children: BUSINESS_LINKS },
-  { label: "Бренды", to: "/brands" },
+  { label: "Бизнес", to: "/business", children: BUSINESS_LINKS },
+  { label: "Бренды и продукция", to: "/brands" },
   { label: "Партнерам", to: "/partnership" },
-  { label: "Новости", to: "/news" },
   { label: "Карьера", to: "/careers" },
   { label: "Контакты", to: "/contacts" },
 ];
-
-const LANGS = ["RU", "UZ", "EN"];
 
 function navStyle(active: boolean): CSSProperties {
   return {
@@ -40,7 +37,6 @@ function navStyle(active: boolean): CSSProperties {
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
-  const [lang, setLang] = useState("RU");
   const [menuOpen, setMenuOpen] = useState(false);
   const [bizOpen, setBizOpen] = useState(false);
   const { pathname, hash } = useLocation();
@@ -211,29 +207,6 @@ export function Header() {
         </nav>
 
         <div className="ng-header-actions" style={{ display: "flex", alignItems: "center", gap: 14, flexShrink: 0 }}>
-          <div style={{ display: "flex", gap: 2 }}>
-            {LANGS.map((l) => (
-              <button
-                key={l}
-                onClick={() => setLang(l)}
-                style={{
-                  background: "transparent",
-                  border: "none",
-                  cursor: "pointer",
-                  fontSize: 11,
-                  fontWeight: 600,
-                  letterSpacing: "0.06em",
-                  color: lang === l ? "#C9A24B" : "#9A9A9A",
-                  padding: "4px 6px",
-                  transition: "color 0.25s",
-                  borderBottom: lang === l ? "1px solid #C9A24B" : "1px solid transparent",
-                  fontFamily: "Manrope, sans-serif",
-                }}
-              >
-                {l}
-              </button>
-            ))}
-          </div>
           <Link
             to="/partnership#partner-form"
             style={{
@@ -355,30 +328,6 @@ export function Header() {
                   )}
                 </div>
               ))}
-
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 0 6px" }}>
-                <div style={{ display: "flex", gap: 6 }}>
-                  {LANGS.map((l) => (
-                    <button
-                      key={l}
-                      onClick={() => setLang(l)}
-                      style={{
-                        background: lang === l ? "rgba(201,162,75,0.1)" : "transparent",
-                        border: lang === l ? "1px solid rgba(201,162,75,0.45)" : "1px solid rgba(255,255,255,0.12)",
-                        cursor: "pointer",
-                        fontSize: 12,
-                        fontWeight: 600,
-                        letterSpacing: "0.06em",
-                        color: lang === l ? "#C9A24B" : "#9A9A9A",
-                        padding: "6px 12px",
-                        fontFamily: "Manrope, sans-serif",
-                      }}
-                    >
-                      {l}
-                    </button>
-                  ))}
-                </div>
-              </div>
 
               <Link
                 to="/partnership#partner-form"

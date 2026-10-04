@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { DEFAULT_CMS } from "./defaults";
 import type { CmsData } from "./types";
 
-const STORAGE_KEY = "nobel-group-cms-v2";
+const STORAGE_KEY = "nobel-group-cms-v3";
 const AUTH_KEY = "nobel-group-admin-auth";
 const PASS_KEY = "nobel-group-admin-pass";
 const API_URL = "/api/cms";
@@ -16,7 +16,7 @@ function cloneDefault(): CmsData {
 
 export function mergeCms(parsed: Partial<CmsData> | null | undefined): CmsData {
   const base = cloneDefault();
-  if (!parsed) return base;
+  if (!parsed || parsed.contentVersion !== base.contentVersion) return base;
   return {
     ...base,
     ...parsed,

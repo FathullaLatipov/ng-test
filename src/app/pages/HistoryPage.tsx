@@ -6,7 +6,6 @@ import { CompanyJourney } from "../components/CompanyJourney";
 import {
   SectionDivider,
   QuoteBand,
-  MegaStats,
   IbmGrid,
   LogisticsMesh,
 } from "../components/BrandDecor";
@@ -37,23 +36,14 @@ export function HistoryPage() {
     <PageLayout>
       <PageHero
         eyebrow="ИСТОРИЯ КОМПАНИИ"
-        title="Путь от оптовых поставок"
-        titleAccent="к продовольственной экосистеме."
-        subtitle="С 2012 года Nobel Group развивается как системный игрок рынка продуктов питания Узбекистана — от первых оптовых операций до мультиформатной группы."
+        title="Подтверждённые"
+        titleAccent="этапы группы."
+        subtitle="На таймлайне только опорные даты: 2009 — начало бизнеса, 2016 — EcoBorn, 2018 — Nobel Trade. Остальные события добавляются после подтверждения."
         crumbs={[{ label: "История" }]}
         visual="history"
       />
 
       <CompanyJourney />
-
-      <MegaStats
-        items={[
-          { n: "2012", l: "Год основания" },
-          { n: "14+", l: "Лет опыта" },
-          { n: "4", l: "Этапа масштабирования" },
-          { n: "1", l: "Общая стратегия роста" },
-        ]}
-      />
 
       <section
         ref={missionRef}

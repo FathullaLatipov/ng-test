@@ -7,7 +7,6 @@ import {
   HoneycombPattern,
   GiantNumber,
   GiantWord,
-  MegaStats,
   QuoteBand,
   FullBleedPhoto,
   SectionDivider,
@@ -136,7 +135,7 @@ export function ImportPage() {
               Направления бизнеса
             </Link>
             <span style={{ color: "rgba(213,162,81,0.5)", fontSize: 10 }}>›</span>
-            <span style={{ color: "#C9A24B", fontSize: 12, fontWeight: 600 }}>Импорт и дистрибуция</span>
+            <span style={{ color: "#C9A24B", fontSize: 12, fontWeight: 600 }}>EcoBorn · производство</span>
           </motion.div>
 
           <motion.div
@@ -147,7 +146,7 @@ export function ImportPage() {
           >
             <div style={{ width: 28, height: 1, background: "#C9A24B" }} />
             <span style={{ color: "#C9A24B", fontSize: 11, fontWeight: 600, letterSpacing: "0.28em" }}>
-              НАПРАВЛЕНИЕ 01 · ИМПОРТ И ДИСТРИБУЦИЯ
+              ДЕЙСТВУЮЩЕЕ ПРЕДПРИЯТИЕ · ПРОИЗВОДСТВО
             </span>
           </motion.div>
 
@@ -211,7 +210,7 @@ export function ImportPage() {
             transition={{ delay: 0.6 }}
             style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 30 }}
           >
-            {["С 2016 года", "Ташкент, Узбекистан", "72 000 т / год", "200+ сотрудников"].map((b) => (
+            {["С 2016 года", "Ташкент, Узбекистан", "Действующее предприятие"].map((b) => (
               <div
                 key={b}
                 style={{
@@ -323,16 +322,6 @@ export function ImportPage() {
           </motion.div>
         </div>
       </section>
-
-      {/* ─── STATS ────────────────────────────────────── */}
-      <MegaStats
-        items={[
-          { n: "2016", l: "Год основания" },
-          { n: "72 000 т", l: "Семян в переработку в год" },
-          { n: "200+", l: "Сотрудников" },
-          { n: "6", l: "Брендов масла" },
-        ]}
-      />
 
       {/* ─── LEKKER BRAND ─────────────────────────────── */}
       <section

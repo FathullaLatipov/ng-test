@@ -5,16 +5,16 @@ import { QuoteBand, SectionDivider } from "../components/BrandDecor";
 
 export function BrandsPage() {
   return (
-    <PageLayout>
+    <PageLayout title="Бренды и продукция — Nobel Group" description="Собственные торговые марки Nobel Group и товарные категории. Партнёрские бренды публикуются после подтверждения.">
       <PageHero
-        eyebrow="БРЕНДЫ"
-        title="Собственные,"
-        titleAccent="эксклюзивные и дистрибутируемые."
-        subtitle="Портфель Nobel Group разделён на собственные бренды, эксклюзивно представляемые марки, дистрибутируемые бренды и товарные категории."
+        eyebrow="БРЕНДЫ И ПРОДУКЦИЯ"
+        title="Бренды и продукция"
+        titleAccent="Nobel Group."
+        subtitle="Портфель группы объединяет собственные торговые марки и продукты для розничного, оптового, HoReCa и промышленного рынков. Партнёрские бренды добавляются только после подтверждения."
         crumbs={[{ label: "Бренды" }]}
         visual="business"
       />
-      <BrandsPortfolio showCta={false} />
+      <BrandsPortfolio showCta={false} showCompanies={false} />
       <QuoteBand
         quote="Сильный портфель — это не набор логотипов, а система категорий, которая работает в рознице и HoReCa."
         author="Nobel Group"

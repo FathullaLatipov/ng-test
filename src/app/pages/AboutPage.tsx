@@ -1,43 +1,42 @@
 import { PageLayout } from "../components/PageLayout";
 import { PageHero } from "../components/PageHero";
 import { CompanyJourney } from "../components/CompanyJourney";
-import { MegaStats, QuoteBand, SectionDivider, SectionTeaser } from "../components/BrandDecor";
+import { QuoteBand, SectionDivider, SectionTeaser } from "../components/BrandDecor";
 
 export function AboutPage() {
   return (
-    <PageLayout>
+    <PageLayout title="О группе — Nobel Group" description="Nobel Group объединяет производство, импорт, международную торговлю, дистрибуцию и логистику продуктов питания. Основной рынок — Узбекистан.">
       <PageHero
         eyebrow="О ГРУППЕ"
         title="Nobel Group —"
-        titleAccent="FMCG-платформа Узбекистана."
-        subtitle="Группа компаний в сфере производства, импорта и дистрибуции продуктов питания. Мы объединяем импорт, собственное производство, оптовую дистрибуцию, HoReCa и развитие потребительских брендов."
+        titleAccent="производство, торговля и дистрибуция."
+        subtitle="Группа компаний в сфере производства, импорта, международной торговли, дистрибуции и логистики продуктов питания. Основной рынок — Узбекистан; производственные и торговые проекты развиваются и в других странах региона."
         crumbs={[{ label: "О группе" }]}
         visual="history"
       />
 
       <SectionTeaser
         index="02"
-        eyebrow="КОМПАНИИ ХОЛДИНГА"
-        title="Пять компаний,"
-        titleAccent="один холдинг."
-        desc="Nobel Trade, Rimado, Elite Dairy, Gold Ingredients и EcoBorn — самостоятельные бренды с собственными рынками, каждый со своей продукцией, клиентами и сайтом."
-        points={["Nobel Trade", "Rimado", "Elite Dairy", "Gold Ingredients", "EcoBorn"]}
+        eyebrow="КОМПАНИИ И НАПРАВЛЕНИЯ"
+        title="Компании и направления"
+        titleAccent="Nobel Group."
+        desc="У каждой сущности указан тип. Юридическая карта, которая ещё не подтверждена, на сайте не публикуется."
+        points={[
+          "Nobel Trade — торговля и дистрибуция",
+          "EcoBorn — действующее производство",
+          "Nobel Distribution — дистрибуция",
+          "Aris и Semey — проекты в реализации",
+          "Акча — логистический проект",
+          "Торговый дом в Афганистане — в процессе",
+        ]}
         background="var(--ng-void)"
       />
 
-      <MegaStats
-        items={[
-          { n: "17+", l: "Лет на рынке" },
-          { n: "5", l: "Компаний холдинга" },
-          { n: "12", l: "Регионов покрытия" },
-          { n: "2", l: "Завода за рубежом" },
-        ]}
-      />
       <CompanyJourney />
       <QuoteBand
-        quote="Мы строим надёжную FMCG-платформу в Центральной Азии — от производства и импорта до полки и HoReCa."
+        quote="Наша задача — создавать эффективную цепочку от производства и международной закупки продуктов питания до их своевременной доставки и реализации потребителю."
         author="Nobel Group"
-        role="Позиционирование группы"
+        role="Стратегическое направление"
       />
       <SectionDivider mark="diamond" />
     </PageLayout>

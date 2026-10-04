@@ -5,7 +5,6 @@ import { PageHero } from "../components/PageHero";
 import {
   SectionDivider,
   QuoteBand,
-  MegaStats,
   IbmGrid,
   LogisticsMesh,
 } from "../components/BrandDecor";
@@ -36,20 +35,11 @@ export function GeographyPage() {
     <PageLayout>
       <PageHero
         eyebrow="ГЕОГРАФИЯ ПРИСУТСТВИЯ"
-        title="Сеть, которая"
-        titleAccent="покрывает Узбекистан."
-        subtitle="Интерактивная карта и региональная модель поставок — от ташкентского хаба до ключевых городов и направлений по всей стране."
+        title="Узбекистан — рынок."
+        titleAccent="Проекты — со статусом."
+        subtitle="Основной операционный рынок — Узбекистан. Казахстан показан как проекты Aris и Semey. Точки без подтверждения не обозначаются как действующие предприятия."
         crumbs={[{ label: "География" }]}
         visual="geography"
-      />
-
-      <MegaStats
-        items={[
-          { n: "7+", l: "Регионов охвата" },
-          { n: "13", l: "Городов на карте" },
-          { n: "1", l: "Центральный хаб" },
-          { n: "24/7", l: "Логистическая связность" },
-        ]}
       />
 
       <section

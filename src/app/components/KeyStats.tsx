@@ -38,6 +38,7 @@ export function KeyStats() {
   const ks = data.keyStats;
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  if (!ks.items.length) return null;
 
   return (
     <section

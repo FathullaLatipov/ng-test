@@ -41,12 +41,12 @@ export function CareersSection() {
                 </motion.div>
               ))}
             </div>
-            <motion.div initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.5 }}
+            {careers.teamImage ? <motion.div initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.5 }}
               style={{ height: 210, overflow: "hidden", position: "relative", border: "1px solid rgba(255,255,255,0.08)" }}>
               <div style={{ width: "100%", height: "100%", backgroundImage: `url(${careers.teamImage})`, backgroundSize: "cover", backgroundPosition: "center top", filter: "brightness(0.45) saturate(0.6)" }} />
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(13,13,13,0.6), transparent)" }} />
               <div style={{ position: "absolute", bottom: 18, left: 22, color: "#FFFFFF", fontSize: 13, fontWeight: 600 }}>{careers.teamCaption}</div>
-            </motion.div>
+            </motion.div> : null}
           </div>
 
           {/* Right: Openings */}
@@ -56,6 +56,11 @@ export function CareersSection() {
               {careers.rolesHeading}
             </motion.div>
             <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 28 }}>
+              {roles.length === 0 && (
+                <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 14, lineHeight: 1.7, margin: 0 }}>
+                  Открытых вакансий сейчас нет. Актуальный список появится после подтверждения HR. Можно отправить резюме заранее.
+                </p>
+              )}
               {roles.map((role, i) => (
                 <motion.div key={role.id} initial={{ opacity: 0, x: 20 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.35 + i * 0.08 }}
                   style={{ background: "#111111", border: "1px solid rgba(255,255,255,0.07)", padding: "18px 22px", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" }}

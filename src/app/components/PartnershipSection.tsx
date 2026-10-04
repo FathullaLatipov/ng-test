@@ -3,6 +3,8 @@ import { motion, useInView } from "motion/react";
 import { GoldCheck } from "./BrandIcons";
 import { LogisticsMesh, IbmGrid } from "./BrandDecor";
 import { useCms } from "../cms/store";
+import { submitLead } from "../lib/submitLead";
+import { Link } from "react-router";
 import type { AudienceItem } from "../cms/types";
 
 function AudienceCard({ aud, index, inView }: { aud: AudienceItem; index: number; inView: boolean }) {
@@ -61,14 +63,17 @@ function AudienceCard({ aud, index, inView }: { aud: AudienceItem; index: number
 }
 
 function PartnerForm({ coopTypes }: { coopTypes: string[] }) {
-  const [sent, setSent] = useState(false);
+  const [sent, setSent] = useState("");
+  const [error, setError] = useState("");
   const [form, setForm] = useState({
     name: "",
     company: "",
-    country: "",
+    email: "",
+    phone: "",
+    product: "",
     type: coopTypes[0] ?? "",
-    contact: "",
     message: "",
+    consent: false,
   });
 
   if (sent) {
@@ -84,10 +89,8 @@ function PartnerForm({ coopTypes }: { coopTypes: string[] }) {
         }}
       >
         <div style={{ color: "#C9A24B", fontSize: 26, marginBottom: 14 }}>✦</div>
-        <div style={{ color: "#FFFFFF", fontSize: 20, fontWeight: 700, marginBottom: 10 }}>Заявка отправлена</div>
-        <p style={{ color: "var(--ng-muted-dark)", fontSize: 14, lineHeight: 1.7, margin: 0 }}>
-          Спасибо! Мы свяжемся с вами в течение 1–2 рабочих дней.
-        </p>
+        <div style={{ color: "#FFFFFF", fontSize: 20, fontWeight: 700, marginBottom: 10 }}>Заявка сохранена</div>
+        <p style={{ color: "var(--ng-muted-dark)", fontSize: 14, lineHeight: 1.7, margin: 0 }}>{sent}</p>
       </motion.div>
     );
   }
@@ -115,18 +118,36 @@ function PartnerForm({ coopTypes }: { coopTypes: string[] }) {
 
   return (
     <form
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
-        setSent(true);
+        setError("");
+        const result = await submitLead({
+          form: "partnership",
+          name: form.name,
+          company: form.company,
+          email: form.email,
+          phone: form.phone,
+          product: form.product,
+          type: form.type,
+          message: form.message,
+          consent: form.consent ? "yes" : "",
+        });
+        if (!result.ok) {
+          setError(result.message);
+          return;
+        }
+        setSent("Обращение записано. Ответственное подразделение свяжется по указанным контактам, когда канал доставки подключён к получателю.");
       }}
       style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}
       className="ng-grid-2"
     >
+      <input name="website" tabIndex={-1} autoComplete="off" style={{ display: "none" }} aria-hidden />
       {[
-        { key: "name", label: "Имя", placeholder: "Ваше имя", full: false },
-        { key: "company", label: "Компания", placeholder: "Название компании", full: false },
-        { key: "country", label: "Страна", placeholder: "Узбекистан", full: false },
-        { key: "contact", label: "Телефон / Email", placeholder: "+998 … или email", full: false },
+        { key: "name", label: "Имя", placeholder: "Ваше имя" },
+        { key: "company", label: "Компания", placeholder: "Название компании" },
+        { key: "email", label: "Email *", placeholder: "name@company.com" },
+        { key: "phone", label: "Телефон / WhatsApp", placeholder: "+998 …" },
+        { key: "product", label: "Продукт / направление", placeholder: "Например: масла, HoReCa" },
       ].map((f) => (
         <div key={f.key}>
           <label style={labelStyle}>{f.label.toUpperCase()}</label>
@@ -164,6 +185,11 @@ function PartnerForm({ coopTypes }: { coopTypes: string[] }) {
           style={{ ...fieldStyle, resize: "vertical" }}
         />
       </div>
+      <label style={{ gridColumn: "1 / -1", display: "flex", gap: 10, alignItems: "flex-start", color: "rgba(255,255,255,0.75)", fontSize: 13, lineHeight: 1.5 }}>
+        <input type="checkbox" required checked={form.consent} onChange={(e) => setForm((p) => ({ ...p, consent: e.target.checked }))} />
+        <span>Согласен на обработку данных согласно <Link to="/privacy" style={{ color: "#C9A24B" }}>политике конфиденциальности</Link>.</span>
+      </label>
+      {error && <p style={{ gridColumn: "1 / -1", color: "#E8A0A0", fontSize: 13, margin: 0 }}>{error}</p>}
       <div style={{ gridColumn: "1 / -1" }}>
         <button
           type="submit"

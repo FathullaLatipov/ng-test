@@ -9,6 +9,8 @@ export type CompanyItem = {
   number: string;
   name: string;
   description: string;
+  /** Тип сущности: компания, актив, проект */
+  entityType?: string;
   tags: string[];
   website: string;
   websiteLabel: string;
@@ -89,6 +91,7 @@ export type SectionHeader = {
 
 export type CmsData = {
   updatedAt: string;
+  contentVersion: number;
 
   homeHero: SectionHeader & {
     badge: string;

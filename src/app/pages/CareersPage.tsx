@@ -6,10 +6,11 @@ import { CareersSection } from "../components/CareersSection";
 import {
   SectionDivider,
   QuoteBand,
-  MegaStats,
   IbmGrid,
   LogisticsMesh,
 } from "../components/BrandDecor";
+import { submitLead } from "../lib/submitLead";
+import { Link } from "react-router";
 
 const DEPARTMENTS = [
   { title: "Продажи и торговля", desc: "Работа с ключевыми клиентами, оптовыми каналами и развитием портфеля." },
@@ -25,7 +26,9 @@ export function CareersPage() {
   const formRef = useRef<HTMLDivElement>(null);
   const deptInView = useInView(deptRef, { once: true, margin: "-80px" });
   const formInView = useInView(formRef, { once: true, margin: "-80px" });
-  const [sent, setSent] = useState(false);
+  const [sent, setSent] = useState("");
+  const [error, setError] = useState("");
+  const [fileName, setFileName] = useState("");
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -34,28 +37,21 @@ export function CareersPage() {
     city: "",
     experience: "",
     message: "",
+    consent: false,
   });
 
   return (
-    <PageLayout>
+    <PageLayout title="Карьера — Nobel Group" description="Карьера в Nobel Group: продажи, финансы, логистика, закупки, ВЭД, производство и управление.">
       <PageHero
         eyebrow="КАРЬЕРА"
-        title="Растите профессионально"
-        titleAccent="вместе с группой."
-        subtitle="Мы создаём возможности для специалистов в продажах, логистике, закупках, дистрибуции и управлении — с реальной ответственностью и долгосрочной перспективой."
+        title="Стройте карьеру"
+        titleAccent="вместе с Nobel Group."
+        subtitle="Мы ищем специалистов, готовых брать ответственность, развивать бизнес и расти вместе с группой. Возможности открываются в продажах, финансах, логистике, закупках, ВЭД, производстве и управлении."
         crumbs={[{ label: "Карьера" }]}
         visual="careers"
       />
 
       <CareersSection />
-
-      <MegaStats
-        items={[
-          { n: "6", l: "Направлений развития" },
-          { n: "14+", l: "Лет стабильного бизнеса" },
-          { n: "4", l: "Открытых вакансий" },
-        ]}
-      />
 
       <section
         ref={deptRef}
@@ -152,19 +148,32 @@ export function CareersPage() {
               }}
             >
               <div style={{ color: "#C9A24B", fontSize: 28, marginBottom: 16 }}>✦</div>
-              <div style={{ color: "#FFFFFF", fontSize: 20, fontWeight: 700, marginBottom: 10 }}>Резюме получено</div>
-              <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 14, lineHeight: 1.7, margin: 0 }}>
-                Спасибо за интерес к Nobel Group. Мы свяжемся с вами, когда появится подходящая вакансия.
-              </p>
+              <div style={{ color: "#FFFFFF", fontSize: 20, fontWeight: 700, marginBottom: 10 }}>Резюме принято к передаче</div>
+              <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 14, lineHeight: 1.7, margin: 0 }}>{sent}</p>
             </motion.div>
           ) : (
             <motion.form
               initial={{ opacity: 0, y: 20 }}
               animate={formInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.25 }}
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
-                setSent(true);
+                setError("");
+                const result = await submitLead({
+                  form: "career",
+                  name: form.name,
+                  phone: form.phone,
+                  email: form.email,
+                  topic: form.role,
+                  message: `${form.city}\n${form.experience}\n${form.message}`,
+                  fileName,
+                  consent: form.consent ? "yes" : "",
+                });
+                if (!result.ok) {
+                  setError(result.message);
+                  return;
+                }
+                setSent("Данные резюме записаны. Файл хранится у HR только после подключения официального канала приёма.");
               }}
               style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}
             >
@@ -224,6 +233,33 @@ export function CareersPage() {
                 />
               </div>
               <div style={{ gridColumn: "1 / -1" }}>
+                <label style={{ display: "block", color: "rgba(255,255,255,0.6)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", marginBottom: 8 }}>
+                  РЕЗЮМЕ PDF / DOCX, ДО 5 МБ
+                </label>
+                <input
+                  type="file"
+                  accept=".pdf,.doc,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    if (file.size > 5 * 1024 * 1024) {
+                      setError("Файл больше 5 МБ.");
+                      e.target.value = "";
+                      setFileName("");
+                      return;
+                    }
+                    setError("");
+                    setFileName(file.name);
+                  }}
+                  style={{ color: "rgba(255,255,255,0.8)", fontSize: 13 }}
+                />
+              </div>
+              <label style={{ gridColumn: "1 / -1", display: "flex", gap: 10, color: "rgba(255,255,255,0.75)", fontSize: 13, lineHeight: 1.5 }}>
+                <input type="checkbox" required checked={form.consent} onChange={(e) => setForm((p) => ({ ...p, consent: e.target.checked }))} />
+                <span>Согласен на обработку данных согласно <Link to="/privacy" style={{ color: "#C9A24B" }}>политике конфиденциальности</Link>.</span>
+              </label>
+              {error && <p style={{ gridColumn: "1 / -1", color: "#E8A0A0", fontSize: 13, margin: 0 }}>{error}</p>}
+              <div style={{ gridColumn: "1 / -1" }}>
                 <button
                   type="submit"
                   style={{
@@ -247,7 +283,7 @@ export function CareersPage() {
       </section>
 
       <QuoteBand
-        quote="Успех компании начинается с сильной команды. Мы даём ответственность, рост и стабильную платформу для развития."
+        quote="Ответственность, развитие и разнообразие направлений: торговля, производство, логистика, финансы и ВЭД."
         author="Nobel Group"
         role="Карьера"
       />

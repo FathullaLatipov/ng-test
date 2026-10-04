@@ -4,12 +4,9 @@ import { YEAR_ICONS } from "./BrandIcons";
 import { GiantNumber, GiantOutline, GiantWord, IbmGrid } from "./BrandDecor";
 
 const MILESTONES = [
-  { year: "2012" as const, title: "Основание компании",           desc: "Nobel Group основана в Ташкенте. Первоначальная деятельность — оптовые поставки продуктов питания.", tag: "Основание" },
-  { year: "2015" as const, title: "Региональное расширение",       desc: "Выход за пределы Ташкента на ключевые региональные рынки. Первые дистрибуторские соглашения.", tag: "Расширение" },
-  { year: "2018" as const, title: "Дистрибуционная инфраструктура", desc: "Запуск дистрибуционного подразделения с транспортным парком и складской сетью по всей стране.", tag: "Дистрибуция" },
-  { year: "2021" as const, title: "Развитие направления HoReCa",   desc: "Запуск специализированного HoReCa-подразделения. Индивидуальные модели сервиса для ресторанов и отелей.", tag: "HoReCa" },
-  { year: "2024" as const, title: "Расширение экосистемы",         desc: "Консолидация группы по четырём направлениям. Активное развитие портфеля брендов и международных партнёрств.", tag: "Рост" },
-  { year: "Будущее" as const, title: "Производственные инициативы", desc: "Стратегическое развитие производственных мощностей для увеличения добавленной стоимости.", tag: "Планы", future: true },
+  { year: "2009", title: "Начало бизнеса", desc: "Опорная дата начала бизнеса Nobel Group. Детали этапа публикуются после подтверждения учредителями.", tag: "Начало" },
+  { year: "2016", title: "EcoBorn", desc: "Запуск производственного направления EcoBorn.", tag: "Производство" },
+  { year: "2018", title: "Nobel Trade", desc: "Запуск торгово-дистрибуционного направления Nobel Trade.", tag: "Торговля" },
 ];
 
 function MilestoneCard({
@@ -22,7 +19,7 @@ function MilestoneCard({
   progress: number;
 }) {
   const [hovered, setHovered] = useState(false);
-  const YearIcon = YEAR_ICONS[m.year];
+  const YearIcon = YEAR_ICONS[m.year as keyof typeof YEAR_ICONS] ?? YEAR_ICONS["2018"];
   const threshold = i / Math.max(total - 1, 1);
   const active = progress >= threshold - 0.02;
 

@@ -25,7 +25,7 @@ function SectionLabel({ children, accent = false }: { children: string; accent?:
   );
 }
 
-export function BrandsPortfolio({ showCta = true }: { showCta?: boolean }) {
+export function BrandsPortfolio({ showCta = true, showCompanies = true }: { showCta?: boolean; showCompanies?: boolean }) {
   const { data } = useCms();
   const brands = data.brands;
   const companies = [...data.companies].filter((c) => c.published).sort((a, b) => a.order - b.order);
@@ -67,8 +67,8 @@ export function BrandsPortfolio({ showCta = true }: { showCta?: boolean }) {
         </div>
 
         {/* ── Компании группы (фирмы) ── */}
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }} style={{ marginBottom: 48 }}>
-          <SectionLabel accent>КОМПАНИИ ГРУППЫ</SectionLabel>
+        {showCompanies && <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }} style={{ marginBottom: 48 }}>
+          <SectionLabel accent>КОМПАНИИ И НАПРАВЛЕНИЯ</SectionLabel>
           <div className="ng-grid-companies" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
             {companies.map((c) => (
               <div
@@ -83,7 +83,8 @@ export function BrandsPortfolio({ showCta = true }: { showCta?: boolean }) {
                   boxSizing: "border-box",
                 }}
               >
-                <div style={{ color: "#FFFFFF", fontSize: 19, fontWeight: 800, marginBottom: 10 }}>{c.name}</div>
+                <div style={{ color: "#FFFFFF", fontSize: 19, fontWeight: 800, marginBottom: 8 }}>{c.name}</div>
+                {c.entityType && <div style={{ color: "#C9A24B", fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", marginBottom: 10 }}>{c.entityType.toUpperCase()}</div>}
                 <p style={{ color: "rgba(255,255,255,0.62)", fontSize: 12.5, lineHeight: 1.65, margin: 0, marginBottom: 14, flex: 1 }}>{c.description}</p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                   {c.tags.map((t) => (
@@ -93,7 +94,7 @@ export function BrandsPortfolio({ showCta = true }: { showCta?: boolean }) {
               </div>
             ))}
           </div>
-        </motion.div>
+        </motion.div>}
 
         {/* ── Бренды группы ── */}
         <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 }} style={{ marginBottom: exclusive.length ? 36 : 48 }}>
@@ -124,6 +125,12 @@ export function BrandsPortfolio({ showCta = true }: { showCta?: boolean }) {
             })}
           </div>
         </motion.div>
+
+        {exclusive.length === 0 && (
+          <p style={{ color: "rgba(255,255,255,0.62)", fontSize: 14, lineHeight: 1.7, margin: "0 0 36px" }}>
+            Партнёрские бренды не опубликованы: логотип добавляется только после проверки отношений и разрешения правообладателя.
+          </p>
+        )}
 
         {exclusive.length > 0 && (
           <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.36 }} style={{ marginBottom: 48 }}>
