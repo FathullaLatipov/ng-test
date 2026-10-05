@@ -9,6 +9,23 @@
    positioned elements once things get tight. */
 html, body { overflow-x: hidden; max-width: 100%; }
 
+/* Images never push past their container / the viewport. */
+img { max-width: 100%; }
+
+/* ─── Universal grid shrink safety ──────────────────────────────
+   A `1fr` track defaults to minmax(auto, 1fr): a long unbreakable
+   word forces its column wider than its share, which shows up as
+   uneven columns and right-edge clipping on narrow screens.
+   minmax(0, 1fr) on the tracks + min-width:0 on the items lets the
+   tracks shrink; overflow-wrap breaks over-long words instead of
+   overflowing. These selectors cover every shared grid class. */
+.ng-grid-2 > *, .ng-grid-3 > *, .ng-grid-4 > *, .ng-grid-5 > *,
+.ng-grid-cards2 > *, .ng-grid-stats > *, .ng-biz-mosaic > *,
+.ng-grid-companies > *, .ng-grid-brands > * {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
 /* ─── Section padding (big vertical rhythm sections) ────────── */
 @media (max-width: 1024px) {
   .ng-sec-pad { padding-top: 84px !important; padding-bottom: 84px !important; padding-left: 40px !important; padding-right: 40px !important; }
@@ -44,21 +61,36 @@ html, body { overflow-x: hidden; max-width: 100%; }
 /* ─── Grid collapses ─────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .ng-grid-2 { grid-template-columns: 1fr !important; gap: 40px !important; }
-  .ng-grid-3 { grid-template-columns: repeat(2, 1fr) !important; }
-  .ng-grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
-  .ng-grid-5 { grid-template-columns: repeat(3, 1fr) !important; }
+  .ng-grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .ng-grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .ng-grid-5 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
 }
 @media (max-width: 680px) {
   .ng-grid-2, .ng-grid-3, .ng-grid-4, .ng-grid-5 { grid-template-columns: 1fr !important; gap: 24px !important; }
 }
 
-/* Card grids (direction/trust/audience cards) — stay 2-up even on phones
-   instead of collapsing to 1 column, to cut down the scroll length. */
+/* Card grids — 2-up on tablet. On phones, compact stat strips
+   (.ng-grid-4.ng-grid-cards2 = KeyStats) stay 2-up, while text-heavy
+   card decks (.ng-grid-2/3.ng-grid-cards2 = WhyChooseUs, Partnerships)
+   drop to a single readable column. */
 @media (max-width: 1024px) {
-  .ng-grid-cards2 { grid-template-columns: repeat(2, 1fr) !important; }
+  .ng-grid-cards2 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
 }
 @media (max-width: 680px) {
-  .ng-grid-cards2 { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
+  .ng-grid-cards2 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; }
+  .ng-grid-cards2.ng-grid-2,
+  .ng-grid-cards2.ng-grid-3 { grid-template-columns: 1fr !important; gap: 16px !important; }
+}
+
+/* BrandsPortfolio: company cards (text, wide) collapse to 1 column on
+   phones; brand chips (compact) stay 2-up. */
+@media (max-width: 1024px) {
+  .ng-grid-companies { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .ng-grid-brands { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+@media (max-width: 680px) {
+  .ng-grid-companies { grid-template-columns: 1fr !important; }
+  .ng-grid-brands { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px !important; }
 }
 
 @media (max-width: 680px) {
@@ -79,7 +111,7 @@ html, body { overflow-x: hidden; max-width: 100%; }
 
 /* Stat strips stay 2-up even on phones (small cells, reads fine as 2x2) */
 @media (max-width: 1024px) {
-  .ng-grid-stats { grid-template-columns: repeat(2, 1fr) !important; }
+  .ng-grid-stats { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
   .ng-grid-stats > *:nth-child(3) { border-left: none !important; padding-left: 0 !important; }
 }
 @media (max-width: 680px) {
@@ -110,7 +142,7 @@ html, body { overflow-x: hidden; max-width: 100%; }
 @media (max-width: 1024px) {
   .ng-teaser-grid > div:nth-child(1) { order: 1 !important; }
   .ng-teaser-grid > div:nth-child(2) { order: 2 !important; margin-top: 8px; }
-  .ng-biz-mosaic { grid-template-columns: 1fr 1fr !important; }
+  .ng-biz-mosaic { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
   .ng-biz-mosaic > * { grid-column: span 1 !important; }
 }
 

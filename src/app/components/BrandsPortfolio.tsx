@@ -201,13 +201,6 @@ export function BrandsPortfolio({ showCta = true, showCompanies = true }: { show
           </motion.div>
         )}
       </div>
-
-      <style>{`
-        @media (max-width: 900px) {
-          .ng-grid-companies { grid-template-columns: 1fr !important; }
-          .ng-grid-brands { grid-template-columns: 1fr 1fr !important; }
-        }
-      `}</style>
     </section>
   );
 }
