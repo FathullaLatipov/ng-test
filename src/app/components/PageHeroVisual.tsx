@@ -170,12 +170,11 @@ function BusinessVisual() {
             </motion.text>
           </g>
         ))}
-        <motion.circle
+        <circle
           cx="180" cy="180" r="110" fill="none" stroke="rgba(213,162,81,0.15)"
           strokeWidth="1" strokeDasharray="4 8"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
-          style={{ transformOrigin: "180px 180px" }}
+          className="ng-eco-spin"
+          style={{ transformOrigin: "180px 180px", "--spin": "28s" } as React.CSSProperties}
         />
       </svg>
     </Frame>
@@ -194,29 +193,29 @@ function GeographyVisual() {
 function PartnershipVisual() {
   return (
     <Frame>
-      <motion.div
+      <div
         aria-hidden
-        animate={{ rotate: 360 }}
-        transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+        className="ng-eco-spin"
         style={{
           position: "absolute",
           width: "78%",
           height: "78%",
           borderRadius: "50%",
           border: "1px dashed rgba(213,162,81,0.22)",
-        }}
+          "--spin": "28s",
+        } as React.CSSProperties}
       />
-      <motion.div
+      <div
         aria-hidden
-        animate={{ rotate: -360 }}
-        transition={{ duration: 38, repeat: Infinity, ease: "linear" }}
+        className="ng-eco-spin-r"
         style={{
           position: "absolute",
           width: "62%",
           height: "62%",
           borderRadius: "50%",
           border: "1px solid rgba(213,162,81,0.16)",
-        }}
+          "--spin": "38s",
+        } as React.CSSProperties}
       />
       <motion.div
         aria-hidden
@@ -264,17 +263,17 @@ function PartnershipVisual() {
       </motion.div>
 
       {[0, 1, 2].map((i) => (
-        <motion.div
+        <div
           key={i}
           aria-hidden
-          animate={{ rotate: 360 }}
-          transition={{ duration: 10 + i * 4, repeat: Infinity, ease: "linear", delay: i * 0.4 }}
+          className="ng-eco-spin"
           style={{
             position: "absolute",
             width: `${70 - i * 8}%`,
             height: `${70 - i * 8}%`,
             pointerEvents: "none",
-          }}
+            "--spin": `${10 + i * 4}s`,
+          } as React.CSSProperties}
         >
           <div
             style={{
@@ -289,7 +288,7 @@ function PartnershipVisual() {
               boxShadow: "0 0 10px rgba(213,162,81,0.8)",
             }}
           />
-        </motion.div>
+        </div>
       ))}
     </Frame>
   );

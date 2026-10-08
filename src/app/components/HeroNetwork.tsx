@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { animate, motion, motionValue, useMotionValue, useSpring, useTransform } from "motion/react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { animate, motion, motionValue, useInView, useMotionValue, useSpring, useTransform } from "motion/react";
 
 /** Premium cinematic easing used throughout the sequence */
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -226,6 +226,12 @@ type Stage = "dark" | "emerge" | "hubs" | "routes" | "traffic" | "clusters" | "a
 export function HeroNetwork() {
   const [stage, setStage] = useState<Stage>("dark");
 
+  // Pause the heavy ambient loops while the hero is scrolled out of view,
+  // so ~100 continuous animations don't run on the main thread (competing
+  // with the rest of the page) once the user has scrolled past the hero.
+  const rootRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(rootRef, { margin: "80px" });
+
   const ambientGlow = useMemo(() => motionValue(0), []);
 
   const meshPoints = useMemo(
@@ -382,7 +388,7 @@ export function HeroNetwork() {
 
   // Goods travelling through the supply chain — smooth accel/decel, infinite loop
   useEffect(() => {
-    if (stage !== "traffic" && stage !== "clusters" && stage !== "alive") return;
+    if (!inView || (stage !== "traffic" && stage !== "clusters" && stage !== "alive")) return;
     const controls = ROUTE_EDGES.flatMap((r, i) => {
       const ca = CITIES[r.a];
       const cb = CITIES[r.b];
@@ -401,32 +407,32 @@ export function HeroNetwork() {
       ];
     });
     return () => controls.forEach((c) => c.stop());
-  }, [stage]);
+  }, [stage, inView]);
 
   // Warehouse / partner clusters breathing gently, like a living ecosystem
   useEffect(() => {
-    if (stage !== "alive") return;
+    if (!inView || stage !== "alive") return;
     const controls = WAREHOUSES.map((_, i) => {
       const dur = 4.5 + hash(i * 6.6 + 80) * 2.6;
       return animate(warehousePoints[i].scale, [1, 1.22, 1], { duration: dur, delay: hash(i * 8.8 + 81) * dur, repeat: Infinity, ease: "easeInOut" });
     });
     return () => controls.forEach((c) => c.stop());
-  }, [stage]);
+  }, [stage, inView]);
 
   // Activity subtly shifting between regions — hubs take turns glowing
   useEffect(() => {
-    if (stage !== "alive") return;
+    if (!inView || stage !== "alive") return;
     const cycle = 8 * CITIES.length;
     const controls = CITIES.map((c, i) => {
       const peak = 0.75;
       return animate(cityGlow[i], [cityGlow[i].get(), cityGlow[i].get(), peak, cityGlow[i].get()], { duration: cycle, delay: i * 8, repeat: Infinity, ease: EASE });
     });
     return () => controls.forEach((c) => c.stop());
-  }, [stage]);
+  }, [stage, inView]);
 
   // New nodes occasionally appear and integrate into the network
   useEffect(() => {
-    if (stage !== "alive") return;
+    if (!inView || stage !== "alive") return;
     const controls = RESERVE_IDX.map((idx, k) => {
       const dur = 5 + hash(idx * 3.3 + 12) * 4;
       const cyc = dur + 14 + hash(idx * 5.1 + 13) * 20;
@@ -436,11 +442,12 @@ export function HeroNetwork() {
       ];
     }).flat();
     return () => controls.forEach((c) => c.stop());
-  }, [stage]);
+  }, [stage, inView]);
 
   return (
     <div
       aria-hidden
+      ref={rootRef}
       style={{
         position: "absolute",
         inset: 0,

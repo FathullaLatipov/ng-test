@@ -102,6 +102,30 @@ html { scroll-behavior: smooth; font-family: 'Manrope', sans-serif; }
   100% { left: 140%; }
 }
 
+/* ─── Ecosystem diagram — CSS-driven continuous loops ─────────────
+   These run as compositor-owned CSS animations instead of JS/WAAPI
+   loops. Framer hands infinite transform/opacity loops to the browser
+   compositor, which can silently drop them until a scroll forces a
+   repaint — the cause of the "animation plays once, then only moves
+   while scrolling" report. CSS animations keep ticking reliably and
+   cost far less than ~20 framer motion loops.
+   Duration is supplied per element via the --spin custom property. */
+@keyframes ng-spin      { to { transform: rotate(360deg); } }
+@keyframes ng-spin-rev  { to { transform: rotate(-360deg); } }
+@keyframes ng-spin-c    { from { transform: translate(-50%, -50%) rotate(0deg); }
+                          to   { transform: translate(-50%, -50%) rotate(360deg); } }
+@keyframes ng-halo      { 0%, 100% { opacity: 0.25; transform: scale(1); }
+                          50%      { opacity: 0.5;  transform: scale(1.08); } }
+@keyframes ng-dashflow  { to { stroke-dashoffset: -18; } }
+@keyframes ng-fade-in   { from { opacity: 0; } to { opacity: 1; } }
+
+.ng-eco-spin      { animation: ng-spin var(--spin, 40s) linear infinite, ng-fade-in 0.8s ease both; will-change: transform; }
+.ng-eco-spin-r    { animation: ng-spin-rev var(--spin, 40s) linear infinite, ng-fade-in 0.8s ease both; will-change: transform; }
+.ng-eco-core-ring { animation: ng-spin-c 14s linear infinite, ng-fade-in 0.8s ease both; will-change: transform; }
+.ng-eco-float     { animation: grid-float 4.5s ease-in-out infinite; will-change: transform; }
+.ng-eco-halo      { animation: ng-halo 3.2s ease-in-out infinite; will-change: opacity, transform; }
+.ng-eco-flow      { animation: ng-dashflow 1.6s linear infinite; }
+
 /* ─── Section eyebrow labels — enlarge site-wide (11px → 15px) ─── */
 /* Matches the small tracked gold section labels (font-size 11px + wide letter-spacing),
    without touching nav links, badges or corner captions. */

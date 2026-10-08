@@ -38,18 +38,10 @@ function NodeDot({ cap, inView, delay, floatDelay }: { cap: typeof CAP_NODES[0];
       onMouseLeave={() => setHovered(false)}
       style={{ position: "absolute", left: `${cap.x}%`, top: `${cap.y}%`, x: "-50%", y: "-50%", width: 58, height: 58, cursor: "default", zIndex: 3 }}
     >
-      {/* gentle floating wrapper */}
-      <motion.div
-        animate={inView ? { y: [0, -6, 0] } : {}}
-        transition={{ duration: 4.5, delay: floatDelay, repeat: Infinity, ease: "easeInOut" }}
-        style={{ position: "relative", width: 58, height: 58 }}
-      >
-        {/* soft glow halo */}
-        <motion.div
-          animate={{ opacity: hovered ? 0.9 : [0.25, 0.5, 0.25], scale: hovered ? 1.15 : [1, 1.08, 1] }}
-          transition={hovered ? { duration: 0.3 } : { duration: 3.2, delay: floatDelay, repeat: Infinity, ease: "easeInOut" }}
-          style={{ position: "absolute", inset: -6, borderRadius: 16, background: "radial-gradient(circle, rgba(213,162,81,0.38), transparent 70%)", pointerEvents: "none" }}
-        />
+      {/* gentle floating wrapper — CSS loop (compositor-reliable) */}
+      <div className="ng-eco-float" style={{ position: "relative", width: 58, height: 58, animationDelay: `${floatDelay}s` }}>
+        {/* soft glow halo — CSS loop */}
+        <div className="ng-eco-halo" style={{ position: "absolute", inset: -6, borderRadius: 16, background: "radial-gradient(circle, rgba(213,162,81,0.38), transparent 70%)", pointerEvents: "none", animationDelay: `${floatDelay}s` }} />
         <motion.div
           animate={{ borderColor: hovered ? "rgba(232,201,122,0.85)" : "rgba(213,162,81,0.35)", background: hovered ? "rgba(213,162,81,0.12)" : "rgba(18,17,15,0.92)", boxShadow: hovered ? "0 0 22px rgba(213,162,81,0.4)" : "0 6px 18px rgba(0,0,0,0.4)" }}
           transition={{ duration: 0.3 }}
@@ -59,7 +51,7 @@ function NodeDot({ cap, inView, delay, floatDelay }: { cap: typeof CAP_NODES[0];
             <path d={CAP_ICONS[cap.id] || ""} />
           </svg>
         </motion.div>
-      </motion.div>
+      </div>
       <div style={{ position: "absolute", top: "calc(100% + 8px)", left: "50%", transform: "translateX(-50%)", width: 100, textAlign: "center", color: hovered ? "#FFFFFF" : "rgba(255,255,255,0.78)", fontSize: 10, fontWeight: 600, lineHeight: 1.35, whiteSpace: "pre-line", transition: "color 0.3s" }}>
         {cap.label}
       </div>
@@ -174,30 +166,19 @@ export function AboutGroup() {
             <motion.div initial={{ opacity: 0, scale: 0.85 }} animate={inView ? { opacity: 1, scale: 1 } : {}} transition={{ delay: 0.5, duration: 0.6 }}
               style={{ position: "absolute", inset: "16%", borderRadius: "50%", border: "1px solid rgba(213,162,81,0.06)" }} />
 
-            {/* radar sweep */}
-            <motion.div
-              initial={{ opacity: 0 }} animate={inView ? { opacity: 1, rotate: 360 } : {}}
-              transition={{ opacity: { delay: 0.6, duration: 1 }, rotate: { duration: 9, repeat: Infinity, ease: "linear" } }}
-              style={{ position: "absolute", inset: "2%", borderRadius: "50%", background: "conic-gradient(from 0deg, rgba(232,201,122,0.20), rgba(213,162,81,0.04) 40deg, transparent 90deg)", WebkitMaskImage: "radial-gradient(circle, #000 34%, transparent 70%)", maskImage: "radial-gradient(circle, #000 34%, transparent 70%)", pointerEvents: "none" }} />
+            {/* radar sweep — CSS loop */}
+            <div className="ng-eco-spin" style={{ "--spin": "9s", position: "absolute", inset: "2%", borderRadius: "50%", background: "conic-gradient(from 0deg, rgba(232,201,122,0.20), rgba(213,162,81,0.04) 40deg, transparent 90deg)", WebkitMaskImage: "radial-gradient(circle, #000 34%, transparent 70%)", maskImage: "radial-gradient(circle, #000 34%, transparent 70%)", pointerEvents: "none" } as React.CSSProperties} />
 
-            {/* counter-rotating dashed rings */}
-            <motion.div
-              initial={{ opacity: 0 }} animate={inView ? { opacity: 1, rotate: 360 } : {}}
-              transition={{ opacity: { delay: 0.4, duration: 0.8 }, rotate: { duration: 60, repeat: Infinity, ease: "linear" } }}
-              style={{ position: "absolute", inset: "0%", borderRadius: "50%", border: "1px dashed rgba(213,162,81,0.16)" }} />
-            <motion.div
-              initial={{ opacity: 0 }} animate={inView ? { opacity: 1, rotate: -360 } : {}}
-              transition={{ opacity: { delay: 0.5, duration: 0.8 }, rotate: { duration: 45, repeat: Infinity, ease: "linear" } }}
-              style={{ position: "absolute", inset: "10%", borderRadius: "50%", border: "1px dashed rgba(213,162,81,0.10)" }} />
+            {/* counter-rotating dashed rings — CSS loops */}
+            <div className="ng-eco-spin" style={{ "--spin": "60s", position: "absolute", inset: "0%", borderRadius: "50%", border: "1px dashed rgba(213,162,81,0.16)" } as React.CSSProperties} />
+            <div className="ng-eco-spin-r" style={{ "--spin": "45s", position: "absolute", inset: "10%", borderRadius: "50%", border: "1px dashed rgba(213,162,81,0.10)" } as React.CSSProperties} />
 
-            {/* orbiting satellites */}
+            {/* orbiting satellites — CSS loops */}
             {[0, 1, 2].map((k) => (
-              <motion.div key={k}
-                initial={{ opacity: 0 }} animate={inView ? { opacity: 1, rotate: k % 2 === 0 ? 360 : -360 } : {}}
-                transition={{ opacity: { delay: 0.6 }, rotate: { duration: 18 + k * 7, repeat: Infinity, ease: "linear" } }}
-                style={{ position: "absolute", inset: `${4 + k * 6}%`, pointerEvents: "none" }}>
+              <div key={k} className={k % 2 === 0 ? "ng-eco-spin" : "ng-eco-spin-r"}
+                style={{ "--spin": `${18 + k * 7}s`, position: "absolute", inset: `${4 + k * 6}%`, pointerEvents: "none" } as React.CSSProperties}>
                 <div style={{ position: "absolute", top: -2.5, left: "50%", width: 5, height: 5, borderRadius: "50%", background: "#D5A251", marginLeft: -2.5, boxShadow: "0 0 8px rgba(213,162,81,0.8)" }} />
-              </motion.div>
+              </div>
             ))}
 
             <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", overflow: "visible" }} viewBox="0 0 100 100">
@@ -256,10 +237,8 @@ export function AboutGroup() {
               {inView && PERIMETER.map(([a, b], i) => {
                 const pa = CAP_NODES[a], pb = CAP_NODES[b];
                 return (
-                  <motion.line key={`flow-${i}`} x1={pa.x} y1={pa.y} x2={pb.x} y2={pb.y}
+                  <line key={`flow-${i}`} className="ng-eco-flow" x1={pa.x} y1={pa.y} x2={pb.x} y2={pb.y}
                     stroke="url(#ngEdgeFlow)" strokeWidth="0.7" strokeLinecap="round" strokeDasharray="3 6"
-                    animate={{ strokeDashoffset: [0, -18] }}
-                    transition={{ duration: 1.6, repeat: Infinity, ease: "linear" }}
                   />
                 );
               })}
@@ -275,11 +254,9 @@ export function AboutGroup() {
               ))}
             </svg>
 
-            {/* rotating gradient ring hugging the core */}
-            <motion.div
-              initial={{ opacity: 0 }} animate={inView ? { opacity: 1, rotate: 360 } : {}}
-              transition={{ opacity: { delay: 0.5, duration: 0.8 }, rotate: { duration: 14, repeat: Infinity, ease: "linear" } }}
-              style={{ position: "absolute", left: "50%", top: "50%", x: "-50%", y: "-50%", width: 150, height: 150, borderRadius: "50%", background: "conic-gradient(from 0deg, transparent, rgba(213,162,81,0.55) 90deg, transparent 180deg)", WebkitMaskImage: "radial-gradient(circle, transparent 58%, #000 60%, #000 70%, transparent 72%)", maskImage: "radial-gradient(circle, transparent 58%, #000 60%, #000 70%, transparent 72%)", zIndex: 1, pointerEvents: "none" }} />
+            {/* rotating gradient ring hugging the core — CSS loop */}
+            <div className="ng-eco-core-ring"
+              style={{ position: "absolute", left: "50%", top: "50%", width: 150, height: 150, borderRadius: "50%", background: "conic-gradient(from 0deg, transparent, rgba(213,162,81,0.55) 90deg, transparent 180deg)", WebkitMaskImage: "radial-gradient(circle, transparent 58%, #000 60%, #000 70%, transparent 72%)", maskImage: "radial-gradient(circle, transparent 58%, #000 60%, #000 70%, transparent 72%)", zIndex: 1, pointerEvents: "none" }} />
 
             <motion.div initial={{ opacity: 0, scale: 0.7 }} animate={inView ? { opacity: 1, scale: 1 } : {}} transition={{ delay: 0.5, duration: 0.55 }}
               style={{ position: "absolute", left: "50%", top: "50%", x: "-50%", y: "-50%", width: 116, height: 116, borderRadius: 16, background: "radial-gradient(120% 120% at 30% 20%, #3A2C14 0%, #1A1712 55%, #12110F 100%)", border: "1px solid rgba(232,201,122,0.7)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", zIndex: 2, animation: "glow-pulse 3s ease-in-out infinite", boxShadow: "0 0 40px rgba(213,162,81,0.22), inset 0 0 20px rgba(213,162,81,0.08)" }}>
