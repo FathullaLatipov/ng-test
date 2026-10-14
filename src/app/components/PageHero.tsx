@@ -43,7 +43,7 @@ export function PageHero({
       {bgVideoStart !== undefined && (
         <>
           <div style={{ position: "absolute", inset: 0, filter: "brightness(0.38) saturate(0.75)" }}>
-            <BgVideo start={bgVideoStart} />
+            <BgVideo start={bgVideoStart} poster={`/video/poster-${bgVideoStart}.jpg`} />
           </div>
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(10,9,8,0.94) 0%, rgba(10,9,8,0.72) 45%, rgba(10,9,8,0.5) 100%)" }} />
         </>

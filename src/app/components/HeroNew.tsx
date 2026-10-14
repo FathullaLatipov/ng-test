@@ -36,7 +36,7 @@ export function HeroNew() {
           y: photoY,
         }}
       >
-        <BgVideo start={1} />
+        <BgVideo start={1} poster="/video/poster-1.jpg" />
       </motion.div>
       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(10,9,8,0.94) 0%, rgba(10,9,8,0.72) 42%, rgba(10,9,8,0.45) 70%, rgba(10,9,8,0.55) 100%)" }} />
       <IbmGrid opacity={0.05} />
