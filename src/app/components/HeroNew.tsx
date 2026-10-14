@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { Link } from "react-router";
 import { HeroNetwork } from "./HeroNetwork";
 import { IbmGrid } from "./BrandDecor";
+import { BgVideo } from "./BgVideo";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { useCms } from "../cms/store";
 
@@ -34,7 +35,9 @@ export function HeroNew() {
           filter: "brightness(0.38) saturate(0.75)",
           y: photoY,
         }}
-      />
+      >
+        <BgVideo start={1} />
+      </motion.div>
       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(10,9,8,0.94) 0%, rgba(10,9,8,0.72) 42%, rgba(10,9,8,0.45) 70%, rgba(10,9,8,0.55) 100%)" }} />
       <IbmGrid opacity={0.05} />
       <div style={{ position: "absolute", inset: 0, zIndex: 2, background: "radial-gradient(ellipse at 78% 46%, rgba(199,155,74,0.12) 0%, transparent 58%)", pointerEvents: "none" }} />

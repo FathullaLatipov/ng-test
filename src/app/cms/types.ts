@@ -49,6 +49,19 @@ export type DirectionItem = {
 export type JibHistoryItem = { id: string; year: string; title: string; desc: string; order: number };
 export type JibProduct = { id: string; name: string; note: string; img: string; order: number };
 
+export type MilestoneItem = {
+  id: string;
+  /** Год — по нему сортируется таймлайн и считается «N лет» */
+  year: string;
+  title: string;
+  desc: string;
+  /** Короткие факты-чипы под описанием */
+  points?: string[];
+  tag: string;
+  order: number;
+  published: boolean;
+};
+
 export type BrandItem = {
   id: string;
   name: string;
@@ -160,6 +173,8 @@ export type CmsData = {
     footerBlurb: string;
     copyright: string;
   };
+
+  milestones: MilestoneItem[];
 
   companiesHero: SectionHeader & { lead: string };
   companies: CompanyItem[];

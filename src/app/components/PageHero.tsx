@@ -1,24 +1,31 @@
 import { motion } from "motion/react";
 import { Link } from "react-router";
 import { IbmGrid, LogisticsMesh } from "./BrandDecor";
+import { BgVideo } from "./BgVideo";
 import { PageHeroVisual, type HeroVisualKind } from "./PageHeroVisual";
 
 type PageHeroProps = {
   eyebrow: string;
   title: string;
   titleAccent?: string;
+  /** Третья строка заголовка (белая), после акцентной */
+  titleTail?: string;
   subtitle: string;
   crumbs?: { label: string; to?: string }[];
   visual?: HeroVisualKind;
+  /** If set, shows the background video starting from this second */
+  bgVideoStart?: number;
 };
 
 export function PageHero({
   eyebrow,
   title,
   titleAccent,
+  titleTail,
   subtitle,
   crumbs = [],
   visual,
+  bgVideoStart,
 }: PageHeroProps) {
   return (
     <section
@@ -33,6 +40,14 @@ export function PageHero({
         background: "linear-gradient(125deg, #0A0908 0%, #12100C 42%, #1A1510 78%, #0A0908 100%)",
       }}
     >
+      {bgVideoStart !== undefined && (
+        <>
+          <div style={{ position: "absolute", inset: 0, filter: "brightness(0.38) saturate(0.75)" }}>
+            <BgVideo start={bgVideoStart} />
+          </div>
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(10,9,8,0.94) 0%, rgba(10,9,8,0.72) 45%, rgba(10,9,8,0.5) 100%)" }} />
+        </>
+      )}
       <IbmGrid opacity={0.05} />
       <LogisticsMesh opacity={0.1} />
       <div
@@ -148,6 +163,12 @@ export function PageHero({
               <>
                 <br />
                 <span style={{ color: "#C9A24B" }}>{titleAccent}</span>
+              </>
+            )}
+            {titleTail && (
+              <>
+                <br />
+                {titleTail}
               </>
             )}
           </motion.h1>

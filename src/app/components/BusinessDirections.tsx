@@ -20,7 +20,7 @@ function DirectionPhotoCard({
   const to = dir.detailTo || `/business#${dir.id}`;
 
   return (
-    <Link to={to} style={{ display: "block", textDecoration: "none", color: "inherit" }}>
+    <Link to={to} style={{ display: "flex", flexDirection: "column", flex: 1, textDecoration: "none", color: "inherit" }}>
     <motion.div
       initial={{ opacity: 0, y: 36 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -30,6 +30,7 @@ function DirectionPhotoCard({
       id={dir.id}
       style={{
         position: "relative",
+        flex: 1,
         minHeight: featured ? 360 : 300,
         overflow: "hidden",
         border: hovered ? "1px solid rgba(213,162,81,0.45)" : "1px solid rgba(255,255,255,0.08)",
@@ -140,6 +141,7 @@ export function BusinessDirections({
           style={{
             display: "grid",
             gridTemplateColumns: items.length === 4 ? "1fr 1fr" : "repeat(6, 1fr)",
+            gridAutoRows: "1fr",
             gap: 16,
           }}
         >
@@ -150,7 +152,7 @@ export function BusinessDirections({
             else if (items.length === 5 && i === 3) gridColumn = "2 / span 2";
             else if (items.length === 5 && i === 4) gridColumn = "4 / span 2";
             return (
-              <div key={dir.id} style={{ gridColumn }}>
+              <div key={dir.id} style={{ gridColumn, display: "flex" }}>
                 <DirectionPhotoCard dir={dir} index={i} inView={inView} featured={items.length === 4} />
               </div>
             );

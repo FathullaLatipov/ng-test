@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
-import { GiantNumber, GiantOutline, GiantWord, IbmGrid, LogisticsMesh } from "./BrandDecor";
+import { GiantOutline, GiantWord, IbmGrid, LogisticsMesh } from "./BrandDecor";
 import { GeographyMap } from "./GeographyMap";
 import { useCms } from "../cms/store";
 
@@ -48,6 +48,9 @@ function Flag({ code, size = 22 }: { code: string; size?: number }) {
   }
 }
 
+/** Подписи из ранее сохранённого CMS могут быть на английском — показываем по-русски */
+const LABEL_RU: Record<string, string> = { operating: "Действующий рынок", project: "Проект" };
+
 export function GeographyNew() {
   const { data } = useCms();
   const geo = data.geography;
@@ -58,7 +61,6 @@ export function GeographyNew() {
     <section id="geography" className="ng-sec-pad" style={{ background: "var(--ng-charcoal)", padding: "110px 80px", position: "relative", overflow: "hidden" }}>
       <IbmGrid opacity={0.02} />
       <LogisticsMesh opacity={0.06} />
-      <div className="ng-decor"><GiantNumber n="06" /></div>
       <div className="ng-decor"><GiantWord word="UZBEKISTAN" side="left" /></div>
       <div className="ng-decor"><GiantOutline kind="truck" side="right" size={280} /></div>
       <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(ellipse at 50% 60%, rgba(213,162,81,0.06) 0%, transparent 60%)", pointerEvents: "none" }} />
@@ -101,7 +103,7 @@ export function GeographyNew() {
             {geo.rows.map((item, i) => (
               <motion.div key={item.id} initial={{ opacity: 0, x: -12 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.5 + i * 0.08 }}
                 style={{ display: "flex", justifyContent: "space-between", padding: "12px 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                <span style={{ color: "rgba(201,162,75,0.9)", fontSize: 12, fontWeight: 500 }}>{item.label}</span>
+                <span style={{ color: "rgba(201,162,75,0.9)", fontSize: 12, fontWeight: 500 }}>{LABEL_RU[item.label.trim().toLowerCase()] || item.label}</span>
                 <span style={{ color: "#FFFFFF", fontSize: 12, fontWeight: 600 }}>{item.value}</span>
               </motion.div>
             ))}
@@ -110,11 +112,11 @@ export function GeographyNew() {
               style={{ marginTop: 24, display: "flex", flexDirection: "column", gap: 8 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#C9A24B", boxShadow: "0 0 6px rgba(201,162,75,0.5)" }} />
-                <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 11 }}>Operating — действующий рынок</span>
+                <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 11 }}>Действующий рынок</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <div style={{ width: 7, height: 7, borderRadius: "50%", background: "rgba(201,162,75,0.7)" }} />
-                <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 11 }}>Project — проект в реализации</span>
+                <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 11 }}>Проект в реализации</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <div style={{ width: 20, height: 1, borderTop: "1px dashed rgba(201,162,75,0.4)" }} />

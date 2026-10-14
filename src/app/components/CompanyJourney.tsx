@@ -1,25 +1,32 @@
 import { useRef, useState } from "react";
 import { motion, useInView, useScroll, useTransform, useMotionValueEvent } from "motion/react";
-import { YEAR_ICONS } from "./BrandIcons";
+import { IconYearExpand, IconYearFoundation, IconYearGlobal, IconYearService, IconYearWarehouse } from "./BrandIcons";
+import { useCms } from "../cms/store";
+import type { MilestoneItem } from "../cms/types";
 import { GiantNumber, GiantOutline, GiantWord, IbmGrid } from "./BrandDecor";
 
-const MILESTONES = [
-  { year: "2009", title: "Начало бизнеса", desc: "Опорная дата начала бизнеса Nobel Group. Детали этапа публикуются после подтверждения учредителями.", tag: "Начало" },
-  { year: "2016", title: "EcoBorn", desc: "Запуск производственного направления EcoBorn.", tag: "Производство" },
-  { year: "2018", title: "Nobel Trade", desc: "Запуск торгово-дистрибуционного направления Nobel Trade.", tag: "Торговля" },
-];
+type Milestone = MilestoneItem;
+
+/** «17 ЛЕТ», «21 ГОД», «22 ГОДА» */
+function yearsLabel(n: number) {
+  const m10 = n % 10, m100 = n % 100;
+  const w = m10 === 1 && m100 !== 11 ? "ГОД" : m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? "ГОДА" : "ЛЕТ";
+  return `${n} ${w}`;
+}
+
+const ICON_CYCLE = [IconYearExpand, IconYearWarehouse, IconYearService, IconYearGlobal];
 
 function MilestoneCard({
   m, i, total, inView, progress,
 }: {
-  m: typeof MILESTONES[0];
+  m: Milestone;
   i: number;
   total: number;
   inView: boolean;
   progress: number;
 }) {
   const [hovered, setHovered] = useState(false);
-  const YearIcon = YEAR_ICONS[m.year as keyof typeof YEAR_ICONS] ?? YEAR_ICONS["2018"];
+  const YearIcon = i === 0 ? IconYearFoundation : ICON_CYCLE[(i - 1) % ICON_CYCLE.length];
   const threshold = i / Math.max(total - 1, 1);
   const active = progress >= threshold - 0.02;
 
@@ -35,19 +42,19 @@ function MilestoneCard({
     >
       <div style={{ textAlign: "right" }}>
         <span style={{
-          color: m.future ? "rgba(213,162,81,0.4)" : active ? "var(--ng-gold)" : "rgba(255,255,255,0.25)",
+          color: active ? "var(--ng-gold)" : "rgba(255,255,255,0.25)",
           fontSize: 22,
           fontWeight: 800,
           letterSpacing: "-0.02em",
           transition: "color 0.4s",
-          textShadow: active && !m.future ? "0 0 18px rgba(213,162,81,0.4)" : "none",
+          textShadow: active ? "0 0 18px rgba(213,162,81,0.4)" : "none",
         }}>
           {m.year}
         </span>
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative" }}>
-        {active && !m.future && (
+        {active && (
           <motion.div
             aria-hidden
             animate={{ opacity: [0.5, 0], scale: [0.85, 1.8] }}
@@ -60,7 +67,7 @@ function MilestoneCard({
             scale: hovered ? 1.15 : active ? 1 : 0.85,
             boxShadow: hovered
               ? "0 0 32px rgba(213,162,81,0.75)"
-              : active && !m.future
+              : active
               ? "0 0 24px rgba(213,162,81,0.55)"
               : "0 4px 12px rgba(0,0,0,0.3)",
           }}
@@ -73,7 +80,7 @@ function MilestoneCard({
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            background: active && !m.future ? "linear-gradient(145deg, #2F2512, #1A1814)" : "var(--ng-void)",
+            background: active ? "linear-gradient(145deg, #2F2512, #1A1814)" : "var(--ng-void)",
             border: active || hovered ? "1.5px solid rgba(213,162,81,0.7)" : "1px solid rgba(255,255,255,0.12)",
             transition: "background 0.4s, border 0.4s",
           }}
@@ -93,9 +100,8 @@ function MilestoneCard({
         style={{
           background: active ? "var(--ng-elevated)" : "rgba(30,28,24,0.5)",
           border: "1px solid rgba(255,255,255,0.06)",
-          borderLeft: active && !m.future ? "3px solid #D5A251" : "3px solid rgba(213,162,81,0.2)",
+          borderLeft: active ? "3px solid #D5A251" : "3px solid rgba(213,162,81,0.2)",
           padding: "22px 26px",
-          opacity: m.future ? 0.65 : 1,
           position: "relative",
           overflow: "hidden",
         }}
@@ -106,13 +112,26 @@ function MilestoneCard({
             {m.tag.toUpperCase()}
           </div>
         </div>
-        <p style={{ color: "var(--ng-muted-dark)", fontSize: 14, fontWeight: 300, lineHeight: 1.75, margin: 0 }}>{m.desc}</p>
+        {m.desc && <p style={{ color: "var(--ng-muted-dark)", fontSize: 14, fontWeight: 300, lineHeight: 1.75, margin: 0 }}>{m.desc}</p>}
+        {!!m.points?.length && (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 14 }}>
+            {m.points.map((p) => (
+              <span key={p} style={{ border: "1px solid rgba(213,162,81,0.28)", background: "rgba(213,162,81,0.05)", color: "rgba(255,255,255,0.82)", fontSize: 11.5, fontWeight: 500, padding: "5px 11px" }}>{p}</span>
+            ))}
+          </div>
+        )}
       </motion.div>
     </motion.div>
   );
 }
 
 export function CompanyJourney() {
+  const { data } = useCms();
+  const milestones = [...data.milestones]
+    .filter((m) => m.published)
+    .sort((a, b) => (parseInt(a.year, 10) || 0) - (parseInt(b.year, 10) || 0) || a.order - b.order);
+  const firstYear = Math.min(...milestones.map((m) => parseInt(m.year, 10)).filter((y) => y > 0), new Date().getFullYear());
+  const years = Math.max(new Date().getFullYear() - firstYear, 1);
   const ref = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLElement>(null);
   const spineRef = useRef<HTMLDivElement>(null);
@@ -139,7 +158,7 @@ export function CompanyJourney() {
           </motion.div>
           <motion.h2 initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }}
             style={{ fontSize: "clamp(32px, 4vw, 56px)", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.03em", lineHeight: 1.05 }}>
-            12 ЛЕТ
+            {yearsLabel(years)}
             <br /><span className="text-gold-glow">УСТОЙЧИВОГО РОСТА.</span>
           </motion.h2>
         </div>
@@ -151,8 +170,8 @@ export function CompanyJourney() {
           </div>
 
           <div style={{ display: "flex", flexDirection: "column" }}>
-            {MILESTONES.map((m, i) => (
-              <MilestoneCard key={m.year} m={m} i={i} total={MILESTONES.length} inView={inView} progress={progress} />
+            {milestones.map((m, i) => (
+              <MilestoneCard key={m.id} m={m} i={i} total={milestones.length} inView={inView} progress={progress} />
             ))}
           </div>
         </div>

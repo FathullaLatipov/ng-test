@@ -1,3 +1,4 @@
+import { GeographyNew } from "../components/GeographyNew";
 import { motion } from "motion/react";
 import { Link } from "react-router";
 import { PageLayout } from "../components/PageLayout";
@@ -325,6 +326,8 @@ export function BusinessPage() {
           <InfoDirection dir={dir("logistics")} points={LOGISTICS_POINTS} img={dir("logistics")?.img} />
         </div>
       </section>
+
+      <GeographyNew />
 
       <section id="trade" className="ng-sec-pad" style={{ background: "var(--ng-charcoal)", padding: "100px 80px", position: "relative", overflow: "hidden", scrollMarginTop: 90 }}>
         <HoneycombPattern opacity={0.03} />

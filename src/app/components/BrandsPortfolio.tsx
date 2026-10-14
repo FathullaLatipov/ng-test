@@ -2,6 +2,57 @@ import { useRef } from "react";
 import { Link } from "react-router";
 import { motion, useInView } from "motion/react";
 import { useCms } from "../cms/store";
+import nobelTradeLogo from "../../assets/nobel-trade-logo.svg";
+import ecobornLogo from "../../assets/ecoborn-logo.svg";
+import nabilAsiaLogo from "../../assets/nabil_asia.jpg";
+
+/** Готовые логотипы по id компании; для остальных рисуется текстовый логотип из названия */
+/** `blend` — у файла чёрный фон: растворяем его в фоне карточки (screen) */
+/** `withName` — в файле только знак, название дописывается рядом текстом */
+const COMPANY_LOGOS: Record<string, { src: string; bg?: string; withName?: boolean; blend?: boolean }> = {
+  "nobel-trade": { src: nobelTradeLogo },
+  ecoborn: { src: ecobornLogo, withName: true },
+  afghanistan: { src: nabilAsiaLogo, blend: true },
+};
+
+function CompanyLogoTile({ id, name, index }: { id: string; name: string; index: number }) {
+  const logo = COMPANY_LOGOS[id];
+  const words = name.trim().split(/\s+/);
+  return (
+    <div
+      className="ng-logo-tile"
+      title={name}
+      style={{
+        ["--bob" as string]: `${(index % 5) * -1.3}s`,
+        ...(logo?.bg ? { background: logo.bg } : {}),
+      }}
+    >
+      {logo?.withName ? (
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <img src={logo.src} alt="" loading="lazy" draggable={false} style={{ width: 56, height: "auto" }} />
+          <span style={{ color: "#FFFFFF", fontSize: 24, fontWeight: 800, letterSpacing: "-0.01em" }}>
+            Eco<span style={{ color: "#8FCD1E" }}>Born</span>
+          </span>
+        </div>
+      ) : logo ? (
+        <img src={logo.src} alt={name} loading="lazy" draggable={false} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain", ...(logo.blend ? { mixBlendMode: "screen" } : {}) }} />
+      ) : (
+        <div style={{ textAlign: "center", lineHeight: 1.1 }}>
+          <div style={{ color: "#FFFFFF", fontSize: words.length > 2 ? 15 : 22, fontWeight: 800, letterSpacing: "0.02em" }}>
+            {words.length > 1 ? (
+              <>
+                {words[0]} <span style={{ color: "#C9A24B" }}>{words.slice(1).join(" ")}</span>
+              </>
+            ) : (
+              name
+            )}
+          </div>
+          <div style={{ width: 28, height: 1, background: "#C9A24B", margin: "10px auto 0", opacity: 0.7 }} />
+        </div>
+      )}
+    </div>
+  );
+}
 
 function SectionLabel({ children, accent = false }: { children: string; accent?: boolean }) {
   return (
@@ -66,33 +117,28 @@ export function BrandsPortfolio({ showCta = true, showCompanies = true }: { show
           </motion.p>
         </div>
 
-        {/* ── Компании группы (фирмы) ── */}
+        {/* ── Компании группы (фирмы) — карусель логотипов ── */}
         {showCompanies && <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }} style={{ marginBottom: 48 }}>
           <SectionLabel accent>КОМПАНИИ И НАПРАВЛЕНИЯ</SectionLabel>
-          <div className="ng-grid-companies" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
-            {companies.map((c) => (
-              <div
-                key={c.id}
-                style={{
-                  background: "#111111",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  borderTop: "2px solid #C9A24B",
-                  padding: "22px 22px",
-                  display: "flex",
-                  flexDirection: "column",
-                  boxSizing: "border-box",
-                }}
-              >
-                <div style={{ color: "#FFFFFF", fontSize: 19, fontWeight: 800, marginBottom: 8 }}>{c.name}</div>
-                {c.entityType && <div style={{ color: "#C9A24B", fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", marginBottom: 10 }}>{c.entityType.toUpperCase()}</div>}
-                <p style={{ color: "rgba(255,255,255,0.62)", fontSize: 12.5, lineHeight: 1.65, margin: 0, marginBottom: 14, flex: 1 }}>{c.description}</p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                  {c.tags.map((t) => (
-                    <span key={t} style={{ border: "1px solid rgba(201,162,75,0.3)", color: "#C9A24B", fontSize: 10, fontWeight: 600, letterSpacing: "0.04em", padding: "4px 9px" }}>{t}</span>
+          <div
+            className="ng-logo-carousel"
+            style={{
+              overflow: "hidden",
+              maskImage: "linear-gradient(to right, transparent, #000 10%, #000 90%, transparent)",
+              WebkitMaskImage: "linear-gradient(to right, transparent, #000 10%, #000 90%, transparent)",
+              margin: "0 -14px",
+            }}
+          >
+            <div className="ng-logo-track" style={{ ["--logo-dur" as string]: `${Math.max(companies.length, 4) * 5}s` }}>
+              {[0, 1].map((copy) => (
+                <div key={copy} aria-hidden={copy === 1} style={{ display: "flex", gap: 18, paddingRight: 18 }}>
+                  {/* повторяем набор, чтобы одна половина трека всегда шире контейнера */}
+                  {[...companies, ...(companies.length < 5 ? companies : [])].map((c, i) => (
+                    <CompanyLogoTile key={`${c.id}-${i}`} id={c.id} name={c.name} index={i} />
                   ))}
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </motion.div>}
 

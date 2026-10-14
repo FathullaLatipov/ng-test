@@ -73,6 +73,7 @@ export function mergeCms(parsed: Partial<CmsData> | null | undefined): CmsData {
     companiesHero: { ...base.companiesHero, ...parsed.companiesHero },
     companies: parsed.companies?.length ? parsed.companies : base.companies,
     news: parsed.news?.length ? parsed.news : base.news,
+    milestones: parsed.milestones?.length ? parsed.milestones : base.milestones,
     jib: {
       ...base.jib,
       ...parsed.jib,

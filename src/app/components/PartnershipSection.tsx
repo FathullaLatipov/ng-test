@@ -251,13 +251,8 @@ export function PartnershipSection({ showForm = true }: { showForm?: boolean }) 
         </div>
 
         <div className="ng-grid-3 ng-grid-cards2" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
-          {audiences.slice(0, 3).map((aud, i) => (
+          {audiences.map((aud, i) => (
             <AudienceCard key={aud.id} aud={aud} index={i} inView={inView} />
-          ))}
-        </div>
-        <div className="ng-grid-2 ng-grid-cards2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginTop: 16, maxWidth: 920, marginLeft: "auto", marginRight: "auto" }}>
-          {audiences.slice(3).map((aud, i) => (
-            <AudienceCard key={aud.id} aud={aud} index={i + 3} inView={inView} />
           ))}
         </div>
       </div>

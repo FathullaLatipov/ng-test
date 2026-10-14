@@ -126,6 +126,41 @@ html { scroll-behavior: smooth; font-family: 'Manrope', sans-serif; }
 .ng-eco-halo      { animation: ng-halo 3.2s ease-in-out infinite; will-change: opacity, transform; }
 .ng-eco-flow      { animation: ng-dashflow 1.6s linear infinite; }
 
+/* Logo carousel (companies) — pure CSS loop, track holds two identical sets */
+@keyframes ng-logo-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes ng-logo-shine  { 0%, 55% { transform: translateX(-130%) skewX(-18deg); } 100% { transform: translateX(260%) skewX(-18deg); } }
+@keyframes ng-logo-bob    { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+.ng-logo-track { display: flex; width: max-content; padding: 14px 0; animation: ng-logo-scroll var(--logo-dur, 40s) linear infinite; will-change: transform; }
+.ng-logo-carousel:hover .ng-logo-track { animation-play-state: paused; }
+
+.ng-logo-tile {
+  position: relative; overflow: hidden; flex-shrink: 0; box-sizing: border-box;
+  width: 250px; height: 132px; display: flex; align-items: center; justify-content: center; padding: 16px 24px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.055) 0%, rgba(255,255,255,0.015) 55%, rgba(213,162,81,0.05) 100%), #121110;
+  border: 1px solid rgba(255,255,255,0.08); border-radius: 14px;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05);
+  transition: transform .5s cubic-bezier(.22,1,.36,1), border-color .4s, box-shadow .5s, opacity .4s, filter .4s;
+  animation: ng-logo-bob 6s ease-in-out infinite; animation-delay: var(--bob, 0s);
+}
+.ng-logo-tile::before { /* gold accent line grows on hover */
+  content: ""; position: absolute; top: 0; left: 50%; height: 2px; width: 28px; transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, #E8C97A, transparent); transition: width .5s cubic-bezier(.22,1,.36,1);
+}
+.ng-logo-tile::after { /* soft light sweep */
+  content: ""; position: absolute; inset: 0; width: 45%; pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,0.09), transparent);
+  animation: ng-logo-shine 7s ease-in-out infinite; animation-delay: var(--bob, 0s);
+}
+.ng-logo-tile > * { position: relative; z-index: 1; transition: transform .5s cubic-bezier(.22,1,.36,1); }
+.ng-logo-carousel:hover .ng-logo-tile { opacity: .45; filter: saturate(.7); }
+.ng-logo-carousel .ng-logo-tile:hover {
+  opacity: 1; filter: none; transform: translateY(-8px) scale(1.05); border-color: rgba(232,201,122,0.6);
+  box-shadow: 0 22px 44px rgba(0,0,0,0.5), 0 0 34px rgba(213,162,81,0.28), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.ng-logo-tile:hover::before { width: 70%; }
+.ng-logo-tile:hover > * { transform: scale(1.06); }
+@media (prefers-reduced-motion: reduce) { .ng-logo-tile, .ng-logo-tile::after { animation: none; } }
+
 /* ─── Section eyebrow labels — enlarge site-wide (11px → 15px) ─── */
 /* Matches the small tracked gold section labels (font-size 11px + wide letter-spacing),
    without touching nav links, badges or corner captions. */

@@ -2,16 +2,16 @@ import { useRef, useState } from "react";
 import { motion, useInView, useScroll, useTransform } from "motion/react";
 import { GoldCheck } from "./BrandIcons";
 import { GiantNumber, GiantOutline, IbmGrid, LogisticsMesh, DrawLine } from "./BrandDecor";
+import { Factory, Globe, Layers, Truck, UtensilsCrossed, Warehouse, type LucideIcon } from "lucide-react";
 import { useCms } from "../cms/store";
 
-/** Icon paths kept for CAP_NODES diagram only */
-const CAP_ICONS: Record<string, string> = {
-  trade: "M1 3h15v13H1zM16 8l4 2v6h-4z",
-  distribution: "M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z",
-  production: "M14.7 6.3a1 1 0 010 1.4l-8 8a1 1 0 01-.4.25l-3 1a1 1 0 01-1.25-1.25l1-3a1 1 0 01.25-.4l8-8a1 1 0 011.4 0z",
-  horeca: "M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z",
-  brand: "M22 7 13.5 15.5 8.5 10.5 2 17M16 7h6v6",
-  logistics: "M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18",
+const CAP_ICONS: Record<string, LucideIcon> = {
+  trade: Truck,
+  distribution: Globe,
+  production: Factory,
+  horeca: UtensilsCrossed,
+  brand: Layers,
+  logistics: Warehouse,
 };
 
 const CAP_NODES = [
@@ -29,6 +29,7 @@ const DIAG: [number, number][] = [[0,3],[1,4],[2,5]];
 
 function NodeDot({ cap, inView, delay, floatDelay }: { cap: typeof CAP_NODES[0]; inView: boolean; delay: number; floatDelay: number }) {
   const [hovered, setHovered] = useState(false);
+  const Icon = CAP_ICONS[cap.id];
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.75 }}
@@ -47,9 +48,7 @@ function NodeDot({ cap, inView, delay, floatDelay }: { cap: typeof CAP_NODES[0];
           transition={{ duration: 0.3 }}
           style={{ position: "relative", width: 58, height: 58, borderRadius: 14, border: "1px solid rgba(213,162,81,0.35)", background: "rgba(18,17,15,0.92)", backdropFilter: "blur(2px)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1 }}
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={hovered ? "#E8C97A" : "#C9A24B"} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-            <path d={CAP_ICONS[cap.id] || ""} />
-          </svg>
+          <Icon size={26} strokeWidth={1.4} color={hovered ? "#E8C97A" : "#C9A24B"} />
         </motion.div>
       </div>
       <div style={{ position: "absolute", top: "calc(100% + 8px)", left: "50%", transform: "translateX(-50%)", width: 100, textAlign: "center", color: hovered ? "#FFFFFF" : "rgba(255,255,255,0.78)", fontSize: 10, fontWeight: 600, lineHeight: 1.35, whiteSpace: "pre-line", transition: "color 0.3s" }}>

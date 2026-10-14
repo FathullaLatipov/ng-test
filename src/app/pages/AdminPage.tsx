@@ -17,6 +17,7 @@ import {
   Factory,
   Droplet,
   Newspaper,
+  History as HistoryIcon,
   ExternalLink,
   LogOut,
   RotateCcw,
@@ -40,6 +41,7 @@ import type {
   CompanyItem,
   DirectionItem,
   JobItem,
+  MilestoneItem,
   NewsItem,
   StatItem,
   TextItem,
@@ -61,6 +63,7 @@ type Tab =
   | "companies"
   | "companiesHero"
   | "jib"
+  | "history"
   | "news";
 
 const TABS: { id: Tab; label: string; group: string; Icon: LucideIcon }[] = [
@@ -75,6 +78,7 @@ const TABS: { id: Tab; label: string; group: string; Icon: LucideIcon }[] = [
   { id: "partnership", label: "Партнёрам", group: "Главная", Icon: Handshake },
   { id: "careers", label: "Карьера", group: "Страницы", Icon: Users },
   { id: "contact", label: "Контакты / футер", group: "Страницы", Icon: Contact },
+  { id: "history", label: "История (таймлайн)", group: "Страницы", Icon: HistoryIcon },
   { id: "news", label: "Новости", group: "Страницы", Icon: Newspaper },
   { id: "companiesHero", label: "Компании — вступление", group: "Холдинг", Icon: Layers },
   { id: "companies", label: "Компании группы", group: "Холдинг", Icon: Factory },
@@ -1383,6 +1387,58 @@ export function AdminPage() {
               <Field lab="CTA — текст" value={data.jib.ctaLead} onChange={(v) => patch("jib", { ...data.jib, ctaLead: v })} multiline />
             </Card>
           </>
+        )}
+
+        {tab === "history" && (
+          <Card
+            title="История компании — этапы"
+            actions={
+              <button
+                onClick={() => {
+                  const item: MilestoneItem = {
+                    id: uid("ms"),
+                    year: String(new Date().getFullYear()),
+                    title: "Новый этап",
+                    desc: "",
+                    tag: "Компания",
+                    order: data.milestones.length + 1,
+                    published: true,
+                  };
+                  patch("milestones", [...data.milestones, item]);
+                  saved();
+                }}
+                style={{ background: "transparent", border: "1px solid rgba(201,162,75,0.4)", color: "#C9A24B", padding: "6px 10px", cursor: "pointer", fontSize: 12 }}
+              >
+                + Этап
+              </button>
+            }
+          >
+            <p style={{ margin: 0, color: "var(--admin-muted)", fontSize: 12, lineHeight: 1.6 }}>
+              Этапы сортируются по году. Заголовок «N лет устойчивого роста» считается автоматически: текущий год минус самый ранний год в списке.
+            </p>
+            {data.milestones.slice().sort((a, b) => (parseInt(a.year, 10) || 0) - (parseInt(b.year, 10) || 0) || a.order - b.order).map((m) => {
+              const set = (patchItem: Partial<MilestoneItem>) =>
+                patch("milestones", data.milestones.map((x) => (x.id === m.id ? { ...x, ...patchItem } : x)));
+              return (
+                <div key={m.id} style={{ border: "1px solid var(--admin-border)", borderRadius: 10, padding: 12, display: "grid", gap: 8, opacity: m.published ? 1 : 0.55 }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "90px 1fr auto", gap: 8 }}>
+                    <input value={m.year} onChange={(e) => set({ year: e.target.value })} style={field} placeholder="Год" />
+                    <input value={m.title} onChange={(e) => set({ title: e.target.value })} style={field} placeholder="Заголовок" />
+                    <DangerBtn onClick={() => { patch("milestones", data.milestones.filter((x) => x.id !== m.id)); saved(); }}>×</DangerBtn>
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 8, alignItems: "center" }}>
+                    <input value={m.tag} onChange={(e) => set({ tag: e.target.value })} style={field} placeholder="Метка (Производство, Торговля…)" />
+                    <label style={{ display: "flex", gap: 6, alignItems: "center", fontSize: 12, color: "var(--admin-muted)" }}>
+                      <input type="checkbox" checked={m.published} onChange={(e) => set({ published: e.target.checked })} /> Показывать
+                    </label>
+                  </div>
+                  <textarea rows={3} value={m.desc} onChange={(e) => set({ desc: e.target.value })} style={{ ...field, resize: "vertical" }} placeholder="Описание" />
+                  <input value={(m.points || []).join(", ")} onChange={(e) => set({ points: e.target.value.split(",").map((x) => x.trim()).filter(Boolean) })} style={field} placeholder="Факты-чипы через запятую" />
+                </div>
+              );
+            })}
+            <SaveBtn onClick={saved} />
+          </Card>
         )}
 
         {tab === "news" && (
