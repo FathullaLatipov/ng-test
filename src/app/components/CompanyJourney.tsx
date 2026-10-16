@@ -35,8 +35,8 @@ function MilestoneCard({
       initial={{ opacity: 0, x: -28 }}
       animate={inView ? { opacity: 1, x: 0 } : {}}
       transition={{ delay: 0.2 + i * 0.08, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-      className="ng-milestone-grid"
-      style={{ display: "grid", gridTemplateColumns: "110px 56px 1fr", gap: "0 20px", alignItems: "center", paddingBottom: i < total - 1 ? 48 : 0 }}
+      className={`ng-milestone-grid ${i % 2 === 0 ? "ng-ms-left" : "ng-ms-right"}`}
+      style={{ display: "grid", gridTemplateColumns: "110px 56px 1fr", gap: "0 20px", alignItems: "center", paddingBottom: i < total - 1 ? 40 : 0 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -143,14 +143,14 @@ export function CompanyJourney() {
   useMotionValueEvent(scrollYProgress, "change", (v) => setProgress(v));
 
   return (
-    <section ref={containerRef} id="history" className="ng-sec-pad" style={{ background: "var(--ng-void)", padding: "120px 80px", position: "relative", overflow: "hidden" }}>
+    <section ref={containerRef} id="history" className="ng-sec-pad" style={{ background: "var(--ng-void)", padding: "120px 40px", position: "relative", overflow: "hidden" }}>
       <IbmGrid opacity={0.02} />
       <div className="ng-decor"><GiantNumber n="03" /></div>
       <div className="ng-decor"><GiantWord word="HISTORY" side="left" /></div>
       <div className="ng-decor"><GiantOutline kind="factory" side="right" size={300} /></div>
       <motion.div style={{ position: "absolute", right: "-8%", top: "15%", width: 420, height: 420, borderRadius: "50%", background: "radial-gradient(circle, rgba(213,162,81,0.05) 0%, transparent 70%)", pointerEvents: "none", y: bgY }} />
 
-      <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative", zIndex: 1 }} ref={ref}>
+      <div style={{ maxWidth: 1500, margin: "0 auto", position: "relative", zIndex: 1 }} ref={ref}>
         <div style={{ marginBottom: 72, maxWidth: 640 }}>
           <motion.div initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
             <div style={{ width: 24, height: 1, background: "var(--ng-gold)" }} />

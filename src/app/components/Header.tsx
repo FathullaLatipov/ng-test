@@ -13,6 +13,7 @@ const BUSINESS_LINKS = [
 ];
 
 const NAV = [
+  { label: "Главная", to: "/" },
   { label: "О группе", to: "/about" },
   { label: "Бизнес", to: "/business", children: BUSINESS_LINKS },
   { label: "Бренды и продукция", to: "/brands" },

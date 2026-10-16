@@ -187,6 +187,19 @@ img { max-width: 100%; }
   .ng-milestone-content { padding: 18px 18px !important; }
 }
 
+/* Desktop: zigzag timeline — cards alternate left / right of the centre spine (two 50% columns) */
+@media (min-width: 1025px) {
+  .ng-milestone-grid { grid-template-columns: 1fr 56px 1fr !important; gap: 0 28px !important; }
+  .ng-milestone-grid > * { grid-row: 1; }
+  .ng-ms-left > :nth-child(1)  { grid-column: 3; text-align: left !important; }
+  .ng-ms-left > :nth-child(2)  { grid-column: 2; }
+  .ng-ms-left > :nth-child(3)  { grid-column: 1; }
+  .ng-ms-right > :nth-child(1) { grid-column: 1; text-align: right !important; }
+  .ng-ms-right > :nth-child(2) { grid-column: 2; }
+  .ng-ms-right > :nth-child(3) { grid-column: 3; }
+  .ng-timeline-spine { left: 50% !important; margin-left: -1.5px; }
+}
+
 /* ─── Header ──────────────────────────────────────────────────── */
 .ng-nav-toggle { display: none; }
 @media (max-width: 1024px) {
