@@ -16,6 +16,9 @@ const CAP_ICONS: Record<string, LucideIcon> = {
 
 /** Единый фирменный жёлтый для всех иконок схемы */
 const ICON_GOLD = "#F0C25A";
+const TILE_BG = "#12110F";
+/** Иконки заливаются жёлтым целиком; детали прорисованы цветом плитки. Тонкие линейные иконки оставляем с жёлтым контуром */
+const FILLED_KEEP_STROKE = new Set(["horeca"]);
 
 function rgba(hex: string, a: number) {
   const n = parseInt(hex.slice(1), 16);
@@ -57,7 +60,13 @@ function NodeDot({ cap, inView, delay, floatDelay }: { cap: typeof CAP_NODES[0];
           transition={{ duration: 0.3 }}
           style={{ position: "relative", width: 58, height: 58, borderRadius: 14, border: `1px solid ${rgba(c, 0.35)}`, background: "rgba(18,17,15,0.92)", backdropFilter: "blur(2px)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1 }}
         >
-          <Icon size={26} strokeWidth={1.6} color={c} style={{ filter: `drop-shadow(0 0 5px ${rgba(c, 0.6)})` }} />
+          <Icon
+            size={28}
+            strokeWidth={1.7}
+            color={FILLED_KEEP_STROKE.has(cap.id) ? c : TILE_BG}
+            fill={c}
+            style={{ filter: `drop-shadow(0 0 5px ${rgba(c, 0.55)})` }}
+          />
         </motion.div>
       </div>
       <div style={{ position: "absolute", top: "calc(100% + 8px)", left: "50%", transform: "translateX(-50%)", width: 100, textAlign: "center", color: hovered ? "#FFFFFF" : "rgba(255,255,255,0.78)", fontSize: 10, fontWeight: 600, lineHeight: 1.35, whiteSpace: "pre-line", transition: "color 0.3s" }}>
