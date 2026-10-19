@@ -56,9 +56,9 @@ function NodeDot({ cap, inView, delay, floatDelay }: { cap: typeof CAP_NODES[0];
         {/* soft glow halo — CSS loop */}
         <div className="ng-eco-halo" style={{ position: "absolute", inset: -6, borderRadius: 16, background: `radial-gradient(circle, ${rgba(c, 0.42)}, transparent 70%)`, pointerEvents: "none", animationDelay: `${floatDelay}s` }} />
         <motion.div
-          animate={{ borderColor: rgba(c, hovered ? 0.9 : 0.35), scale: hovered ? 1.1 : 1, boxShadow: hovered ? `0 0 26px ${rgba(c, 0.55)}` : `0 6px 18px rgba(0,0,0,0.4)` }}
+          animate={{ borderColor: hovered ? "#FFE08A" : c, scale: hovered ? 1.1 : 1, boxShadow: hovered ? `0 0 26px ${rgba(c, 0.55)}` : `0 6px 18px rgba(0,0,0,0.4)` }}
           transition={{ duration: 0.3 }}
-          style={{ position: "relative", width: 58, height: 58, borderRadius: 14, border: `1px solid ${rgba(c, 0.35)}`, background: "rgba(18,17,15,0.92)", backdropFilter: "blur(2px)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1 }}
+          style={{ position: "relative", width: 58, height: 58, borderRadius: 14, border: `1.5px solid ${c}`, background: "rgba(18,17,15,0.92)", backdropFilter: "blur(2px)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1 }}
         >
           <Icon
             size={28}
