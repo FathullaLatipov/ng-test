@@ -14,6 +14,21 @@ const CAP_ICONS: Record<string, LucideIcon> = {
   logistics: Warehouse,
 };
 
+/** Цвет каждого направления — делает схему живее, оставаясь в тёмной палитре */
+const CAP_COLORS: Record<string, string> = {
+  trade: "#F5B544",
+  distribution: "#4FB8F0",
+  production: "#F0714A",
+  horeca: "#4ADE80",
+  brand: "#A78BFA",
+  logistics: "#2DD4BF",
+};
+
+function rgba(hex: string, a: number) {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
+}
+
 const CAP_NODES = [
   { id: "trade",        label: "Импорт и\nдистрибуция", x: 50,   y: 10 },
   { id: "production",   label: "Производство",          x: 84.6, y: 30 },
@@ -30,6 +45,7 @@ const DIAG: [number, number][] = [[0,3],[1,4],[2,5]];
 function NodeDot({ cap, inView, delay, floatDelay }: { cap: typeof CAP_NODES[0]; inView: boolean; delay: number; floatDelay: number }) {
   const [hovered, setHovered] = useState(false);
   const Icon = CAP_ICONS[cap.id];
+  const c = CAP_COLORS[cap.id] || "#C9A24B";
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.75 }}
@@ -42,16 +58,16 @@ function NodeDot({ cap, inView, delay, floatDelay }: { cap: typeof CAP_NODES[0];
       {/* gentle floating wrapper — CSS loop (compositor-reliable) */}
       <div className="ng-eco-float" style={{ position: "relative", width: 58, height: 58, animationDelay: `${floatDelay}s` }}>
         {/* soft glow halo — CSS loop */}
-        <div className="ng-eco-halo" style={{ position: "absolute", inset: -6, borderRadius: 16, background: "radial-gradient(circle, rgba(213,162,81,0.38), transparent 70%)", pointerEvents: "none", animationDelay: `${floatDelay}s` }} />
+        <div className="ng-eco-halo" style={{ position: "absolute", inset: -6, borderRadius: 16, background: `radial-gradient(circle, ${rgba(c, 0.42)}, transparent 70%)`, pointerEvents: "none", animationDelay: `${floatDelay}s` }} />
         <motion.div
-          animate={{ borderColor: hovered ? "rgba(232,201,122,0.85)" : "rgba(213,162,81,0.35)", background: hovered ? "rgba(213,162,81,0.12)" : "rgba(18,17,15,0.92)", boxShadow: hovered ? "0 0 22px rgba(213,162,81,0.4)" : "0 6px 18px rgba(0,0,0,0.4)" }}
+          animate={{ borderColor: rgba(c, hovered ? 0.95 : 0.6), scale: hovered ? 1.1 : 1, boxShadow: hovered ? `0 0 26px ${rgba(c, 0.55)}` : `0 6px 18px rgba(0,0,0,0.4), 0 0 14px ${rgba(c, 0.22)}` }}
           transition={{ duration: 0.3 }}
-          style={{ position: "relative", width: 58, height: 58, borderRadius: 14, border: "1px solid rgba(213,162,81,0.35)", background: "rgba(18,17,15,0.92)", backdropFilter: "blur(2px)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1 }}
+          style={{ position: "relative", width: 58, height: 58, borderRadius: 14, border: `1px solid ${rgba(c, 0.6)}`, background: `linear-gradient(145deg, ${rgba(c, 0.28)} 0%, rgba(18,17,15,0.92) 75%)`, backdropFilter: "blur(2px)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1 }}
         >
-          <Icon size={26} strokeWidth={1.4} color={hovered ? "#E8C97A" : "#C9A24B"} />
+          <Icon size={26} strokeWidth={1.6} color={c} style={{ filter: `drop-shadow(0 0 5px ${rgba(c, 0.6)})` }} />
         </motion.div>
       </div>
-      <div style={{ position: "absolute", top: "calc(100% + 8px)", left: "50%", transform: "translateX(-50%)", width: 100, textAlign: "center", color: hovered ? "#FFFFFF" : "rgba(255,255,255,0.78)", fontSize: 10, fontWeight: 600, lineHeight: 1.35, whiteSpace: "pre-line", transition: "color 0.3s" }}>
+      <div style={{ position: "absolute", top: "calc(100% + 8px)", left: "50%", transform: "translateX(-50%)", width: 100, textAlign: "center", color: hovered ? c : "rgba(255,255,255,0.85)", fontSize: 10, fontWeight: 600, lineHeight: 1.35, whiteSpace: "pre-line", transition: "color 0.3s" }}>
         {cap.label}
       </div>
     </motion.div>

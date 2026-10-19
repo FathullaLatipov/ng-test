@@ -32,19 +32,19 @@ export function HeroNew() {
           backgroundImage: `url(${h.photoUrl})`,
           backgroundSize: "cover",
           backgroundPosition: "center 40%",
-          filter: "brightness(0.38) saturate(0.75)",
+          filter: "brightness(0.85) saturate(1)",
           y: photoY,
         }}
       >
         <BgVideo start={1} poster="/video/poster-1.jpg" />
       </motion.div>
-      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(10,9,8,0.94) 0%, rgba(10,9,8,0.72) 42%, rgba(10,9,8,0.45) 70%, rgba(10,9,8,0.55) 100%)" }} />
+      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(10,9,8,0.82) 0%, rgba(10,9,8,0.5) 40%, rgba(10,9,8,0.12) 70%, rgba(10,9,8,0.2) 100%)" }} />
       <IbmGrid opacity={0.05} />
       <div style={{ position: "absolute", inset: 0, zIndex: 2, background: "radial-gradient(ellipse at 78% 46%, rgba(199,155,74,0.12) 0%, transparent 58%)", pointerEvents: "none" }} />
-      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "28%", zIndex: 3, background: "linear-gradient(to top, #0A0908 0%, transparent 100%)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "16%", zIndex: 3, background: "linear-gradient(to top, #0A0908 0%, transparent 100%)", pointerEvents: "none" }} />
 
       {!hideNetwork && (
-        <motion.div style={{ position: "absolute", inset: 0, opacity: 0.92, zIndex: 2 }}>
+        <motion.div style={{ position: "absolute", inset: 0, opacity: 0.55, zIndex: 2 }}>
           <HeroNetwork />
         </motion.div>
       )}
@@ -64,7 +64,7 @@ export function HeroNew() {
 
       <motion.div
         className="ng-side-pad ng-hero-copy"
-        style={{ position: "absolute", inset: 0, zIndex: 8, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 80px", maxWidth: 720, y: contentY, opacity: fadeOut }}
+        style={{ position: "absolute", inset: 0, zIndex: 8, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 80px", maxWidth: 720, y: contentY, opacity: fadeOut, textShadow: "0 2px 20px rgba(0,0,0,0.6)" }}
       >
         <motion.div
           initial={{ opacity: 0, x: -20 }}

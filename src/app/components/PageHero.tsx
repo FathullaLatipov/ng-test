@@ -42,10 +42,10 @@ export function PageHero({
     >
       {bgVideoStart !== undefined && (
         <>
-          <div style={{ position: "absolute", inset: 0, filter: "brightness(0.38) saturate(0.75)" }}>
+          <div style={{ position: "absolute", inset: 0, filter: "brightness(0.85) saturate(1)" }}>
             <BgVideo start={bgVideoStart} poster={`/video/poster-${bgVideoStart}.jpg`} />
           </div>
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(10,9,8,0.94) 0%, rgba(10,9,8,0.72) 45%, rgba(10,9,8,0.5) 100%)" }} />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(10,9,8,0.8) 0%, rgba(10,9,8,0.45) 45%, rgba(10,9,8,0.1) 100%)" }} />
         </>
       )}
       <IbmGrid opacity={0.05} />
@@ -100,7 +100,7 @@ export function PageHero({
           alignItems: "center",
         }}
       >
-        <div>
+        <div style={{ textShadow: "0 2px 20px rgba(0,0,0,0.6)" }}>
           {crumbs.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
