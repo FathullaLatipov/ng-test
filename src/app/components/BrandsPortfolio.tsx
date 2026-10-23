@@ -5,14 +5,19 @@ import { useCms } from "../cms/store";
 import nobelTradeLogo from "../../assets/nobel-trade-logo.svg";
 import ecobornLogo from "../../assets/ecoborn-logo.svg";
 import nabilAsiaLogo from "../../assets/nabil_asia.jpg";
+import rimadoLogo from "../../assets/rimado_logo.png";
+import eliteDairyLogo from "../../assets/elite_daily_logo.png";
 
 /** Готовые логотипы по id компании; для остальных рисуется текстовый логотип из названия */
 /** `blend` — у файла чёрный фон: растворяем его в фоне карточки (screen) */
 /** `withName` — в файле только знак, название дописывается рядом текстом */
-const COMPANY_LOGOS: Record<string, { src: string; bg?: string; withName?: boolean; blend?: boolean }> = {
+const COMPANY_LOGOS: Record<string, { src: string; bg?: string; withName?: boolean; blend?: boolean; zoom?: number }> = {
   "nobel-trade": { src: nobelTradeLogo },
   ecoborn: { src: ecobornLogo, withName: true },
   afghanistan: { src: nabilAsiaLogo, blend: true },
+  /** у файла Rimado широкие чёрные поля — растворяем фон и увеличиваем знак */
+  rimado: { src: rimadoLogo, blend: true, zoom: 1.7 },
+  "elite-dairy": { src: eliteDairyLogo },
 };
 
 function CompanyLogoTile({ id, name, index }: { id: string; name: string; index: number }) {
@@ -35,7 +40,7 @@ function CompanyLogoTile({ id, name, index }: { id: string; name: string; index:
           </span>
         </div>
       ) : logo ? (
-        <img src={logo.src} alt={name} loading="lazy" draggable={false} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain", ...(logo.blend ? { mixBlendMode: "screen" } : {}) }} />
+        <img src={logo.src} alt={name} loading="lazy" draggable={false} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain", ...(logo.blend ? { mixBlendMode: "screen" } : {}), ...(logo.zoom ? { transform: `scale(${logo.zoom})` } : {}) }} />
       ) : (
         <div style={{ textAlign: "center", lineHeight: 1.1 }}>
           <div style={{ color: "#FFFFFF", fontSize: words.length > 2 ? 15 : 22, fontWeight: 800, letterSpacing: "0.02em" }}>

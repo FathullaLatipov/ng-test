@@ -55,11 +55,11 @@ function DirectionPhotoCard({
       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,9,8,0.96) 0%, rgba(10,9,8,0.55) 45%, rgba(10,9,8,0.25) 100%)" }} />
       <div style={{ position: "absolute", top: 0, left: 0, width: hovered ? "100%" : 48, height: 2, background: "linear-gradient(to right, #D5A251, rgba(213,162,81,0.2))", transition: "width 0.45s ease", zIndex: 2 }} />
 
-      <div style={{ position: "relative", zIndex: 2, height: "100%", minHeight: featured ? 360 : 300, display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "28px 26px" }}>
+      <div style={{ position: "relative", zIndex: 2, height: "100%", minHeight: featured ? 360 : 300, display: "flex", flexDirection: "column", justifyContent: "flex-start", padding: "36px 26px 28px" }}>
         <div style={{ color: "rgba(232,201,122,0.55)", fontSize: 12, fontWeight: 700, letterSpacing: "0.2em", marginBottom: 12 }}>{dir.number}</div>
         <div style={{ color: "#C9A24B", fontSize: 11, fontWeight: 600, letterSpacing: "0.16em", marginBottom: 8 }}>{dir.tagline.toUpperCase()}</div>
-        <div style={{ color: "#FFFFFF", fontSize: featured ? 26 : 22, fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 12, lineHeight: 1.15 }}>{dir.name}</div>
-        <p style={{ color: "rgba(255,255,255,0.68)", fontSize: 14, lineHeight: 1.7, margin: 0, maxWidth: 420 }}>{dir.desc}</p>
+        <div style={{ color: "#FFFFFF", fontSize: featured ? 26 : 22, fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 12, lineHeight: 1.15, minHeight: featured ? 60 : 51 }}>{dir.name}</div>
+        <p style={{ color: "rgba(255,255,255,0.68)", fontSize: 14, lineHeight: 1.7, margin: 0, maxWidth: 420, display: "-webkit-box", WebkitLineClamp: 6, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{dir.desc}</p>
       </div>
     </motion.div>
     </Link>
