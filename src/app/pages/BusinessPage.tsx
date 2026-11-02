@@ -269,14 +269,32 @@ export function BusinessPage() {
                 <div style={{ color: GOLD, fontSize: 14, fontWeight: 700, letterSpacing: "0.16em", marginBottom: 18 }}>МАРКИ ЗАВОДА</div>
                 <div className="ng-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 30 }}>
                   {jibProducts.map((p) => (
-                    <div key={p.id} style={{ position: "relative", border: "1px solid rgba(255,255,255,0.08)", background: "radial-gradient(120% 80% at 50% 0%, rgba(232,201,122,0.10), transparent 60%), var(--ng-elevated)", padding: "24px 20px", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
+                    <div key={p.id} style={{ position: "relative", border: "1px solid rgba(255,255,255,0.08)", background: "radial-gradient(120% 80% at 50% 0%, rgba(232,201,122,0.10), transparent 60%), var(--ng-elevated)", padding: "12px 12px 22px", borderRadius: 14, overflow: "hidden", display: "flex", flexDirection: "column", alignItems: "stretch", textAlign: "center" }}>
                       {p.img && (
-                        <div style={{ height: 170, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
-                          <img src={p.img} alt={p.name} style={{ maxHeight: 170, maxWidth: "100%", objectFit: "contain", filter: "drop-shadow(0 14px 24px rgba(0,0,0,0.45))" }} />
+                        <div style={{ position: "relative", height: 330, marginBottom: 14 }}>
+                          {/* soft golden glow behind the bottles */}
+                          <div aria-hidden style={{ position: "absolute", inset: "-4% 8%", background: "radial-gradient(ellipse at center, rgba(232,201,122,0.20) 0%, transparent 68%)", pointerEvents: "none" }} />
+                          {/* photo edges dissolve into the card (transparent fade), nothing is cropped */}
+                          <img
+                            src={p.img}
+                            alt={p.name}
+                            style={{
+                              position: "relative",
+                              display: "block",
+                              height: "100%",
+                              width: "auto",
+                              maxWidth: "100%",
+                              margin: "0 auto",
+                              WebkitMaskImage: "linear-gradient(to right, transparent 0, #000 16%, #000 84%, transparent 100%), linear-gradient(to bottom, transparent 0, #000 14%, #000 80%, transparent 100%)",
+                              maskImage: "linear-gradient(to right, transparent 0, #000 16%, #000 84%, transparent 100%), linear-gradient(to bottom, transparent 0, #000 14%, #000 80%, transparent 100%)",
+                              WebkitMaskComposite: "source-in",
+                              maskComposite: "intersect",
+                            }}
+                          />
                         </div>
                       )}
-                      <div style={{ color: "#FFFFFF", fontSize: 21, fontWeight: 800, marginBottom: 8 }}>{p.name}</div>
-                      <p style={{ color: "rgba(255,255,255,0.68)", fontSize: 15, lineHeight: 1.65, margin: 0 }}>{p.note}</p>
+                      <div style={{ color: "#FFFFFF", fontSize: 21, fontWeight: 800, marginBottom: 8, padding: "0 10px" }}>{p.name}</div>
+                      <p style={{ color: "rgba(255,255,255,0.68)", fontSize: 15, lineHeight: 1.65, margin: 0, padding: "0 10px" }}>{p.note}</p>
                     </div>
                   ))}
                 </div>
