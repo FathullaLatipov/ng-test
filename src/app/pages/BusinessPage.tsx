@@ -155,12 +155,12 @@ export function BusinessPage() {
 
       {/* Quick nav */}
       <section className="ng-sec-pad-sm" style={{ background: "var(--ng-void)", padding: "34px 40px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+        <div className="ng-bz-quicknav">
           {directions.map((d) => (
             <a
               key={d.id}
               href={`#${d.id}`}
-              style={{ flex: "1 1 auto", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 10, border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.85)", textDecoration: "none", fontSize: 16, fontWeight: 600, padding: "13px 22px", transition: "all 0.25s" }}
+              style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 10, whiteSpace: "nowrap", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.85)", textDecoration: "none", transition: "all 0.25s" }}
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(213,162,81,0.5)"; e.currentTarget.style.color = GOLD; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; e.currentTarget.style.color = "rgba(255,255,255,0.85)"; }}
             >
