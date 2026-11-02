@@ -22,6 +22,7 @@ function AudienceCard({ aud, index, inView }: { aud: AudienceItem; index: number
         background: "var(--ng-elevated)",
         border: hovered ? "1px solid rgba(213,162,81,0.45)" : "1px solid rgba(255,255,255,0.07)",
         overflow: "hidden",
+        borderRadius: 14,
         transition: "all 0.35s ease",
         transform: hovered ? "translateY(-5px)" : "none",
       }}

@@ -12,6 +12,7 @@ import {
   GiantNumber,
 } from "../components/BrandDecor";
 import { GoldCheck } from "../components/BrandIcons";
+import { FadeImage } from "../components/FadeImage";
 import { ArisSection } from "../components/ArisSection";
 import { SemeySection } from "../components/SemeySection";
 import { useCms } from "../cms/store";
@@ -87,56 +88,49 @@ function DirHeader({ dir }: { dir?: DirectionItem }) {
           {dir.number}
         </span>
         <div>
-          <div style={{ color: GOLD, fontSize: 12, fontWeight: 700, letterSpacing: "0.18em", marginBottom: 8 }}>
+          <div style={{ color: GOLD, fontSize: 14, fontWeight: 700, letterSpacing: "0.18em", marginBottom: 10 }}>
             {dir.tagline.toUpperCase()}
           </div>
-          <h2 style={{ fontSize: "clamp(28px, 3.4vw, 46px)", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.08, margin: 0 }}>
+          <h2 style={{ fontSize: "clamp(32px, 3.9vw, 54px)", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.08, margin: 0 }}>
             {dir.name}
           </h2>
         </div>
       </div>
-      <p style={{ color: "rgba(255,255,255,0.72)", fontSize: 16, lineHeight: 1.8, maxWidth: 780, marginTop: 20, marginBottom: 0 }}>
+      <p style={{ color: "rgba(255,255,255,0.78)", fontSize: 19, lineHeight: 1.75, maxWidth: 780, marginTop: 22, marginBottom: 0 }}>
         {dir.desc}
       </p>
     </motion.div>
   );
 }
 
-/** Compact info block for directions without a dedicated page */
+/** Info block for directions without a dedicated page. `reverse` puts the photo on the left (desktop) */
 function InfoDirection({
   dir,
   points,
   img,
+  reverse = false,
+  position,
 }: {
   dir?: DirectionItem;
   points: string[];
   img?: string;
+  reverse?: boolean;
+  position?: string;
 }) {
   return (
-    <div className="ng-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 0.85fr", gap: 48, alignItems: "center" }}>
+    <div className={`ng-grid-2 ${reverse ? "ng-bz-rev" : ""}`} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center" }}>
       <div>
         <DirHeader dir={dir} />
-        <motion.div {...reveal} style={{ display: "flex", flexDirection: "column", gap: 10, maxWidth: 520 }}>
+        <motion.div {...reveal} style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 580 }}>
           {points.map((p) => (
-            <div key={p} style={{ display: "flex", alignItems: "center", gap: 14, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", padding: "15px 18px" }}>
-              <GoldCheck size={15} />
-              <span style={{ color: "rgba(255,255,255,0.85)", fontSize: 14.5 }}>{p}</span>
+            <div key={p} style={{ display: "flex", alignItems: "center", gap: 16, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", padding: "18px 22px" }}>
+              <GoldCheck size={17} />
+              <span style={{ color: "rgba(255,255,255,0.9)", fontSize: 17 }}>{p}</span>
             </div>
           ))}
         </motion.div>
       </div>
-      {img && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.7 }}
-          style={{ position: "relative", minHeight: 360, border: "1px solid rgba(213,162,81,0.2)", overflow: "hidden" }}
-        >
-          <div style={{ position: "absolute", inset: 0, backgroundImage: `url(${img})`, backgroundSize: "cover", backgroundPosition: "center", filter: "brightness(0.72)" }} />
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,9,8,0.75), transparent 55%)" }} />
-        </motion.div>
-      )}
+      {img && <FadeImage src={img} alt={dir?.name ?? ""} position={position} />}
     </div>
   );
 }
@@ -160,13 +154,13 @@ export function BusinessPage() {
       />
 
       {/* Quick nav */}
-      <section className="ng-sec-pad-sm" style={{ background: "var(--ng-void)", padding: "34px 80px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-        <div style={{ maxWidth: 1400, margin: "0 auto", display: "flex", flexWrap: "wrap", gap: 10 }}>
+      <section className="ng-sec-pad-sm" style={{ background: "var(--ng-void)", padding: "34px 40px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
           {directions.map((d) => (
             <a
               key={d.id}
               href={`#${d.id}`}
-              style={{ display: "inline-flex", alignItems: "center", gap: 8, border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.85)", textDecoration: "none", fontSize: 13, fontWeight: 600, padding: "9px 16px", transition: "all 0.25s" }}
+              style={{ flex: "1 1 auto", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 10, border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.85)", textDecoration: "none", fontSize: 16, fontWeight: 600, padding: "13px 22px", transition: "all 0.25s" }}
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(213,162,81,0.5)"; e.currentTarget.style.color = GOLD; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; e.currentTarget.style.color = "rgba(255,255,255,0.85)"; }}
             >
@@ -183,7 +177,7 @@ export function BusinessPage() {
         <div style={{ maxWidth: 1400, margin: "0 auto", position: "relative", zIndex: 1 }}>
           <InfoDirection dir={dir("import")} points={IMPORT_POINTS} img={dir("import")?.img} />
           <motion.div {...reveal} style={{ marginTop: 28 }}>
-            <a href="https://nobeltrade.uz" target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, border: "1px solid rgba(213,162,81,0.5)", color: GOLD, textDecoration: "none", fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", padding: "13px 26px" }}>
+            <a href="https://nobeltrade.uz" target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, border: "1px solid rgba(213,162,81,0.5)", color: GOLD, textDecoration: "none", fontSize: 14, fontWeight: 700, letterSpacing: "0.08em", padding: "15px 30px" }}>
               NOBELTRADE.UZ →
             </a>
           </motion.div>
@@ -199,57 +193,49 @@ export function BusinessPage() {
 
           {/* — EcoBorn — */}
           <motion.div {...reveal} style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 12, marginBottom: 26 }}>
-            <img src={ecobornLogo} alt="EcoBorn" style={{ width: 48, height: 48, objectFit: "contain" }} />
+            <img src={ecobornLogo} alt="EcoBorn" style={{ width: 58, height: 58, objectFit: "contain" }} />
             <div>
-              <div style={{ color: "#FFFFFF", fontSize: 22, fontWeight: 800 }}>EcoBorn <span style={{ color: "rgba(255,255,255,0.4)", fontWeight: 500, fontSize: 16 }}>INC</span></div>
-              <div style={{ color: "#8FCD1E", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", marginTop: 4 }}>ДЕЙСТВУЮЩЕЕ ПРЕДПРИЯТИЕ · УЗБЕКИСТАН</div>
+              <div style={{ color: "#FFFFFF", fontSize: 28, fontWeight: 800 }}>EcoBorn <span style={{ color: "rgba(255,255,255,0.4)", fontWeight: 500, fontSize: 19 }}>INC</span></div>
+              <div style={{ color: "#8FCD1E", fontSize: 13, fontWeight: 600, letterSpacing: "0.14em", marginTop: 6 }}>ДЕЙСТВУЮЩЕЕ ПРЕДПРИЯТИЕ · УЗБЕКИСТАН</div>
             </div>
           </motion.div>
 
-          <div className="ng-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 0.9fr", gap: 48, alignItems: "center", marginBottom: 40 }}>
+          <div className="ng-grid-2 ng-bz-rev" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center", marginBottom: 48 }}>
             <motion.div {...reveal}>
-              <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 15.5, lineHeight: 1.85, marginBottom: 22 }}>
+              <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 18, lineHeight: 1.8, marginBottom: 24 }}>
                 Ecoborn INC — маслоэкстракционный комплекс в Ташкенте (с 2016 года). Производит рафинированное,
                 дезодорированное и вымороженное подсолнечное масло и подсолнечный шрот, входит в число крупнейших
                 экспортёров отрасли в Узбекистане.
               </p>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 13 }}>
                 {ECOBORN_ADV.map((a) => (
-                  <div key={a} style={{ display: "flex", alignItems: "center", gap: 12, color: "rgba(255,255,255,0.82)", fontSize: 14 }}>
-                    <GoldCheck size={14} /> {a}
+                  <div key={a} style={{ display: "flex", alignItems: "center", gap: 14, color: "rgba(255,255,255,0.88)", fontSize: 16.5 }}>
+                    <GoldCheck size={16} /> {a}
                   </div>
                 ))}
               </div>
             </motion.div>
-            <motion.div initial={{ opacity: 0, scale: 0.96 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.7 }}
-              style={{ position: "relative", minHeight: 340, border: "1px solid rgba(213,162,81,0.2)", overflow: "hidden" }}>
-              <div style={{ position: "absolute", inset: 0, backgroundImage: `url(${ecobornHero})`, backgroundSize: "cover", backgroundPosition: "center", filter: "brightness(0.7)" }} />
-              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,9,8,0.8), transparent 55%)" }} />
-              <div style={{ position: "absolute", left: 22, bottom: 20, display: "flex", alignItems: "center", gap: 12 }}>
-                <div style={{ width: 24, height: 1, background: GOLD }} />
-                <span style={{ color: "rgba(255,255,255,0.85)", fontSize: 12, fontWeight: 600, letterSpacing: "0.14em" }}>ЗАВОД · ТАШКЕНТ</span>
-              </div>
-            </motion.div>
+            <FadeImage src={ecobornHero} alt="Завод EcoBorn" caption="ЗАВОД · ТАШКЕНТ" />
           </div>
 
           {/* brands */}
           <motion.div {...reveal}>
-            <div style={{ color: GOLD, fontSize: 12, fontWeight: 700, letterSpacing: "0.16em", marginBottom: 16 }}>БРЕНДЫ ПОДСОЛНЕЧНОГО МАСЛА</div>
+            <div style={{ color: GOLD, fontSize: 14, fontWeight: 700, letterSpacing: "0.16em", marginBottom: 18 }}>БРЕНДЫ ПОДСОЛНЕЧНОГО МАСЛА</div>
             <div className="ng-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 30 }}>
               {ECOBORN_BRANDS.map((b) => (
-                <div key={b.name} style={{ background: b.featured ? "linear-gradient(150deg, rgba(213,162,81,0.14), var(--ng-elevated))" : "var(--ng-elevated)", border: b.featured ? "1px solid rgba(213,162,81,0.45)" : "1px solid rgba(255,255,255,0.07)", borderLeft: `2px solid ${GOLD}`, padding: "18px 20px", boxSizing: "border-box", minHeight: 88 }}>
+                <div key={b.name} style={{ background: b.featured ? "linear-gradient(150deg, rgba(213,162,81,0.14), var(--ng-elevated))" : "var(--ng-elevated)", border: b.featured ? "1px solid rgba(213,162,81,0.45)" : "1px solid rgba(255,255,255,0.07)", borderLeft: `2px solid ${GOLD}`, padding: "20px 22px", boxSizing: "border-box", minHeight: 100 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                    <div style={{ color: "#FFFFFF", fontSize: 18, fontWeight: 800 }}>{b.name}</div>
+                    <div style={{ color: "#FFFFFF", fontSize: 21, fontWeight: 800 }}>{b.name}</div>
                     {b.featured && <span style={{ color: "#0A0A0A", background: GOLD, fontSize: 9, fontWeight: 700, letterSpacing: "0.08em", padding: "3px 7px" }}>ФЛАГМАН</span>}
                   </div>
-                  <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 12.5, marginTop: 10 }}>{b.note}</div>
+                  <div style={{ color: "rgba(255,255,255,0.68)", fontSize: 14.5, marginTop: 10 }}>{b.note}</div>
                 </div>
               ))}
             </div>
           </motion.div>
 
           <motion.div {...reveal} style={{ marginBottom: 8 }}>
-            <Link to="/business/import" style={{ display: "inline-flex", alignItems: "center", gap: 8, border: `1px solid rgba(213,162,81,0.5)`, color: GOLD, textDecoration: "none", fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", padding: "13px 26px" }}>
+            <Link to="/business/import" style={{ display: "inline-flex", alignItems: "center", gap: 8, border: `1px solid rgba(213,162,81,0.5)`, color: GOLD, textDecoration: "none", fontSize: 14, fontWeight: 700, letterSpacing: "0.08em", padding: "15px 30px" }}>
               ПОДРОБНЕЕ О ECOBORN →
             </Link>
           </motion.div>
@@ -260,30 +246,27 @@ export function BusinessPage() {
           {jib && (
             <>
               <motion.div {...reveal} style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 26, flexWrap: "wrap" }}>
-                {jib.logoUrl && <img src={jib.logoUrl} alt="J.I.B. INVEST" style={{ height: 46, width: "auto", maxWidth: 260, objectFit: "contain" }} />}
+                {jib.logoUrl && <img src={jib.logoUrl} alt="J.I.B. INVEST" style={{ height: 56, width: "auto", maxWidth: 300, objectFit: "contain" }} />}
                 <div>
-                  <div style={{ color: GOLD_LIGHT, fontSize: 14, fontWeight: 600 }}>{jib.titleAccent}</div>
-                  <div style={{ color: GOLD, fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", marginTop: 6 }}>ПРОИЗВОДСТВЕННЫЙ АКТИВ · РОССИЯ</div>
+                  <div style={{ color: GOLD_LIGHT, fontSize: 17, fontWeight: 600 }}>{jib.titleAccent}</div>
+                  <div style={{ color: GOLD, fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", marginTop: 6 }}>ПРОИЗВОДСТВЕННЫЙ АКТИВ · РОССИЯ</div>
                 </div>
               </motion.div>
 
-              <div className="ng-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 0.9fr", gap: 48, alignItems: "center", marginBottom: 40 }}>
+              <div className="ng-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center", marginBottom: 48 }}>
                 <motion.div {...reveal}>
-                  <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 15.5, lineHeight: 1.85, marginBottom: 18 }}>{jib.about}</p>
-                  <div style={{ borderLeft: `3px solid ${GOLD}`, background: "rgba(201,162,75,0.06)", padding: "16px 20px" }}>
-                    <div style={{ color: GOLD, fontSize: 11, fontWeight: 700, letterSpacing: "0.16em", marginBottom: 8 }}>МИССИЯ</div>
-                    <p style={{ color: "rgba(255,255,255,0.9)", fontSize: 15, lineHeight: 1.7, margin: 0, fontStyle: "italic" }}>«{jib.mission}»</p>
+                  <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 18, lineHeight: 1.8, marginBottom: 22 }}>{jib.about}</p>
+                  <div style={{ borderLeft: `3px solid ${GOLD}`, background: "rgba(201,162,75,0.06)", padding: "20px 24px" }}>
+                    <div style={{ color: GOLD, fontSize: 13, fontWeight: 700, letterSpacing: "0.16em", marginBottom: 10 }}>МИССИЯ</div>
+                    <p style={{ color: "rgba(255,255,255,0.92)", fontSize: 17.5, lineHeight: 1.7, margin: 0, fontStyle: "italic" }}>«{jib.mission}»</p>
                   </div>
                 </motion.div>
-                <motion.div initial={{ opacity: 0, scale: 0.96 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.7 }}
-                  style={{ position: "relative", minHeight: 340, border: "1px solid rgba(255,255,255,0.08)", overflow: "hidden" }}>
-                  <img src={jib.aboutImage} alt="Продукция завода" style={{ width: "100%", height: "100%", minHeight: 340, objectFit: "cover", display: "block" }} />
-                </motion.div>
+                <FadeImage src={jib.aboutImage} alt="Продукция завода" position="center 62%" />
               </div>
 
               {/* products */}
               <motion.div {...reveal}>
-                <div style={{ color: GOLD, fontSize: 12, fontWeight: 700, letterSpacing: "0.16em", marginBottom: 16 }}>МАРКИ ЗАВОДА</div>
+                <div style={{ color: GOLD, fontSize: 14, fontWeight: 700, letterSpacing: "0.16em", marginBottom: 18 }}>МАРКИ ЗАВОДА</div>
                 <div className="ng-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 30 }}>
                   {jibProducts.map((p) => (
                     <div key={p.id} style={{ position: "relative", border: "1px solid rgba(255,255,255,0.08)", background: "radial-gradient(120% 80% at 50% 0%, rgba(232,201,122,0.10), transparent 60%), var(--ng-elevated)", padding: "24px 20px", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
@@ -292,8 +275,8 @@ export function BusinessPage() {
                           <img src={p.img} alt={p.name} style={{ maxHeight: 170, maxWidth: "100%", objectFit: "contain", filter: "drop-shadow(0 14px 24px rgba(0,0,0,0.45))" }} />
                         </div>
                       )}
-                      <div style={{ color: "#FFFFFF", fontSize: 18, fontWeight: 800, marginBottom: 8 }}>{p.name}</div>
-                      <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 13, lineHeight: 1.65, margin: 0 }}>{p.note}</p>
+                      <div style={{ color: "#FFFFFF", fontSize: 21, fontWeight: 800, marginBottom: 8 }}>{p.name}</div>
+                      <p style={{ color: "rgba(255,255,255,0.68)", fontSize: 15, lineHeight: 1.65, margin: 0 }}>{p.note}</p>
                     </div>
                   ))}
                 </div>
@@ -303,13 +286,13 @@ export function BusinessPage() {
               {jib.standards?.length > 0 && (
                 <motion.div {...reveal} style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 30 }}>
                   {jib.standards.map((s) => (
-                    <div key={s} style={{ border: `1px solid rgba(213,162,81,0.4)`, background: "rgba(201,162,75,0.06)", color: GOLD_LIGHT, fontSize: 12.5, fontWeight: 700, padding: "10px 16px" }}>{s}</div>
+                    <div key={s} style={{ border: `1px solid rgba(213,162,81,0.4)`, background: "rgba(201,162,75,0.06)", color: GOLD_LIGHT, fontSize: 14.5, fontWeight: 700, padding: "12px 18px" }}>{s}</div>
                   ))}
                 </motion.div>
               )}
 
               <motion.div {...reveal}>
-                <Link to="/business/jib" style={{ display: "inline-flex", alignItems: "center", gap: 8, border: `1px solid rgba(213,162,81,0.5)`, color: GOLD, textDecoration: "none", fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", padding: "13px 26px" }}>
+                <Link to="/business/jib" style={{ display: "inline-flex", alignItems: "center", gap: 8, border: `1px solid rgba(213,162,81,0.5)`, color: GOLD, textDecoration: "none", fontSize: 14, fontWeight: 700, letterSpacing: "0.08em", padding: "15px 30px" }}>
                   ПОДРОБНЕЕ О J.I.B. INVEST →
                 </Link>
               </motion.div>
@@ -323,7 +306,7 @@ export function BusinessPage() {
         <IbmGrid opacity={0.02} />
         <div className="ng-decor"><GiantNumber n="03" /></div>
         <div style={{ maxWidth: 1400, margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <InfoDirection dir={dir("logistics")} points={LOGISTICS_POINTS} img={dir("logistics")?.img} />
+          <InfoDirection dir={dir("logistics")} points={LOGISTICS_POINTS} img={dir("logistics")?.img} reverse />
         </div>
       </section>
 
@@ -341,7 +324,7 @@ export function BusinessPage() {
         <IbmGrid opacity={0.02} />
         <div className="ng-decor"><GiantNumber n="05" /></div>
         <div style={{ maxWidth: 1400, margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <InfoDirection dir={dir("horeca")} points={HORECA_POINTS} img={dir("horeca")?.img} />
+          <InfoDirection dir={dir("horeca")} points={HORECA_POINTS} img={dir("horeca")?.img} reverse />
         </div>
       </section>
 

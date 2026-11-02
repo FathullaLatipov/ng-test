@@ -33,6 +33,7 @@ function DirectionPhotoCard({
         flex: 1,
         minHeight: featured ? 360 : 300,
         overflow: "hidden",
+        borderRadius: 14,
         border: hovered ? "1px solid rgba(213,162,81,0.45)" : "1px solid rgba(255,255,255,0.08)",
         transform: hovered ? "translateY(-6px)" : "translateY(0)",
         transition: "all 0.4s cubic-bezier(0.4,0,0.2,1)",

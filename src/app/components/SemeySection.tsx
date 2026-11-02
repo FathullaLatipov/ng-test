@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { motion, useInView } from "motion/react";
 import { IbmGrid, HoneycombPattern, FullBleedPhoto } from "./BrandDecor";
 import { GoldCheck } from "./BrandIcons";
+import { FadeImage } from "./FadeImage";
 
 import semeySunflower from "../../assets/semey/semey-sunflower.jpg";
 import semeyField from "../../assets/semey/semey-field.jpg";
@@ -23,7 +24,7 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}>
       <span style={{ width: 26, height: 1, background: GOLD }} />
-      <span style={{ color: GOLD, fontSize: 12, fontWeight: 700, letterSpacing: "0.22em" }}>{children}</span>
+      <span style={{ color: GOLD, fontSize: 13.5, fontWeight: 700, letterSpacing: "0.22em" }}>{children}</span>
     </div>
   );
 }
@@ -58,26 +59,22 @@ export function SemeySection() {
               </h2>
             </Reveal>
             <Reveal delay={0.1}>
-              <p style={{ color: "rgba(255,255,255,0.78)", fontSize: 16, lineHeight: 1.8, margin: 0 }}>
+              <p style={{ color: "rgba(255,255,255,0.78)", fontSize: 18.5, lineHeight: 1.75, margin: 0 }}>
                 Создание нового высокотехнологичного маслоэкстракционного завода по переработке семян подсолнечника в Абайской области (Казахстан) — привлечение инвестиций, современные технологии переработки, выпуск конкурентоспособной продукции с высокой добавленной стоимостью и расширение экспортного потенциала страны.
               </p>
             </Reveal>
           </div>
 
-          <div className="ng-grid-2" style={{ display: "grid", gridTemplateColumns: "0.95fr 1.05fr", gap: 48, alignItems: "center", marginBottom: 40 }}>
-            <motion.div initial={{ opacity: 0, scale: 0.96 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.7 }}
-              style={{ position: "relative", minHeight: 380, overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)" }}>
-              <img src={semeySunflower} alt="Подсолнечник" style={{ width: "100%", height: "100%", minHeight: 380, objectFit: "cover", display: "block" }} />
-              <div style={{ position: "absolute", top: 0, left: 0, width: 64, height: 2, background: `linear-gradient(to right, ${GOLD}, transparent)` }} />
-            </motion.div>
+          <div className="ng-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center", marginBottom: 40 }}>
             <Reveal delay={0.1}>
-              <p style={{ color: "rgba(255,255,255,0.78)", fontSize: 15.5, lineHeight: 1.85, marginBottom: 18 }}>
+              <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 17.5, lineHeight: 1.8, marginBottom: 18 }}>
                 Завод в Семее — проект в реализации. Отраслевые цифры и проектные мощности публикуются только после подтверждения источником.
               </p>
-              <p style={{ color: "rgba(255,255,255,0.78)", fontSize: 15.5, lineHeight: 1.85, margin: 0 }}>
+              <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 17.5, lineHeight: 1.8, margin: 0 }}>
                 Государственные и отраслевые инициативы направлены на увеличение глубокой переработки, развитие инфраструктуры и экспортных потоков — отрасль остаётся приоритетной и способствует диверсификации сельского хозяйства и росту внешнеторговой выручки.
               </p>
             </Reveal>
+            <FadeImage src={semeySunflower} alt="Подсолнечник" />
           </div>
 
         </div>
@@ -104,8 +101,8 @@ export function SemeySection() {
               <Reveal key={s.n} delay={0.06 + i * 0.07}>
                 <div style={{ position: "relative", background: "var(--ng-elevated)", border: "1px solid rgba(255,255,255,0.07)", padding: "26px 22px", height: "100%", boxSizing: "border-box" }}>
                   <div style={{ fontSize: 38, fontWeight: 800, color: "rgba(213,162,81,0.25)", lineHeight: 1, marginBottom: 14 }}>{s.n}</div>
-                  <div style={{ color: "#FFFFFF", fontSize: 16, fontWeight: 700, marginBottom: 10 }}>{s.t}</div>
-                  <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 13, lineHeight: 1.65, margin: 0 }}>{s.d}</p>
+                  <div style={{ color: "#FFFFFF", fontSize: 19, fontWeight: 700, marginBottom: 10 }}>{s.t}</div>
+                  <p style={{ color: "rgba(255,255,255,0.68)", fontSize: 15, lineHeight: 1.65, margin: 0 }}>{s.d}</p>
                   <div style={{ position: "absolute", top: 0, left: 0, width: 40, height: 2, background: `linear-gradient(to right, ${GOLD}, transparent)` }} />
                 </div>
               </Reveal>
@@ -117,8 +114,8 @@ export function SemeySection() {
             {PRINCIPLES.map((p) => (
               <Reveal key={p}>
                 <div style={{ display: "flex", alignItems: "center", gap: 14, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", padding: "16px 18px" }}>
-                  <GoldCheck size={15} />
-                  <span style={{ color: "rgba(255,255,255,0.85)", fontSize: 14.5 }}>{p}</span>
+                  <GoldCheck size={17} />
+                  <span style={{ color: "rgba(255,255,255,0.85)", fontSize: 16.5 }}>{p}</span>
                 </div>
               </Reveal>
             ))}
