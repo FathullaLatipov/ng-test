@@ -1,4 +1,3 @@
-import { GeographyNew } from "../components/GeographyNew";
 import { motion } from "motion/react";
 import { Link } from "react-router";
 import { PageLayout } from "../components/PageLayout";
@@ -140,6 +139,7 @@ export function BusinessPage() {
   const directions = [...data.business.directions].filter((d) => d.published).sort((a, b) => a.order - b.order);
   const dir = (id: string) => directions.find((d) => d.id === id);
   const jib = data.jib;
+  const ecobornUrl = data.companies.find((c) => c.id === "ecoborn")?.website || "https://ecoborn.uz";
   const jibProducts = [...(jib?.products ?? [])].sort((a, b) => a.order - b.order);
 
   return (
@@ -235,9 +235,9 @@ export function BusinessPage() {
           </motion.div>
 
           <motion.div {...reveal} style={{ marginBottom: 8 }}>
-            <Link to="/business/import" style={{ display: "inline-flex", alignItems: "center", gap: 8, border: `1px solid rgba(213,162,81,0.5)`, color: GOLD, textDecoration: "none", fontSize: 14, fontWeight: 700, letterSpacing: "0.08em", padding: "15px 30px" }}>
-              ПОДРОБНЕЕ О ECOBORN →
-            </Link>
+            <a href={ecobornUrl} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, border: `1px solid rgba(213,162,81,0.5)`, color: GOLD, textDecoration: "none", fontSize: 14, fontWeight: 700, letterSpacing: "0.08em", padding: "15px 30px" }}>
+              ПЕРЕЙТИ НА ECOBORN.UZ →
+            </a>
           </motion.div>
 
           {/* divider between production assets */}
@@ -310,9 +310,9 @@ export function BusinessPage() {
               )}
 
               <motion.div {...reveal}>
-                <Link to="/business/jib" style={{ display: "inline-flex", alignItems: "center", gap: 8, border: `1px solid rgba(213,162,81,0.5)`, color: GOLD, textDecoration: "none", fontSize: 14, fontWeight: 700, letterSpacing: "0.08em", padding: "15px 30px" }}>
-                  ПОДРОБНЕЕ О J.I.B. INVEST →
-                </Link>
+                <a href={jib.website || "https://www.vmpz.pro/"} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, border: `1px solid rgba(213,162,81,0.5)`, color: GOLD, textDecoration: "none", fontSize: 14, fontWeight: 700, letterSpacing: "0.08em", padding: "15px 30px" }}>
+                  ПЕРЕЙТИ НА САЙТ ЗАВОДА →
+                </a>
               </motion.div>
             </>
           )}
@@ -327,8 +327,6 @@ export function BusinessPage() {
           <InfoDirection dir={dir("logistics")} points={LOGISTICS_POINTS} img={dir("logistics")?.img} reverse />
         </div>
       </section>
-
-      <GeographyNew />
 
       <section id="trade" className="ng-sec-pad" style={{ background: "var(--ng-charcoal)", padding: "100px 80px", position: "relative", overflow: "hidden", scrollMarginTop: 90 }}>
         <HoneycombPattern opacity={0.03} />
