@@ -17,9 +17,7 @@ import { SemeySection } from "../components/SemeySection";
 import { useCms } from "../cms/store";
 import type { DirectionItem } from "../cms/types";
 
-import ecobornHero from "../../assets/ecoborn-5.jpg";
-import ecobornFacility from "../../assets/ecoborn-3.jpg";
-import ecobornWarehouse from "../../assets/ecoborn-1.jpg";
+import ecobornHero from "../../assets/ecoborn-5.webp";
 import ecobornLogo from "../../assets/ecoborn-logo.svg";
 
 const GOLD = "#C9A24B";
@@ -215,7 +213,7 @@ export function BusinessPage() {
                 ))}
               </div>
             </motion.div>
-            <FadeImage src={ecobornHero} alt="Завод EcoBorn" caption="ЗАВОД · ТАШКЕНТ" />
+            <FadeImage src={dir("production")?.img || ecobornHero} alt="Производство" />
           </div>
 
           {/* brands */}
@@ -324,7 +322,7 @@ export function BusinessPage() {
         <IbmGrid opacity={0.02} />
         <div className="ng-decor"><GiantNumber n="03" /></div>
         <div style={{ maxWidth: 1400, margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <InfoDirection dir={dir("logistics")} points={LOGISTICS_POINTS} img={dir("logistics")?.img} reverse />
+          <InfoDirection dir={dir("logistics")} points={LOGISTICS_POINTS} img={dir("logistics")?.img} position="58% 62%" reverse />
         </div>
       </section>
 
@@ -332,7 +330,7 @@ export function BusinessPage() {
         <HoneycombPattern opacity={0.03} />
         <div className="ng-decor"><GiantNumber n="04" /></div>
         <div style={{ maxWidth: 1400, margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <InfoDirection dir={dir("trade")} points={TRADE_POINTS} img={dir("trade")?.img} />
+          <InfoDirection dir={dir("trade")} points={TRADE_POINTS} img={dir("trade")?.img} position="24% 50%" />
         </div>
       </section>
 

@@ -4,9 +4,9 @@ import { IbmGrid, HoneycombPattern, LogisticsMesh } from "./BrandDecor";
 import { GoldCheck } from "./BrandIcons";
 import { FadeImage } from "./FadeImage";
 
-import arisHero from "../../assets/aris/aris-1.png";
-import arisAbout from "../../assets/aris/aris-2.png";
-import arisWarehouse from "../../assets/aris/aris-warehouse.jpg";
+import arisHero from "../../assets/aris/aris-1.webp";
+import arisAbout from "../../assets/aris/aris-2.webp";
+import arisWarehouse from "../../assets/aris/aris-warehouse.webp";
 
 const GOLD = "#C9A24B";
 const GOLD_LIGHT = "#E8C97A";

@@ -4,8 +4,8 @@ import { IbmGrid, HoneycombPattern, FullBleedPhoto } from "./BrandDecor";
 import { GoldCheck } from "./BrandIcons";
 import { FadeImage } from "./FadeImage";
 
-import semeySunflower from "../../assets/semey/semey-sunflower.jpg";
-import semeyField from "../../assets/semey/semey-field.jpg";
+import semeySunflower from "../../assets/semey/semey-sunflower.webp";
+import semeyField from "../../assets/semey/semey-field.webp";
 
 const GOLD = "#C9A24B";
 const GOLD_LIGHT = "#E8C97A";

@@ -1,12 +1,16 @@
 import type { CmsData } from "./types";
 import jibLogo from "../../assets/jib/logo.svg";
-import jibField from "../../assets/jib/field.jpg";
-import jibOilBottles from "../../assets/jib/oil-bottles.jpg";
-import markSemeynoe from "../../assets/jib/mark-semeynoe.png";
-import markDonchanka from "../../assets/jib/mark-donchanka.png";
-import markDonola from "../../assets/jib/mark-donola.png";
-import ecobornDist from "../../assets/ecoborn-5.jpg";
-import ecobornWarehouse from "../../assets/ecoborn-1.jpg";
+import jibField from "../../assets/jib/field.webp";
+import jibOilBottles from "../../assets/jib/oil-bottles.webp";
+import markSemeynoe from "../../assets/jib/mark-semeynoe.webp";
+import markDonchanka from "../../assets/jib/mark-donchanka.webp";
+import markDonola from "../../assets/jib/mark-donola.webp";
+import ecobornDist from "../../assets/ecoborn-5.webp";
+import ecobornWarehouse from "../../assets/ecoborn-1.webp";
+import dirProduction from "../../assets/production.webp";
+import dirLogistics from "../../assets/logistic.webp";
+import dirTrade from "../../assets/international.webp";
+import dirHoreca from "../../assets/horeca.webp";
 
 export const DEFAULT_CMS: CmsData = {
   updatedAt: new Date().toISOString(),
@@ -87,7 +91,7 @@ export const DEFAULT_CMS: CmsData = {
         name: "Производство",
         tagline: "Действующие активы и проекты",
         desc: "EcoBorn — действующее предприятие в Узбекистане. J.I.B. INVEST — производственный актив в России. Aris и Semey — проекты в реализации в Казахстане.",
-        img: "https://images.unsplash.com/photo-1565793298595-6a879b1d9492?auto=format&fit=crop&w=1200&q=80",
+        img: dirProduction,
         order: 2,
         published: true,
       },
@@ -97,7 +101,7 @@ export const DEFAULT_CMS: CmsData = {
         name: "Логистика и инфраструктура",
         tagline: "Перевозки, склады, распределение",
         desc: "Международные железнодорожные и автомобильные перевозки, управление товарами в пути, региональное складирование и распределение продукции. Развивается логистический проект Акча в Узбекистане.",
-        img: ecobornWarehouse,
+        img: dirLogistics,
         order: 3,
         published: true,
       },
@@ -107,7 +111,7 @@ export const DEFAULT_CMS: CmsData = {
         name: "Международная торговля",
         tagline: "Закупка и движение между рынками",
         desc: "Прямая работа с производителями и поставщиками из России, Казахстана и других стран: поиск товара, контрактование, ВЭД, международные расчёты и организация транспортной цепочки.",
-        img: "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=1200&q=80",
+        img: dirTrade,
         order: 4,
         published: true,
       },
@@ -117,7 +121,7 @@ export const DEFAULT_CMS: CmsData = {
         name: "HoReCa и B2B",
         tagline: "Профессиональный канал",
         desc: "Поставки продуктов питания ресторанам, отелям, кафе, производственным компаниям и оптовым покупателям: специализированный ассортимент, крупная фасовка и регулярные поставки.",
-        img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200&q=80",
+        img: dirHoreca,
         order: 5,
         published: true,
       },

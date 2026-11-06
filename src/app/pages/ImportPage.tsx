@@ -13,12 +13,12 @@ import {
 } from "../components/BrandDecor";
 import { GoldCheck, IconImport, IconDistribution, IconBrand } from "../components/BrandIcons";
 
-import heroImg from "../../assets/ecoborn-5.jpg";
-import facilityImg from "../../assets/ecoborn-3.jpg";
-import warehouseImg from "../../assets/ecoborn-1.jpg";
-import galleryB from "../../assets/ecoborn-2.jpg";
-import galleryD from "../../assets/ecoborn-4.jpg";
-import galleryF from "../../assets/ecoborn-6.jpg";
+import heroImg from "../../assets/ecoborn-5.webp";
+import facilityImg from "../../assets/ecoborn-3.webp";
+import warehouseImg from "../../assets/ecoborn-1.webp";
+import galleryB from "../../assets/ecoborn-2.webp";
+import galleryD from "../../assets/ecoborn-4.webp";
+import galleryF from "../../assets/ecoborn-6.webp";
 import ecobornLogo from "../../assets/ecoborn-logo.svg";
 
 const LEKKER = [

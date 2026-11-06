@@ -2,11 +2,11 @@ import { useRef } from "react";
 import { Link } from "react-router";
 import { motion, useInView } from "motion/react";
 import { useCms } from "../cms/store";
-import nobelTradeLogo from "../../assets/nobel-trade-logo.svg";
+import nobelTradeLogo from "../../assets/nobel-trade-logo.webp";
 import ecobornLogo from "../../assets/ecoborn-logo.svg";
-import nabilAsiaLogo from "../../assets/nabil_asia.jpg";
-import rimadoLogo from "../../assets/rimado_logo.png";
-import eliteDairyLogo from "../../assets/elite_daily_logo.png";
+import nabilAsiaLogo from "../../assets/nabil_asia.webp";
+import rimadoLogo from "../../assets/rimado_logo.webp";
+import eliteDairyLogo from "../../assets/elite_daily_logo.webp";
 
 /** Готовые логотипы по id компании; для остальных рисуется текстовый логотип из названия */
 /** `blend` — у файла чёрный фон: растворяем его в фоне карточки (screen) */
