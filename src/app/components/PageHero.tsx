@@ -15,6 +15,8 @@ type PageHeroProps = {
   visual?: HeroVisualKind;
   /** If set, shows the background video starting from this second */
   bgVideoStart?: number;
+  /** If set, shows this picture as the hero background (cover, anchored right) */
+  bgImage?: string;
 };
 
 export function PageHero({
@@ -26,6 +28,7 @@ export function PageHero({
   crumbs = [],
   visual,
   bgVideoStart,
+  bgImage,
 }: PageHeroProps) {
   return (
     <section
@@ -40,6 +43,13 @@ export function PageHero({
         background: "linear-gradient(125deg, #0A0908 0%, #12100C 42%, #1A1510 78%, #0A0908 100%)",
       }}
     >
+      {bgImage && (
+        <div
+          aria-hidden
+          style={{ position: "absolute", inset: 0, backgroundImage: `url(${bgImage})`, backgroundSize: "cover", backgroundPosition: "right center", backgroundRepeat: "no-repeat" }}
+        />
+      )}
+      {bgImage && <div aria-hidden className="ng-hero-shade" style={{ position: "absolute", inset: 0 }} />}
       {bgVideoStart !== undefined && (
         <>
           <div style={{ position: "absolute", inset: 0, filter: "brightness(0.85) saturate(1)" }}>

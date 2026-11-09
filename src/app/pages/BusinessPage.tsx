@@ -18,6 +18,7 @@ import { useCms } from "../cms/store";
 import type { DirectionItem } from "../cms/types";
 
 import ecobornHero from "../../assets/ecoborn-5.webp";
+import bannerBusiness from "../../assets/banner11.webp";
 import ecobornLogo from "../../assets/ecoborn-logo.svg";
 
 const GOLD = "#C9A24B";
@@ -148,7 +149,7 @@ export function BusinessPage() {
         titleAccent="до рынка."
         subtitle="Nobel Group объединяет взаимосвязанные направления: производство продуктов питания, международную торговлю и импорт, логистику, складскую инфраструктуру, дистрибуцию и продажи."
         crumbs={[{ label: "Направления бизнеса" }]}
-        visual="business"
+        bgImage={bannerBusiness}
       />
 
       {/* Quick nav */}

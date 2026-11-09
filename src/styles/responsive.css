@@ -58,6 +58,10 @@ img { max-width: 100%; }
   .ng-side-pad { padding-left: 20px !important; padding-right: 20px !important; }
 }
 
+/* Hero with a photo background: left shade keeps the text readable (stronger on phones) */
+.ng-hero-shade { background: linear-gradient(90deg, rgba(10,9,8,0.35) 0%, transparent 55%); }
+@media (max-width: 900px) { .ng-hero-shade { background: linear-gradient(180deg, rgba(10,9,8,0.7) 0%, rgba(10,9,8,0.62) 100%); } }
+
 /* Business page: quick-nav pills — always one row on desktop, text scales down to fit */
 .ng-bz-quicknav { display: flex; flex-wrap: nowrap; gap: 10px; }
 .ng-bz-quicknav > a { flex: 1 1 auto; font-size: clamp(12px, 1.02vw, 16px); font-weight: 600; padding: 13px clamp(8px, 1vw, 22px); }
