@@ -46,7 +46,16 @@ export function PageHero({
       {bgImage && (
         <div
           aria-hidden
-          style={{ position: "absolute", inset: 0, backgroundImage: `url(${bgImage})`, backgroundSize: "cover", backgroundPosition: "right center", backgroundRepeat: "no-repeat" }}
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage: `url(${bgImage})`, backgroundSize: "cover",
+            backgroundPosition: "right 78%",
+            backgroundRepeat: "no-repeat",
+            /* bottom edge dissolves into the page background instead of a hard cut */
+            WebkitMaskImage: "linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%)",
+            maskImage: "linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%)",
+          }}
         />
       )}
       {bgImage && <div aria-hidden className="ng-hero-shade" style={{ position: "absolute", inset: 0 }} />}
