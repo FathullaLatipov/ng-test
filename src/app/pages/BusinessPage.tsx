@@ -109,34 +109,13 @@ function InfoDirection({
   img,
   reverse = false,
   position,
-  wideImg,
 }: {
   dir?: DirectionItem;
   points: string[];
   img?: string;
   reverse?: boolean;
   position?: string;
-  /** Panorama shown full-width under the text (keeps a wide photo uncropped) */
-  wideImg?: string;
 }) {
-  if (wideImg) {
-    return (
-      <div>
-        <div className="ng-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center", marginBottom: 36 }}>
-          <DirHeader dir={dir} />
-          <motion.div {...reveal} style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 580 }}>
-            {points.map((p) => (
-              <div key={p} style={{ display: "flex", alignItems: "center", gap: 16, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", padding: "18px 22px" }}>
-                <GoldCheck size={17} />
-                <span style={{ color: "rgba(255,255,255,0.9)", fontSize: 17 }}>{p}</span>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-        <FadeImage src={wideImg} alt={dir?.name ?? ""} aspect="1600 / 671" minHeight={0} />
-      </div>
-    );
-  }
   return (
     <div className={`ng-grid-2 ${reverse ? "ng-bz-rev" : ""}`} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center" }}>
       <div>
@@ -196,7 +175,7 @@ export function BusinessPage() {
         <HoneycombPattern opacity={0.03} />
         <div className="ng-decor"><GiantNumber n="01" /></div>
         <div style={{ maxWidth: 1400, margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <InfoDirection dir={dir("import")} points={IMPORT_POINTS} wideImg={importPanorama} />
+          <InfoDirection dir={dir("import")} points={IMPORT_POINTS} img={importPanorama} position="68% 50%" />
           <motion.div {...reveal} style={{ marginTop: 28 }}>
             <a href="https://nobeltrade.uz" target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, border: "1px solid rgba(213,162,81,0.5)", color: GOLD, textDecoration: "none", fontSize: 14, fontWeight: 700, letterSpacing: "0.08em", padding: "15px 30px" }}>
               NOBELTRADE.UZ →
