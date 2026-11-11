@@ -1,9 +1,13 @@
 import type { ReactNode } from "react";
 import { motion } from "motion/react";
 
-/** Edges dissolve into the section background (works on any bg); corners fade the most */
-const FADE_MASK =
-  "linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%), linear-gradient(to bottom, transparent 0, #000 9%, #000 91%, transparent 100%)";
+/**
+ * Edges dissolve into the section background — a thin, smooth fade (~5% per side) so the photo
+ * stays almost fully visible. Eased stops (not a hard linear ramp) keep the transition silky.
+ */
+const FADE_X = "linear-gradient(to right, transparent 0, rgba(0,0,0,0.55) 2.2%, #000 5.5%, #000 94.5%, rgba(0,0,0,0.55) 97.8%, transparent 100%)";
+const FADE_Y = "linear-gradient(to bottom, transparent 0, rgba(0,0,0,0.55) 2.6%, #000 6.5%, #000 93.5%, rgba(0,0,0,0.55) 97.4%, transparent 100%)";
+const FADE_MASK = `${FADE_X}, ${FADE_Y}`;
 
 /**
  * Photo for a two-column block: rounded, soft dark/transparent edges, faint gold glow behind.
@@ -41,7 +45,7 @@ export function FadeImage({
         style={{
           position: "absolute",
           inset: "-6%",
-          background: "radial-gradient(ellipse at center, rgba(213,162,81,0.12) 0%, transparent 65%)",
+          background: "radial-gradient(ellipse at center, rgba(213,162,81,0.10) 0%, transparent 65%)",
           pointerEvents: "none",
         }}
       />
@@ -49,7 +53,7 @@ export function FadeImage({
         style={{
           position: "absolute",
           inset: 0,
-          borderRadius: 26,
+          borderRadius: 22,
           overflow: "hidden",
           WebkitMaskImage: FADE_MASK,
           maskImage: FADE_MASK,
@@ -61,9 +65,9 @@ export function FadeImage({
           src={src}
           alt={alt}
           loading="lazy"
-          style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: position, display: "block", filter: "brightness(0.88) saturate(1.05)" }}
+          style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: position, display: "block" }}
         />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,9,8,0.45), transparent 50%)" }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,9,8,0.14), transparent 30%)" }} />
       </div>
       {caption && (
         <div style={{ position: "absolute", left: 34, bottom: 30, display: "flex", alignItems: "center", gap: 12 }}>
