@@ -2,6 +2,7 @@ import { PageLayout } from "../components/PageLayout";
 import { PageHero } from "../components/PageHero";
 import { BrandsPortfolio } from "../components/BrandsPortfolio";
 import { QuoteBand, SectionDivider } from "../components/BrandDecor";
+import bannerBrands from "../../assets/banner-brands.webp";
 
 export function BrandsPage() {
   return (
@@ -12,7 +13,9 @@ export function BrandsPage() {
         titleAccent="Nobel Group."
         subtitle="Портфель группы объединяет собственные торговые марки и продукты для розничного, оптового, HoReCa и промышленного рынков. Партнёрские бренды добавляются только после подтверждения."
         crumbs={[{ label: "Бренды" }]}
-        visual="business"
+        bgImage={bannerBrands}
+        bgImagePosition="right 70%"
+        bgShadeStrong
       />
       <BrandsPortfolio showCta={false} showCompanies={false} />
       <QuoteBand

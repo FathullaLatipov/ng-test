@@ -17,6 +17,10 @@ type PageHeroProps = {
   bgVideoStart?: number;
   /** If set, shows this picture as the hero background (cover, anchored right) */
   bgImage?: string;
+  /** CSS background-position for bgImage */
+  bgImagePosition?: string;
+  /** Stronger left shade for bright banners */
+  bgShadeStrong?: boolean;
 };
 
 export function PageHero({
@@ -29,6 +33,8 @@ export function PageHero({
   visual,
   bgVideoStart,
   bgImage,
+  bgImagePosition = "right 78%",
+  bgShadeStrong = false,
 }: PageHeroProps) {
   return (
     <section
@@ -50,7 +56,7 @@ export function PageHero({
             position: "absolute",
             inset: 0,
             backgroundImage: `url(${bgImage})`, backgroundSize: "cover",
-            backgroundPosition: "right 78%",
+            backgroundPosition: bgImagePosition,
             backgroundRepeat: "no-repeat",
             /* bottom edge dissolves into the page background instead of a hard cut */
             WebkitMaskImage: "linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%)",
@@ -58,7 +64,7 @@ export function PageHero({
           }}
         />
       )}
-      {bgImage && <div aria-hidden className="ng-hero-shade" style={{ position: "absolute", inset: 0 }} />}
+      {bgImage && <div aria-hidden className={`ng-hero-shade ${bgShadeStrong ? "ng-hero-shade-strong" : ""}`} style={{ position: "absolute", inset: 0 }} />}
       {bgVideoStart !== undefined && (
         <>
           <div style={{ position: "absolute", inset: 0, filter: "brightness(0.85) saturate(1)" }}>

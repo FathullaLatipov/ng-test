@@ -109,15 +109,20 @@ function InfoDirection({
   img,
   reverse = false,
   position,
+  imgAspect,
+  cols = "1fr 1fr",
 }: {
   dir?: DirectionItem;
   points: string[];
   img?: string;
   reverse?: boolean;
   position?: string;
+  /** Show the photo uncropped at this aspect ratio (e.g. "1600 / 671") */
+  imgAspect?: string;
+  cols?: string;
 }) {
   return (
-    <div className={`ng-grid-2 ${reverse ? "ng-bz-rev" : ""}`} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center" }}>
+    <div className={`ng-grid-2 ${reverse ? "ng-bz-rev" : ""}`} style={{ display: "grid", gridTemplateColumns: cols, gap: 64, alignItems: "center" }}>
       <div>
         <DirHeader dir={dir} />
         <motion.div {...reveal} style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 580 }}>
@@ -129,7 +134,7 @@ function InfoDirection({
           ))}
         </motion.div>
       </div>
-      {img && <FadeImage src={img} alt={dir?.name ?? ""} position={position} />}
+      {img && <FadeImage src={img} alt={dir?.name ?? ""} position={position} aspect={imgAspect} minHeight={imgAspect ? 0 : undefined} />}
     </div>
   );
 }
@@ -175,7 +180,7 @@ export function BusinessPage() {
         <HoneycombPattern opacity={0.03} />
         <div className="ng-decor"><GiantNumber n="01" /></div>
         <div style={{ maxWidth: 1400, margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <InfoDirection dir={dir("import")} points={IMPORT_POINTS} img={importPanorama} position="68% 50%" />
+          <InfoDirection dir={dir("import")} points={IMPORT_POINTS} img={importPanorama} imgAspect="1600 / 671" cols="0.95fr 1.25fr" />
           <motion.div {...reveal} style={{ marginTop: 28 }}>
             <a href="https://nobeltrade.uz" target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, border: "1px solid rgba(213,162,81,0.5)", color: GOLD, textDecoration: "none", fontSize: 14, fontWeight: 700, letterSpacing: "0.08em", padding: "15px 30px" }}>
               NOBELTRADE.UZ →

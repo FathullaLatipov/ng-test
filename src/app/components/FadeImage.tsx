@@ -38,7 +38,7 @@ export function FadeImage({
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.7 }}
-      style={{ position: "relative", width: "100%", alignSelf: "stretch", minHeight, ...(aspect ? { aspectRatio: aspect } : {}) }}
+      style={{ position: "relative", width: "100%", alignSelf: aspect ? "center" : "stretch", minHeight, ...(aspect ? { aspectRatio: aspect } : {}) }}
     >
       <div
         aria-hidden
