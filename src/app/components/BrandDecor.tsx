@@ -2,6 +2,7 @@ import { useRef, type CSSProperties, type ReactNode } from "react";
 import { motion, useInView, useScroll, useTransform } from "motion/react";
 import { Link } from "react-router";
 import { GoldCheck } from "./BrandIcons";
+import { pickSrc } from "../lib/images";
 
 /* ─── Background atmospheres ───────────────────────── */
 export type SectionTone = "void" | "charcoal" | "elevated" | "gradient" | "grid" | "honey" | "paper";
@@ -472,7 +473,7 @@ export function FullBleedPhoto({
         style={{
           position: "absolute",
           inset: "-12% 0",
-          backgroundImage: `url(${src})`,
+          backgroundImage: `url(${pickSrc(src, 1)})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           y,

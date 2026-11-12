@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { motion } from "motion/react";
+import { ResponsiveImg } from "./ResponsiveImg";
 
 /**
  * Edges dissolve into the section background — a thin, smooth fade (~5% per side) so the photo
@@ -34,6 +35,7 @@ export function FadeImage({
   return (
     <motion.div
       className="ng-bz-img"
+      data-fixed={aspect ? "1" : undefined}
       initial={{ opacity: 0, scale: 0.96 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true, margin: "-80px" }}
@@ -61,10 +63,10 @@ export function FadeImage({
           maskComposite: "intersect",
         }}
       >
-        <img
+        <ResponsiveImg
           src={src}
           alt={alt}
-          loading="lazy"
+          sizes="(max-width: 1024px) 100vw, 56vw"
           style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: position, display: "block" }}
         />
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,9,8,0.14), transparent 30%)" }} />

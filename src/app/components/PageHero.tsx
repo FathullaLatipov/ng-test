@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { IbmGrid, LogisticsMesh } from "./BrandDecor";
 import { BgVideo } from "./BgVideo";
 import { PageHeroVisual, type HeroVisualKind } from "./PageHeroVisual";
+import { pickSrc } from "../lib/images";
 
 type PageHeroProps = {
   eyebrow: string;
@@ -55,7 +56,7 @@ export function PageHero({
           style={{
             position: "absolute",
             inset: 0,
-            backgroundImage: `url(${bgImage})`, backgroundSize: "cover",
+            backgroundImage: `url(${pickSrc(bgImage, 1)})`, backgroundSize: "cover",
             backgroundPosition: bgImagePosition,
             backgroundRepeat: "no-repeat",
             /* bottom edge dissolves into the page background instead of a hard cut */

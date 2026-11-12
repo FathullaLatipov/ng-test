@@ -68,6 +68,15 @@ img { max-width: 100%; }
 .ng-bz-quicknav > a { flex: 1 1 auto; min-width: 0; font-size: clamp(11px, 0.9vw, 16px); font-weight: 600; padding: 13px clamp(6px, 0.6vw, 22px); }
 @media (max-width: 1279px) { .ng-bz-quicknav { flex-wrap: wrap; gap: 10px; } .ng-bz-quicknav > a { font-size: 14px; padding: 11px 16px; } }
 
+/* Business page photos & text scale down on tablets / phones */
+@media (max-width: 1024px) {
+  .ng-bz-img:not([data-fixed]) { min-height: 0 !important; aspect-ratio: 16 / 10; align-self: auto !important; }
+}
+@media (max-width: 680px) {
+  .ng-bz-img:not([data-fixed]) { aspect-ratio: 4 / 3; }
+  .ng-bz-lead { font-size: 16.5px !important; line-height: 1.7 !important; margin-top: 16px !important; }
+  .ng-bz-point { font-size: 15px !important; }
+}
 @media (max-width: 680px) { .ng-bz-points2 { grid-template-columns: 1fr !important; } }
 
 /* Business page: flip image/text order on desktop (on phones the text stays first) */

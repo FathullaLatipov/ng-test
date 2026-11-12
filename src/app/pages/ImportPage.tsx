@@ -20,6 +20,7 @@ import galleryB from "../../assets/ecoborn-2.webp";
 import galleryD from "../../assets/ecoborn-4.webp";
 import galleryF from "../../assets/ecoborn-6.webp";
 import ecobornLogo from "../../assets/ecoborn-logo.svg";
+import { pickSrc } from "../lib/images";
 
 const LEKKER = [
   { l: "L", en: "Living", ru: "Жизнь" },
@@ -88,7 +89,7 @@ export function ImportPage() {
           style={{
             position: "absolute",
             inset: 0,
-            backgroundImage: `url(${heroImg})`,
+            backgroundImage: `url(${pickSrc(heroImg, 1)})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             filter: "brightness(0.4) saturate(0.9)",
@@ -313,7 +314,7 @@ export function ImportPage() {
             transition={{ duration: 0.7 }}
             style={{ position: "relative", minHeight: 420, border: "1px solid rgba(213,162,81,0.2)", overflow: "hidden" }}
           >
-            <div style={{ position: "absolute", inset: 0, backgroundImage: `url(${facilityImg})`, backgroundSize: "cover", backgroundPosition: "center", filter: "brightness(0.72)" }} />
+            <div style={{ position: "absolute", inset: 0, backgroundImage: `url(${pickSrc(facilityImg, 2)})`, backgroundSize: "cover", backgroundPosition: "center", filter: "brightness(0.72)" }} />
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,9,8,0.85), transparent 55%)" }} />
             <div style={{ position: "absolute", left: 24, bottom: 22, display: "flex", alignItems: "center", gap: 12 }}>
               <div style={{ width: 24, height: 1, background: "#D5A251" }} />
@@ -552,7 +553,7 @@ export function ImportPage() {
                 transition={{ delay: i * 0.05 }}
                 style={{ position: "relative", height: 240, overflow: "hidden", border: "1px solid rgba(255,255,255,0.07)" }}
               >
-                <div style={{ position: "absolute", inset: 0, backgroundImage: `url(${g.src})`, backgroundSize: "cover", backgroundPosition: "center", transition: "transform 0.6s" }} className="ng-gallery-img" />
+                <div style={{ position: "absolute", inset: 0, backgroundImage: `url(${pickSrc(g.src, 3)})`, backgroundSize: "cover", backgroundPosition: "center", transition: "transform 0.6s" }} className="ng-gallery-img" />
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,9,8,0.85), transparent 60%)" }} />
                 <div style={{ position: "absolute", left: 16, bottom: 14, color: "rgba(255,255,255,0.85)", fontSize: 12, fontWeight: 600, letterSpacing: "0.08em" }}>{g.cap}</div>
               </motion.div>

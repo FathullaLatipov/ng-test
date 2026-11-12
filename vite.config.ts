@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
+import { imagetools } from 'vite-imagetools'
 import { cmsApiPlugin } from './plugins/cms-api-plugin.js'
 
 
@@ -21,6 +22,8 @@ export default defineConfig({
   plugins: [
     figmaAssetResolver(),
     cmsApiPlugin(),
+    // Responsive images: `import.meta.glob(..., { query: { w: '480;800;1200', as: 'srcset' } })`
+    imagetools(),
     // The React and Tailwind plugins are both required for Make, even if
     // Tailwind is not being actively used – do not remove them
     react(),

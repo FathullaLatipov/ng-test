@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { motion, useInView } from "motion/react";
 import { Link } from "react-router";
 import { useCms } from "../cms/store";
+import { pickSrc } from "../lib/images";
 
 export function CareersSection() {
   const { data } = useCms();
@@ -43,7 +44,7 @@ export function CareersSection() {
             </div>
             {careers.teamImage ? <motion.div initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.5 }}
               style={{ height: 210, overflow: "hidden", position: "relative", border: "1px solid rgba(255,255,255,0.08)" }}>
-              <div style={{ width: "100%", height: "100%", backgroundImage: `url(${careers.teamImage})`, backgroundSize: "cover", backgroundPosition: "center top", filter: "brightness(0.45) saturate(0.6)" }} />
+              <div style={{ width: "100%", height: "100%", backgroundImage: `url(${pickSrc(careers.teamImage, 2)})`, backgroundSize: "cover", backgroundPosition: "center top", filter: "brightness(0.45) saturate(0.6)" }} />
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(13,13,13,0.6), transparent)" }} />
               <div style={{ position: "absolute", bottom: 18, left: 22, color: "#FFFFFF", fontSize: 13, fontWeight: 600 }}>{careers.teamCaption}</div>
             </motion.div> : null}

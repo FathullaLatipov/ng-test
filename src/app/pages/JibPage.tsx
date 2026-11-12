@@ -5,6 +5,8 @@ import { PageLayout } from "../components/PageLayout";
 import { IbmGrid, HoneycombPattern, SectionDivider, MegaStats } from "../components/BrandDecor";
 import { GoldCheck } from "../components/BrandIcons";
 import { useCms } from "../cms/store";
+import { pickSrc } from "../lib/images";
+import { ResponsiveImg } from "../components/ResponsiveImg";
 
 const GOLD = "#C9A24B";
 const GOLD_LIGHT = "#E8C97A";
@@ -57,7 +59,7 @@ export function JibPage() {
           style={{
             position: "absolute",
             inset: 0,
-            backgroundImage: `url(${jib.heroImage})`,
+            backgroundImage: `url(${pickSrc(jib.heroImage, 1)})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             filter: "brightness(0.34) saturate(0.85)",
@@ -169,7 +171,7 @@ export function JibPage() {
           </div>
           <Reveal delay={0.15}>
             <div style={{ position: "relative", minHeight: 420, overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)" }}>
-              <img src={jib.aboutImage} alt="Продукция завода" style={{ width: "100%", height: "100%", minHeight: 420, objectFit: "cover", display: "block" }} />
+              <ResponsiveImg src={jib.aboutImage} alt="Продукция завода" sizes="(max-width: 1024px) 100vw, 50vw" style={{ width: "100%", height: "100%", minHeight: 420, objectFit: "cover", display: "block" }} />
               <div style={{ position: "absolute", top: 0, left: 0, width: 64, height: 2, background: `linear-gradient(to right, ${GOLD}, transparent)` }} />
             </div>
           </Reveal>

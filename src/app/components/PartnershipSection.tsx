@@ -6,6 +6,7 @@ import { useCms } from "../cms/store";
 import { submitLead } from "../lib/submitLead";
 import { Link } from "react-router";
 import type { AudienceItem } from "../cms/types";
+import { pickSrc } from "../lib/images";
 
 function AudienceCard({ aud, index, inView }: { aud: AudienceItem; index: number; inView: boolean }) {
   const [hovered, setHovered] = useState(false);
@@ -32,7 +33,7 @@ function AudienceCard({ aud, index, inView }: { aud: AudienceItem; index: number
           style={{
             width: "100%",
             height: "100%",
-            backgroundImage: `url(${aud.img})`,
+            backgroundImage: `url(${pickSrc(aud.img, 3)})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             filter: hovered ? "brightness(0.7)" : "brightness(0.55)",

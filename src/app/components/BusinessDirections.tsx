@@ -4,6 +4,7 @@ import { motion, useInView } from "motion/react";
 import { GiantNumber, GiantOutline, GiantWord, HoneycombPattern } from "./BrandDecor";
 import { useCms } from "../cms/store";
 import type { DirectionItem } from "../cms/types";
+import { pickSrc } from "../lib/images";
 
 function DirectionPhotoCard({
   dir,
@@ -45,7 +46,7 @@ function DirectionPhotoCard({
         style={{
           position: "absolute",
           inset: 0,
-          backgroundImage: `url(${dir.img})`,
+          backgroundImage: `url(${pickSrc(dir.img, 3)})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           filter: hovered ? "brightness(0.55) saturate(0.9)" : "brightness(0.42) saturate(0.75)",

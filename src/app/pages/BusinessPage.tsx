@@ -95,7 +95,7 @@ function DirHeader({ dir }: { dir?: DirectionItem }) {
           </h2>
         </div>
       </div>
-      <p style={{ color: "rgba(255,255,255,0.78)", fontSize: 19, lineHeight: 1.75, maxWidth: 780, marginTop: 22, marginBottom: 0 }}>
+      <p className="ng-bz-lead" style={{ color: "rgba(255,255,255,0.78)", fontSize: 19, lineHeight: 1.75, maxWidth: 780, marginTop: 22, marginBottom: 0 }}>
         {dir.desc}
       </p>
     </motion.div>
@@ -124,7 +124,7 @@ function InfoDirection({
           {points.map((p) => (
             <div key={p} style={{ display: "flex", alignItems: "center", gap: 16, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", padding: "18px 22px" }}>
               <GoldCheck size={17} />
-              <span style={{ color: "rgba(255,255,255,0.9)", fontSize: 17 }}>{p}</span>
+              <span className="ng-bz-point" style={{ color: "rgba(255,255,255,0.9)", fontSize: 17 }}>{p}</span>
             </div>
           ))}
         </motion.div>
@@ -191,7 +191,7 @@ export function BusinessPage() {
                 {IMPORT_POINTS.map((pt) => (
                   <div key={pt} style={{ display: "flex", alignItems: "center", gap: 14, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", padding: "16px 18px" }}>
                     <GoldCheck size={17} />
-                    <span style={{ color: "rgba(255,255,255,0.9)", fontSize: 16, lineHeight: 1.4 }}>{pt}</span>
+                    <span className="ng-bz-point" style={{ color: "rgba(255,255,255,0.9)", fontSize: 16, lineHeight: 1.4 }}>{pt}</span>
                   </div>
                 ))}
               </motion.div>
