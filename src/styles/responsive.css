@@ -68,6 +68,8 @@ img { max-width: 100%; }
 .ng-bz-quicknav > a { flex: 1 1 auto; min-width: 0; font-size: clamp(11px, 0.9vw, 16px); font-weight: 600; padding: 13px clamp(6px, 0.6vw, 22px); }
 @media (max-width: 1279px) { .ng-bz-quicknav { flex-wrap: wrap; gap: 10px; } .ng-bz-quicknav > a { font-size: 14px; padding: 11px 16px; } }
 
+@media (max-width: 680px) { .ng-bz-points2 { grid-template-columns: 1fr !important; } }
+
 /* Business page: flip image/text order on desktop (on phones the text stays first) */
 @media (min-width: 1025px) {
   .ng-bz-rev > .ng-bz-img { order: -1; }

@@ -109,20 +109,15 @@ function InfoDirection({
   img,
   reverse = false,
   position,
-  imgAspect,
-  cols = "1fr 1fr",
 }: {
   dir?: DirectionItem;
   points: string[];
   img?: string;
   reverse?: boolean;
   position?: string;
-  /** Show the photo uncropped at this aspect ratio (e.g. "1600 / 671") */
-  imgAspect?: string;
-  cols?: string;
 }) {
   return (
-    <div className={`ng-grid-2 ${reverse ? "ng-bz-rev" : ""}`} style={{ display: "grid", gridTemplateColumns: cols, gap: 64, alignItems: "center" }}>
+    <div className={`ng-grid-2 ${reverse ? "ng-bz-rev" : ""}`} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center" }}>
       <div>
         <DirHeader dir={dir} />
         <motion.div {...reveal} style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 580 }}>
@@ -134,7 +129,7 @@ function InfoDirection({
           ))}
         </motion.div>
       </div>
-      {img && <FadeImage src={img} alt={dir?.name ?? ""} position={position} aspect={imgAspect} minHeight={imgAspect ? 0 : undefined} />}
+      {img && <FadeImage src={img} alt={dir?.name ?? ""} position={position} />}
     </div>
   );
 }
@@ -180,12 +175,28 @@ export function BusinessPage() {
         <HoneycombPattern opacity={0.03} />
         <div className="ng-decor"><GiantNumber n="01" /></div>
         <div style={{ maxWidth: 1400, margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <InfoDirection dir={dir("import")} points={IMPORT_POINTS} img={importPanorama} imgAspect="1600 / 671" cols="0.95fr 1.25fr" />
-          <motion.div {...reveal} style={{ marginTop: 28 }}>
-            <a href="https://nobeltrade.uz" target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, border: "1px solid rgba(213,162,81,0.5)", color: GOLD, textDecoration: "none", fontSize: 14, fontWeight: 700, letterSpacing: "0.08em", padding: "15px 30px" }}>
-              NOBELTRADE.UZ →
-            </a>
-          </motion.div>
+          <div className="ng-grid-2" style={{ display: "grid", gridTemplateColumns: "0.85fr 1.25fr", gap: 56, alignItems: "center" }}>
+            <div>
+              <DirHeader dir={dir("import")} />
+              <motion.div {...reveal} style={{ marginTop: 8 }}>
+                <a href="https://nobeltrade.uz" target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, border: "1px solid rgba(213,162,81,0.5)", color: GOLD, textDecoration: "none", fontSize: 14, fontWeight: 700, letterSpacing: "0.08em", padding: "15px 30px" }}>
+                  NOBELTRADE.UZ →
+                </a>
+              </motion.div>
+            </div>
+            <div>
+              {/* whole panorama, nothing cropped */}
+              <FadeImage src={importPanorama} alt={dir("import")?.name ?? ""} aspect="1600 / 671" minHeight={0} />
+              <motion.div {...reveal} className="ng-bz-points2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 18 }}>
+                {IMPORT_POINTS.map((pt) => (
+                  <div key={pt} style={{ display: "flex", alignItems: "center", gap: 14, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", padding: "16px 18px" }}>
+                    <GoldCheck size={17} />
+                    <span style={{ color: "rgba(255,255,255,0.9)", fontSize: 16, lineHeight: 1.4 }}>{pt}</span>
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+          </div>
         </div>
       </section>
 
