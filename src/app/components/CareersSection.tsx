@@ -1,15 +1,13 @@
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
-import { Link } from "react-router";
+import { FadeImage } from "./FadeImage";
+import careersDeal from "../../assets/girl_with_deal.webp";
 import { useCms } from "../cms/store";
 import { pickSrc } from "../lib/images";
 
 export function CareersSection() {
   const { data } = useCms();
   const careers = data.careers;
-  const roles = [...careers.roles]
-    .filter((r) => r.published)
-    .sort((a, b) => a.order - b.order);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   return (
@@ -50,48 +48,8 @@ export function CareersSection() {
             </motion.div> : null}
           </div>
 
-          {/* Right: Openings */}
-          <div>
-            <motion.div initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 }}
-              style={{ color: "rgba(201,162,75,0.9)", fontSize: 11, fontWeight: 600, letterSpacing: "0.18em", marginBottom: 18, paddingBottom: 12, borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
-              {careers.rolesHeading}
-            </motion.div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 28 }}>
-              {roles.length === 0 && (
-                <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 14, lineHeight: 1.7, margin: 0 }}>
-                  Открытых вакансий сейчас нет. Актуальный список появится после подтверждения HR. Можно отправить резюме заранее.
-                </p>
-              )}
-              {roles.map((role, i) => (
-                <motion.div key={role.id} initial={{ opacity: 0, x: 20 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.35 + i * 0.08 }}
-                  style={{ background: "#111111", border: "1px solid rgba(255,255,255,0.07)", padding: "18px 22px", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" }}
-                  whileHover={{ borderColor: "rgba(201,162,75,0.35)", x: 2 }}>
-                  <div>
-                    <div style={{ color: "#FFFFFF", fontSize: 14, fontWeight: 600, marginBottom: 6 }}>{role.title}</div>
-                    <div style={{ display: "flex", gap: 10 }}>
-                      <span style={{ background: "rgba(201,162,75,0.1)", color: "#C9A24B", fontSize: 10, fontWeight: 600, letterSpacing: "0.1em", padding: "2px 8px" }}>{role.dept.toUpperCase()}</span>
-                      <span style={{ color: "rgba(255,255,255,0.6)", fontSize: 12 }}>{role.type}</span>
-                      <span style={{ color: "rgba(255,255,255,0.6)", fontSize: 12 }}>· {role.location}</span>
-                    </div>
-                  </div>
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ color: "#C9A24B", flexShrink: 0 }}><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" /></svg>
-                </motion.div>
-              ))}
-            </div>
-            <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.7 }}
-              style={{ background: "#111111", border: "1px solid rgba(201,162,75,0.2)", padding: "26px 26px" }}>
-              <div style={{ color: "#FFFFFF", fontSize: 15, fontWeight: 700, marginBottom: 8 }}>Не нашли подходящую вакансию?</div>
-              <p style={{ color: "rgba(255,255,255,0.72)", fontSize: 13, lineHeight: 1.7, marginBottom: 18 }}>
-                Мы всегда ищем опытных специалистов в области продаж, логистики, операций и торговли. Пришлите резюме — мы свяжемся, когда появится подходящая возможность.
-              </p>
-              <Link to="/careers#resume"
-                style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#C9A24B", color: "#0A0A0A", textDecoration: "none", fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", padding: "11px 20px", transition: "all 0.3s" }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = "#D4AF37"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(201,162,75,0.3)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = "#C9A24B"; e.currentTarget.style.boxShadow = "none"; }}>
-                ОТПРАВИТЬ РЕЗЮМЕ →
-              </Link>
-            </motion.div>
-          </div>
+          {/* Right: photo (replaces the vacancies list + CTA card) */}
+          <FadeImage src={careersDeal} alt="Рукопожатие при приёме на работу в Nobel Group" aspect="1448 / 1086" minHeight={0} />
         </div>
       </div>
     </section>

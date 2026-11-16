@@ -138,7 +138,7 @@ function PartnerForm({ coopTypes }: { coopTypes: string[] }) {
           setError(result.message);
           return;
         }
-        setSent("Обращение записано. Ответственное подразделение свяжется по указанным контактам, когда канал доставки подключён к получателю.");
+        setSent("Спасибо! Заявка отправлена. Ответственный сотрудник Nobel Group свяжется с вами по указанным контактам.");
       }}
       style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}
       className="ng-grid-2"

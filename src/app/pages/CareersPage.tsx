@@ -3,14 +3,18 @@ import { motion, useInView } from "motion/react";
 import { PageLayout } from "../components/PageLayout";
 import { PageHero } from "../components/PageHero";
 import { CareersSection } from "../components/CareersSection";
+import bannerCareers from "../../assets/careers-team.webp";
 import {
   SectionDivider,
   QuoteBand,
   IbmGrid,
   LogisticsMesh,
 } from "../components/BrandDecor";
-import { submitLead } from "../lib/submitLead";
+import { submitLead, fileToBase64 } from "../lib/submitLead";
 import { Link } from "react-router";
+import { BarChart3, ClipboardList, Globe2, Megaphone, Truck, UtensilsCrossed, type LucideIcon } from "lucide-react";
+
+const DEPT_ICONS: LucideIcon[] = [BarChart3, Truck, Globe2, UtensilsCrossed, Megaphone, ClipboardList];
 
 const DEPARTMENTS = [
   { title: "Продажи и торговля", desc: "Работа с ключевыми клиентами, оптовыми каналами и развитием портфеля." },
@@ -29,6 +33,7 @@ export function CareersPage() {
   const [sent, setSent] = useState("");
   const [error, setError] = useState("");
   const [fileName, setFileName] = useState("");
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -48,7 +53,8 @@ export function CareersPage() {
         titleAccent="вместе с Nobel Group."
         subtitle="Мы ищем специалистов, готовых брать ответственность, развивать бизнес и расти вместе с группой. Возможности открываются в продажах, финансах, логистике, закупках, ВЭД, производстве и управлении."
         crumbs={[{ label: "Карьера" }]}
-        visual="careers"
+        bgImage={bannerCareers}
+        bgImagePosition="right 28%"
       />
 
       <CareersSection />
@@ -79,24 +85,27 @@ export function CareersPage() {
           </motion.h2>
 
           <div className="ng-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
-            {DEPARTMENTS.map((d, i) => (
-              <motion.div
-                key={d.title}
-                initial={{ opacity: 0, y: 24 }}
-                animate={deptInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.1 + i * 0.06 }}
-                style={{
-                  background: "var(--ng-elevated)",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  padding: "26px 24px",
-                  minHeight: 160,
-                }}
-              >
-                <div style={{ width: 24, height: 2, background: "#D5A251", marginBottom: 16 }} />
-                <div style={{ color: "#FFFFFF", fontSize: 16, fontWeight: 700, marginBottom: 10 }}>{d.title}</div>
-                <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 14, lineHeight: 1.7, margin: 0 }}>{d.desc}</p>
-              </motion.div>
-            ))}
+            {DEPARTMENTS.map((d, i) => {
+              const Icon = DEPT_ICONS[i % DEPT_ICONS.length];
+              return (
+                <motion.div
+                  key={d.title}
+                  initial={{ opacity: 0, y: 32, scale: 0.97 }}
+                  animate={deptInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+                  transition={{ delay: 0.1 + i * 0.08, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+                  className="ng-dept-card"
+                  style={{ borderRadius: 14, padding: "28px 26px 30px", minHeight: 200 }}
+                >
+                  <span className="ng-dept-num">{String(i + 1).padStart(2, "0")}</span>
+                  <div className="ng-dept-icon" style={{ ["--float" as string]: `${i * 0.5}s` }}>
+                    <Icon size={26} strokeWidth={1.5} />
+                  </div>
+                  <div style={{ color: "#FFFFFF", fontSize: 18, fontWeight: 700, marginBottom: 10, lineHeight: 1.3 }}>{d.title}</div>
+                  <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 14.5, lineHeight: 1.7, margin: 0 }}>{d.desc}</p>
+                  <span className="ng-dept-bar" />
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -159,6 +168,15 @@ export function CareersPage() {
               onSubmit={async (e) => {
                 e.preventDefault();
                 setError("");
+                let fileData = "";
+                if (resumeFile) {
+                  try {
+                    fileData = await fileToBase64(resumeFile);
+                  } catch {
+                    setError("Не удалось прочитать файл резюме.");
+                    return;
+                  }
+                }
                 const result = await submitLead({
                   form: "career",
                   name: form.name,
@@ -167,13 +185,14 @@ export function CareersPage() {
                   topic: form.role,
                   message: `${form.city}\n${form.experience}\n${form.message}`,
                   fileName,
+                  ...(fileData ? { fileData, fileType: resumeFile?.type || "" } : {}),
                   consent: form.consent ? "yes" : "",
                 });
                 if (!result.ok) {
                   setError(result.message);
                   return;
                 }
-                setSent("Данные резюме записаны. Файл хранится у HR только после подключения официального канала приёма.");
+                setSent("Спасибо! Резюме отправлено в HR Nobel Group. Мы свяжемся с вами, когда появится подходящая возможность.");
               }}
               style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}
             >
@@ -234,7 +253,7 @@ export function CareersPage() {
               </div>
               <div style={{ gridColumn: "1 / -1" }}>
                 <label style={{ display: "block", color: "rgba(255,255,255,0.6)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", marginBottom: 8 }}>
-                  РЕЗЮМЕ PDF / DOCX, ДО 5 МБ
+                  РЕЗЮМЕ PDF / DOCX, ДО 3 МБ
                 </label>
                 <input
                   type="file"
@@ -242,14 +261,16 @@ export function CareersPage() {
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (!file) return;
-                    if (file.size > 5 * 1024 * 1024) {
-                      setError("Файл больше 5 МБ.");
+                    if (file.size > 3 * 1024 * 1024) {
+                      setError("Файл больше 3 МБ.");
                       e.target.value = "";
                       setFileName("");
+                      setResumeFile(null);
                       return;
                     }
                     setError("");
                     setFileName(file.name);
+                    setResumeFile(file);
                   }}
                   style={{ color: "rgba(255,255,255,0.8)", fontSize: 13 }}
                 />

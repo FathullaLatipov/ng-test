@@ -161,6 +161,38 @@ html { scroll-behavior: smooth; font-family: 'Manrope', sans-serif; }
 .ng-logo-tile:hover > * { transform: scale(1.06); }
 @media (prefers-reduced-motion: reduce) { .ng-logo-tile, .ng-logo-tile::after { animation: none; } }
 
+/* Careers: department cards — icon tile, hover lift, glow, sweeping bottom bar */
+@keyframes ng-dept-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+.ng-dept-card {
+  position: relative; overflow: hidden;
+  background: linear-gradient(160deg, rgba(255,255,255,0.045) 0%, rgba(255,255,255,0.012) 55%), var(--ng-elevated);
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: transform .45s cubic-bezier(.22,1,.36,1), border-color .35s, box-shadow .45s;
+}
+.ng-dept-card::before { /* soft golden glow that follows the hover */
+  content: ""; position: absolute; width: 220px; height: 220px; right: -70px; top: -90px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(213,162,81,0.22), transparent 70%); opacity: 0; transition: opacity .5s;
+  pointer-events: none;
+}
+.ng-dept-card:hover { transform: translateY(-8px); border-color: rgba(213,162,81,0.5); box-shadow: 0 22px 44px rgba(0,0,0,0.45), 0 0 30px rgba(213,162,81,0.12); }
+.ng-dept-card:hover::before { opacity: 1; }
+.ng-dept-num { position: absolute; top: 18px; right: 22px; font-size: 13px; font-weight: 800; letter-spacing: .14em; color: rgba(213,162,81,0.35); transition: color .35s; }
+.ng-dept-card:hover .ng-dept-num { color: rgba(232,201,122,0.9); }
+.ng-dept-icon {
+  width: 54px; height: 54px; border-radius: 14px; margin-bottom: 20px;
+  display: flex; align-items: center; justify-content: center; color: #E8C97A;
+  background: linear-gradient(145deg, rgba(213,162,81,0.22), rgba(213,162,81,0.06));
+  border: 1px solid rgba(213,162,81,0.4);
+  animation: ng-dept-float 4.5s ease-in-out infinite; animation-delay: var(--float, 0s);
+  transition: background .35s, color .35s, box-shadow .35s;
+}
+.ng-dept-icon svg { transition: transform .5s cubic-bezier(.22,1,.36,1); }
+.ng-dept-card:hover .ng-dept-icon { background: linear-gradient(145deg, #E8C97A, #D5A251); color: #1A1408; box-shadow: 0 0 26px rgba(213,162,81,0.5); }
+.ng-dept-card:hover .ng-dept-icon svg { transform: scale(1.12) rotate(-6deg); }
+.ng-dept-bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 0; background: linear-gradient(90deg, #D5A251, #E8C97A, transparent); transition: width .6s cubic-bezier(.22,1,.36,1); }
+.ng-dept-card:hover .ng-dept-bar { width: 100%; }
+@media (prefers-reduced-motion: reduce) { .ng-dept-icon { animation: none; } }
+
 /* ─── Section eyebrow labels — enlarge site-wide (11px → 15px) ─── */
 /* Matches the small tracked gold section labels (font-size 11px + wide letter-spacing),
    without touching nav links, badges or corner captions. */
@@ -172,3 +204,10 @@ html { scroll-behavior: smooth; font-family: 'Manrope', sans-serif; }
 [style*="font-size:11px"][style*="letter-spacing:0.28em"] {
   font-size: 15px !important;
 }
+
+/* Brands: pack photo tile reacts to card hover */
+.ng-brand-card { transition: transform .4s cubic-bezier(.22,1,.36,1), border-color .3s, box-shadow .4s; }
+.ng-brand-card:focus-visible { outline: 2px solid #E8C97A; outline-offset: 2px; }
+.ng-brand-card:hover { transform: translateY(-4px); border-color: rgba(213,162,81,0.5); box-shadow: 0 14px 30px rgba(0,0,0,0.4); }
+.ng-brand-pack img { transition: transform .6s cubic-bezier(.22,1,.36,1); }
+.ng-brand-card:hover .ng-brand-pack img { transform: scale(1.08); }

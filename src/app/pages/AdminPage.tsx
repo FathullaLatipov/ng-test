@@ -1426,8 +1426,9 @@ export function AdminPage() {
                     <input value={m.title} onChange={(e) => set({ title: e.target.value })} style={field} placeholder="Заголовок" />
                     <DangerBtn onClick={() => { patch("milestones", data.milestones.filter((x) => x.id !== m.id)); saved(); }}>×</DangerBtn>
                   </div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 8, alignItems: "center" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr auto", gap: 8, alignItems: "center" }}>
                     <input value={m.tag} onChange={(e) => set({ tag: e.target.value })} style={field} placeholder="Метка (Производство, Торговля…)" />
+                    <input value={m.logo || ""} onChange={(e) => set({ logo: e.target.value })} style={field} placeholder="Логотип (URL, необязательно)" />
                     <label style={{ display: "flex", gap: 6, alignItems: "center", fontSize: 12, color: "var(--admin-muted)" }}>
                       <input type="checkbox" checked={m.published} onChange={(e) => set({ published: e.target.checked })} /> Показывать
                     </label>
@@ -1575,31 +1576,26 @@ function BrandList({
         </button>
       }
     >
-      {items.map((b) => (
-        <div key={b.id} style={{ display: "grid", gridTemplateColumns: withDesc ? "1fr 1fr 1.2fr auto" : "1fr 1fr auto", gap: 8 }}>
-          <input
-            value={b.name}
-            onChange={(e) => onChange(items.map((x) => (x.id === b.id ? { ...x, name: e.target.value } : x)))}
-            style={field}
-            placeholder="Название"
-          />
-          <input
-            value={b.cat}
-            onChange={(e) => onChange(items.map((x) => (x.id === b.id ? { ...x, cat: e.target.value } : x)))}
-            style={field}
-            placeholder="Категория"
-          />
-          {withDesc && (
-            <input
-              value={b.desc || ""}
-              onChange={(e) => onChange(items.map((x) => (x.id === b.id ? { ...x, desc: e.target.value } : x)))}
-              style={field}
-              placeholder="Описание"
-            />
-          )}
-          <DangerBtn onClick={() => onChange(items.filter((x) => x.id !== b.id))}>×</DangerBtn>
-        </div>
-      ))}
+      {items.map((b) => {
+        const set = (patch: Partial<BrandItem>) => onChange(items.map((x) => (x.id === b.id ? { ...x, ...patch } : x)));
+        return (
+          <div key={b.id} style={{ border: "1px solid var(--admin-border)", borderRadius: 10, padding: 12, display: "grid", gap: 8 }}>
+            <div style={{ display: "grid", gridTemplateColumns: withDesc ? "1fr 1fr 1.2fr auto" : "1fr 1fr auto", gap: 8 }}>
+              <input value={b.name} onChange={(e) => set({ name: e.target.value })} style={field} placeholder="Название" />
+              <input value={b.cat} onChange={(e) => set({ cat: e.target.value })} style={field} placeholder="Категория" />
+              {withDesc && <input value={b.desc || ""} onChange={(e) => set({ desc: e.target.value })} style={field} placeholder="Описание (флагман)" />}
+              <DangerBtn onClick={() => onChange(items.filter((x) => x.id !== b.id))}>×</DangerBtn>
+            </div>
+            <input value={b.img || ""} onChange={(e) => set({ img: e.target.value })} style={field} placeholder="Фото упаковки (URL)" />
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+              <input value={b.volumes || ""} onChange={(e) => set({ volumes: e.target.value })} style={field} placeholder="Объёмы: 1 л / 2 л / 5 л" />
+              <input value={b.shelfLife || ""} onChange={(e) => set({ shelfLife: e.target.value })} style={field} placeholder="Срок хранения: 12 месяцев" />
+            </div>
+            <input value={(b.badges || []).join(", ")} onChange={(e) => set({ badges: e.target.value.split(",").map((x) => x.trim()).filter(Boolean) })} style={field} placeholder="Свойства через запятую: Без ГМО, Рафинированное" />
+            <textarea rows={4} value={b.about || ""} onChange={(e) => set({ about: e.target.value })} style={{ ...field, resize: "vertical" }} placeholder="Подробное описание для окна «Подробнее» (абзацы — через пустую строку)" />
+          </div>
+        );
+      })}
     </Card>
   );
 }

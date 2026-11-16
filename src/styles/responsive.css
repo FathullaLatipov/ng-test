@@ -59,8 +59,8 @@ img { max-width: 100%; }
 }
 
 /* Hero with a photo background: left shade keeps the text readable (stronger on phones) */
-.ng-hero-shade { background: linear-gradient(90deg, rgba(10,9,8,0.35) 0%, transparent 55%); }
-.ng-hero-shade-strong { background: linear-gradient(90deg, rgba(8,10,16,0.82) 0%, rgba(8,10,16,0.55) 38%, rgba(8,10,16,0.08) 72%, transparent 100%); }
+.ng-hero-shade { background: linear-gradient(180deg, rgba(8,8,10,0.72) 0, rgba(8,8,10,0.35) 90px, transparent 190px), linear-gradient(90deg, rgba(10,9,8,0.35) 0%, transparent 55%); }
+.ng-hero-shade-strong { background: linear-gradient(180deg, rgba(8,8,10,0.72) 0, rgba(8,8,10,0.35) 90px, transparent 190px), linear-gradient(90deg, rgba(8,10,16,0.82) 0%, rgba(8,10,16,0.55) 38%, rgba(8,10,16,0.08) 72%, transparent 100%); }
 @media (max-width: 900px) { .ng-hero-shade, .ng-hero-shade-strong { background: linear-gradient(180deg, rgba(10,9,8,0.7) 0%, rgba(10,9,8,0.62) 100%); } }
 
 /* Business page: quick-nav pills — always one row on desktop, text scales down to fit */
@@ -263,4 +263,11 @@ img { max-width: 100%; }
 @media (max-width: 680px) {
   .ng-page-hero { padding-top: 108px !important; padding-bottom: 40px !important; }
   .ng-page-hero-visual { max-width: 260px !important; min-height: 200px !important; }
+}
+
+/* Brand details dialog: stacks on tablets / phones (photo on top, compact) */
+@media (max-width: 760px) {
+  .ng-brand-modal { grid-template-columns: 1fr !important; max-height: 94vh !important; overflow-y: auto !important; }
+  .ng-brand-modal-photo { min-height: 0 !important; height: 210px; }
+  .ng-brand-modal-photo img { object-position: center 40%; }
 }

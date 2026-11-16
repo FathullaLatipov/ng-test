@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { PageLayout } from "../components/PageLayout";
 import { PageHero } from "../components/PageHero";
+import bannerContacts from "../../assets/contacts.webp";
 import {
   SectionDivider,
   QuoteBand,
@@ -21,7 +22,8 @@ export function ContactsPage() {
         titleAccent="с Nobel Group."
         subtitle="Выберите направление обращения или напишите через форму. Телефон, email и адрес появятся после утверждённого списка контактов."
         crumbs={[{ label: "Контакты" }]}
-        visual="contacts"
+        bgImage={bannerContacts}
+        bgImagePosition="right 38%"
       />
 
       <section

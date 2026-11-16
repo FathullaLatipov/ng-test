@@ -1,6 +1,19 @@
 import fs from "node:fs";
 import path from "node:path";
 import { getAdminPassword, getStorageMode, readCms, writeCms } from "../api/_lib/storage.js";
+import leadHandler from "../api/lead.js";
+
+/** Load .env into process.env for local dev (Vercel injects real env vars in production) */
+function loadDotEnv() {
+  const file = path.join(process.cwd(), ".env");
+  if (!fs.existsSync(file)) return;
+  for (const line of fs.readFileSync(file, "utf8").split(/\r?\n/)) {
+    const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*?)\s*$/i);
+    if (!m || line.trim().startsWith("#")) continue;
+    if (process.env[m[1]] === undefined) process.env[m[1]] = m[2].replace(/^["']|["']$/g, "");
+  }
+}
+loadDotEnv();
 
 function sendJson(res, status, body) {
   res.statusCode = status;
@@ -42,6 +55,7 @@ export function cmsApiPlugin() {
 
       server.middlewares.use(async (req, res, next) => {
         const url = req.url?.split("?")[0] || "";
+        if (url === "/api/lead") return leadHandler(req, res);
         if (url !== "/api/cms") return next();
 
         try {

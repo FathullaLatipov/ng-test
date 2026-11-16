@@ -1,7 +1,9 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router";
 import { motion, useInView } from "motion/react";
 import { useCms } from "../cms/store";
+import { BrandModal } from "./BrandModal";
+import type { BrandItem } from "../cms/types";
 import nobelTradeLogo from "../../assets/nobel-trade-logo.webp";
 import ecobornLogo from "../../assets/ecoborn-logo.svg";
 import nabilAsiaLogo from "../../assets/nabil_asia.webp";
@@ -87,6 +89,7 @@ export function BrandsPortfolio({ showCta = true, showCompanies = true }: { show
   const companies = [...data.companies].filter((c) => c.published).sort((a, b) => a.order - b.order);
   const own = [...brands.own].sort((a, b) => a.order - b.order);
   const exclusive = [...brands.exclusive].sort((a, b) => a.order - b.order);
+  const [openBrand, setOpenBrand] = useState<BrandItem | null>(null);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -156,21 +159,40 @@ export function BrandsPortfolio({ showCta = true, showCompanies = true }: { show
               return (
                 <div
                   key={b.id}
+                  className="ng-brand-card"
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`${b.name} — подробнее`}
+                  onClick={() => setOpenBrand(b)}
+                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpenBrand(b); } }}
                   style={{
+                    cursor: "pointer",
                     background: featured ? "linear-gradient(150deg, rgba(201,162,75,0.14), #111111)" : "#111111",
                     border: featured ? "1px solid rgba(201,162,75,0.4)" : "1px solid rgba(255,255,255,0.07)",
                     borderLeft: "2px solid #C9A24B",
-                    padding: "16px 18px",
+                    borderRadius: 12,
+                    padding: "14px 14px 14px 18px",
                     boxSizing: "border-box",
-                    minHeight: 86,
+                    minHeight: 112,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: 14,
                   }}
                 >
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
-                    <div style={{ color: "#FFFFFF", fontSize: 17, fontWeight: 800 }}>{b.name}</div>
-                    {featured && <span style={{ color: "#0A0A0A", background: "#C9A24B", fontSize: 9, fontWeight: 700, letterSpacing: "0.06em", padding: "3px 7px", whiteSpace: "nowrap" }}>ФЛАГМАН</span>}
+                  <div style={{ minWidth: 0, alignSelf: "flex-start", paddingTop: 2 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                      <div style={{ color: "#FFFFFF", fontSize: 18, fontWeight: 800 }}>{b.name}</div>
+                      {featured && <span style={{ color: "#0A0A0A", background: "#C9A24B", fontSize: 9, fontWeight: 700, letterSpacing: "0.06em", padding: "3px 7px", whiteSpace: "nowrap" }}>ФЛАГМАН</span>}
+                    </div>
+                    <div style={{ color: "#C9A24B", fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", marginTop: 6 }}>{b.cat.toUpperCase()}</div>
+                    {b.desc && <div style={{ color: "rgba(255,255,255,0.58)", fontSize: 12, marginTop: 8 }}>{b.desc}</div>}
                   </div>
-                  <div style={{ color: "#C9A24B", fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", marginTop: 6 }}>{b.cat.toUpperCase()}</div>
-                  {b.desc && <div style={{ color: "rgba(255,255,255,0.58)", fontSize: 12, marginTop: 8 }}>{b.desc}</div>}
+                  {b.img && (
+                    <div className="ng-brand-pack" style={{ flexShrink: 0, width: 84, height: 105, borderRadius: 10, overflow: "hidden", background: "radial-gradient(circle at 50% 35%, rgba(232,201,122,0.22), rgba(30,26,18,0.9) 75%)", border: "1px solid rgba(213,162,81,0.25)" }}>
+                      <img src={b.img} alt={b.name} loading="lazy" draggable={false} style={{ width: "100%", height: "100%", objectFit: b.img.includes("mark-") ? "contain" : "cover", display: "block" }} />
+                    </div>
+                  )}
                 </div>
               );
             })}
@@ -252,6 +274,7 @@ export function BrandsPortfolio({ showCta = true, showCompanies = true }: { show
           </motion.div>
         )}
       </div>
+      <BrandModal brand={openBrand} onClose={() => setOpenBrand(null)} />
     </section>
   );
 }

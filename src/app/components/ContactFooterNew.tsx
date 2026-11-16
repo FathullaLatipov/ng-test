@@ -134,7 +134,7 @@ export function ContactFooterNew() {
                     setFormError(result.message);
                     return;
                   }
-                  setSent("Обращение записано и будет передано ответственному подразделению.");
+                  setSent("Спасибо! Обращение отправлено. Ответственный сотрудник Nobel Group свяжется с вами.");
                 }}>
                   <input name="website" tabIndex={-1} autoComplete="off" style={{ display: "none" }} aria-hidden />
                   <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>

@@ -17,14 +17,24 @@ function shouldSkipVideo() {
  * Looping muted background video that starts from `start` seconds (and loops back to it).
  * Phones get a lighter file; data-saver / slow networks / reduced-motion get the poster only.
  */
-export function BgVideo({ start = 0, poster }: { start?: number; poster?: string }) {
+export function BgVideo({
+  start = 0,
+  poster,
+  desktopSrc = DESKTOP_SRC,
+  mobileSrc = MOBILE_SRC,
+}: {
+  start?: number;
+  poster?: string;
+  desktopSrc?: string;
+  mobileSrc?: string;
+}) {
   const ref = useRef<HTMLVideoElement>(null);
   const [src, setSrc] = useState<string | null>(null);
 
   useEffect(() => {
     if (shouldSkipVideo()) return;
-    setSrc(window.matchMedia("(max-width: 768px)").matches ? MOBILE_SRC : DESKTOP_SRC);
-  }, []);
+    setSrc(window.matchMedia("(max-width: 768px)").matches ? mobileSrc : desktopSrc);
+  }, [desktopSrc, mobileSrc]);
 
   useEffect(() => {
     const v = ref.current;

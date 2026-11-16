@@ -22,6 +22,8 @@ type PageHeroProps = {
   bgImagePosition?: string;
   /** Stronger left shade for bright banners */
   bgShadeStrong?: boolean;
+  /** Own looping background video (desktop / phone files in /public) instead of the shared one */
+  bgVideo?: { desktop: string; mobile: string; poster: string; start?: number };
 };
 
 export function PageHero({
@@ -36,6 +38,7 @@ export function PageHero({
   bgImage,
   bgImagePosition = "right 78%",
   bgShadeStrong = false,
+  bgVideo,
 }: PageHeroProps) {
   return (
     <section
@@ -66,6 +69,14 @@ export function PageHero({
         />
       )}
       {bgImage && <div aria-hidden className={`ng-hero-shade ${bgShadeStrong ? "ng-hero-shade-strong" : ""}`} style={{ position: "absolute", inset: 0 }} />}
+      {bgVideo && (
+        <>
+          <div style={{ position: "absolute", inset: 0, filter: "brightness(0.9) saturate(1.05)" }}>
+            <BgVideo start={bgVideo.start ?? 0} poster={bgVideo.poster} desktopSrc={bgVideo.desktop} mobileSrc={bgVideo.mobile} />
+          </div>
+          <div aria-hidden className="ng-hero-shade ng-hero-shade-strong" style={{ position: "absolute", inset: 0 }} />
+        </>
+      )}
       {bgVideoStart !== undefined && (
         <>
           <div style={{ position: "absolute", inset: 0, filter: "brightness(0.85) saturate(1)" }}>

@@ -59,12 +59,12 @@ function MilestoneCard({
             aria-hidden
             animate={{ opacity: [0.5, 0], scale: [0.85, 1.8] }}
             transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
-            style={{ position: "absolute", left: "50%", top: "50%", x: "-50%", y: "-50%", width: 60, height: 60, borderRadius: 10, border: "1.5px solid rgba(213,162,81,0.5)", pointerEvents: "none" }}
+            style={{ position: "absolute", left: "50%", top: "50%", x: "-50%", y: "-50%", width: m.logo ? 84 : 60, height: m.logo ? 84 : 60, borderRadius: 10, border: "1.5px solid rgba(213,162,81,0.5)", pointerEvents: "none" }}
           />
         )}
         <motion.div
           animate={{
-            scale: hovered ? 1.15 : active ? 1 : 0.85,
+            scale: hovered ? 1.12 : active ? 1 : m.logo ? 0.92 : 0.85,
             boxShadow: hovered
               ? "0 0 32px rgba(213,162,81,0.75)"
               : active
@@ -73,7 +73,7 @@ function MilestoneCard({
           }}
           transition={{ duration: 0.35 }}
           style={{
-            width: 56, height: 56,
+            width: m.logo ? 80 : 56, height: m.logo ? 80 : 56,
             boxSizing: "border-box",
             zIndex: 2,
             flexShrink: 0,
@@ -85,7 +85,11 @@ function MilestoneCard({
             transition: "background 0.4s, border 0.4s",
           }}
         >
-          <YearIcon size={28} />
+          {m.logo ? (
+            <img src={m.logo} alt={m.title} draggable={false} style={{ width: "100%", height: "100%", objectFit: "contain", padding: 11, boxSizing: "border-box", display: "block" }} />
+          ) : (
+            <YearIcon size={28} />
+          )}
         </motion.div>
       </div>
 

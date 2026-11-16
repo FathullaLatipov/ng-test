@@ -57,6 +57,8 @@ export type MilestoneItem = {
   desc: string;
   /** Короткие факты-чипы под описанием */
   points?: string[];
+  /** Логотип компании в центре таймлайна (URL); если пусто — иконка */
+  logo?: string;
   tag: string;
   order: number;
   published: boolean;
@@ -67,6 +69,16 @@ export type BrandItem = {
   name: string;
   cat: string;
   desc?: string;
+  /** Фото упаковки марки (URL) */
+  img?: string;
+  /** Подробное описание для окна «Подробнее» (абзацы через пустую строку) */
+  about?: string;
+  /** Объёмы фасовки, например «1 л / 2 л / 5 л» */
+  volumes?: string;
+  /** Срок хранения */
+  shelfLife?: string;
+  /** Короткие свойства: «Без ГМО», «Рафинированное»… */
+  badges?: string[];
   exclusive?: boolean;
   order: number;
 };

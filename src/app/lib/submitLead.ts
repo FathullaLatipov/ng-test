@@ -1,5 +1,15 @@
 export type LeadResult = { ok: true } | { ok: false; message: string };
 
+/** File → base64 (without the data: prefix) */
+export function fileToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result).split(",")[1] ?? "");
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
+
 export async function submitLead(payload: Record<string, string>): Promise<LeadResult> {
   const res = await fetch("/api/lead", {
     method: "POST",

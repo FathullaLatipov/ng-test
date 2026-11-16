@@ -12,7 +12,7 @@ export function PartnershipPage() {
         titleAccent="вместе."
         subtitle="Nobel Group сотрудничает с производителями, поставщиками, торговыми сетями, оптовыми компаниями, HoReCa и инвестиционными партнёрами."
         crumbs={[{ label: "Партнерам" }]}
-        visual="partnership"
+        bgVideo={{ desktop: "/video/partners-desktop.mp4", mobile: "/video/partners-mobile.mp4", poster: "/video/partners-poster.jpg" }}
       />
 
       <PartnershipSection showForm />
