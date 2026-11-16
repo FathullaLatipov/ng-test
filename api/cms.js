@@ -1,4 +1,5 @@
-import { getAdminPassword, getStorageMode, readCms, writeCms } from "./_lib/storage.js";
+import { getStorageMode, passwordOk, readCms, writeCms } from "./_lib/storage.js";
+import { validateCms } from "./_lib/validate.js";
 
 function send(res, status, body) {
   res.statusCode = status;
@@ -26,7 +27,7 @@ function readBody(req) {
 function checkAuth(req) {
   const header = req.headers["x-admin-password"] || req.headers["authorization"] || "";
   const value = String(header).replace(/^Bearer\s+/i, "").trim();
-  return value && value === getAdminPassword();
+  return passwordOk(value);
 }
 
 export default async function handler(req, res) {
@@ -54,7 +55,7 @@ export default async function handler(req, res) {
     if (req.method === "POST") {
       const body = await readBody(req);
       if (body?.action === "auth") {
-        const ok = body.password === getAdminPassword();
+        const ok = passwordOk(body.password);
         send(res, ok ? 200 : 401, { ok });
         return;
       }
@@ -70,6 +71,11 @@ export default async function handler(req, res) {
       const body = await readBody(req);
       if (!body || typeof body !== "object" || !body.homeHero) {
         send(res, 400, { ok: false, error: "Некорректные данные CMS" });
+        return;
+      }
+      const invalid = validateCms(body);
+      if (invalid) {
+        send(res, 400, { ok: false, error: invalid });
         return;
       }
       const next = { ...body, updatedAt: new Date().toISOString() };

@@ -7,9 +7,6 @@ const AUTH_KEY = "nobel-group-admin-auth";
 const PASS_KEY = "nobel-group-admin-pass";
 const API_URL = "/api/cms";
 
-/** Demo fallback — server ADMIN_PASSWORD is source of truth */
-export const ADMIN_PASSWORD = "nobel2026";
-
 function cloneDefault(): CmsData {
   return structuredClone(DEFAULT_CMS);
 }
@@ -119,7 +116,7 @@ export async function fetchCmsFromServer(): Promise<{ data: CmsData; storage: st
 }
 
 export async function saveCmsToServer(data: CmsData): Promise<CmsData> {
-  const password = sessionStorage.getItem(PASS_KEY) || ADMIN_PASSWORD;
+  const password = sessionStorage.getItem(PASS_KEY) || "";
   const next = { ...data, updatedAt: new Date().toISOString() };
   const res = await fetch(API_URL, {
     method: "PUT",
@@ -170,11 +167,7 @@ export async function loginAdmin(password: string): Promise<boolean> {
     }
     return false;
   } catch {
-    if (password === ADMIN_PASSWORD) {
-      sessionStorage.setItem(AUTH_KEY, "1");
-      sessionStorage.setItem(PASS_KEY, password);
-      return true;
-    }
+    // server unreachable: never fall back to a built-in password
     return false;
   }
 }

@@ -3,6 +3,7 @@ import { motion, useInView } from "motion/react";
 import { Link } from "react-router";
 import nobelLogo from "../../assets/nobel-logo.png";
 import { useCms } from "../cms/store";
+import { safeInstagram, safeTelegram } from "../lib/safeUrl";
 import { submitLead } from "../lib/submitLead";
 
 const TOPICS = ["Продажи", "Закупки / поставщики", "Партнёрство", "HoReCa", "Логистика", "Карьера", "СМИ", "Другое"];
@@ -94,8 +95,8 @@ export function ContactFooterNew() {
                   { label: "Адрес", value: contact.address, href: "" },
                   { label: "Телефон", value: contact.phone, href: contact.phone ? "tel:" + contact.phone.replace(/[^\d+]/g, "") : "" },
                   { label: "Email", value: contact.email, href: contact.email ? "mailto:" + contact.email : "" },
-                  { label: "Instagram", value: contact.instagram ? "@" + (contact.instagram.match(/instagram\.com\/([^/?#]+)/i)?.[1] ?? "") : "", href: contact.instagram || "" },
-                  { label: "Telegram", value: contact.telegram ? "@" + (contact.telegram.match(/t\.me\/([^/?#]+)/i)?.[1] ?? "") : "", href: contact.telegram || "" },
+                  { label: "Instagram", value: safeInstagram(contact.instagram) ? "@" + (safeInstagram(contact.instagram)!.match(/instagram\.com\/([^/?#]+)/i)?.[1] ?? "") : "", href: safeInstagram(contact.instagram) || "" },
+                  { label: "Telegram", value: safeTelegram(contact.telegram) ? "@" + (safeTelegram(contact.telegram)!.match(/(?:t\.me|telegram\.me|telegram\.dog)\/([^/?#]+)/i)?.[1] ?? "") : "", href: safeTelegram(contact.telegram) || "" },
                   { label: "Часы работы", value: contact.hours, href: "" },
                 ].filter((item) => item.value && item.value.trim() && item.value !== "@").map((item) => (
                   <div key={item.label} style={{ display: "grid", gridTemplateColumns: "90px 1fr", gap: 16, padding: "13px 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>

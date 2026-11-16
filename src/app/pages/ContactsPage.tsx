@@ -5,6 +5,7 @@ import { PageLayout } from "../components/PageLayout";
 import { PageHero } from "../components/PageHero";
 import bannerContacts from "../../assets/contacts.webp";
 import { useCms } from "../cms/store";
+import { safeInstagram, safeTelegram } from "../lib/safeUrl";
 import {
   SectionDivider,
   QuoteBand,
@@ -28,6 +29,8 @@ type Row = { key: string; icon: LucideIcon; label: string; value: string; href?:
 export function ContactsPage() {
   const { data } = useCms();
   const c = data.contact;
+  const instagram = safeInstagram(c.instagram);
+  const telegram = safeTelegram(c.telegram);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -38,8 +41,8 @@ export function ContactsPage() {
   const rows: Row[] = [
     { key: "phone", icon: Phone, label: "ТЕЛЕФОН", value: c.phone.trim(), href: c.phone.trim() ? telHref(c.phone) : undefined, hint: "Позвонить" },
     { key: "address", icon: MapPin, label: "АДРЕС", value: address, href: address ? `https://www.google.com/maps/search/?api=1&query=${q}` : undefined, external: true, hint: "Открыть на карте" },
-    { key: "instagram", icon: Instagram, label: "INSTAGRAM", value: c.instagram ? handle(c.instagram) : "", href: c.instagram || undefined, external: true, hint: "Перейти в Instagram" },
-    { key: "telegram", icon: Send, label: "TELEGRAM", value: c.telegram ? handle(c.telegram) : "", href: c.telegram || undefined, external: true, hint: "Написать в Telegram" },
+    { key: "instagram", icon: Instagram, label: "INSTAGRAM", value: instagram ? handle(instagram) : "", href: instagram, external: true, hint: "Перейти в Instagram" },
+    { key: "telegram", icon: Send, label: "TELEGRAM", value: telegram ? handle(telegram) : "", href: telegram, external: true, hint: "Написать в Telegram" },
     { key: "email", icon: Mail, label: "EMAIL", value: c.email.trim(), href: c.email.trim() ? `mailto:${c.email.trim()}` : undefined, hint: "Написать на email" },
     { key: "hours", icon: Clock, label: "ЧАСЫ РАБОТЫ", value: c.hours.trim() },
   ].filter((r) => r.value);

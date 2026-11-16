@@ -15,6 +15,7 @@ import { FadeImage } from "../components/FadeImage";
 import { ArisSection } from "../components/ArisSection";
 import { SemeySection } from "../components/SemeySection";
 import { useCms } from "../cms/store";
+import { safeHttpUrl } from "../lib/safeUrl";
 import type { DirectionItem } from "../cms/types";
 
 import ecobornHero from "../../assets/ecoborn-5.webp";
@@ -139,7 +140,7 @@ export function BusinessPage() {
   const directions = [...data.business.directions].filter((d) => d.published).sort((a, b) => a.order - b.order);
   const dir = (id: string) => directions.find((d) => d.id === id);
   const jib = data.jib;
-  const ecobornUrl = data.companies.find((c) => c.id === "ecoborn")?.website || "https://ecoborn.uz";
+  const ecobornUrl = safeHttpUrl(data.companies.find((c) => c.id === "ecoborn")?.website) || "https://ecoborn.uz";
   const jibProducts = [...(jib?.products ?? [])].sort((a, b) => a.order - b.order);
 
   return (
@@ -326,7 +327,7 @@ export function BusinessPage() {
               )}
 
               <motion.div {...reveal}>
-                <a href={jib.website || "https://www.vmpz.pro/"} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, border: `1px solid rgba(213,162,81,0.5)`, color: GOLD, textDecoration: "none", fontSize: 14, fontWeight: 700, letterSpacing: "0.08em", padding: "15px 30px" }}>
+                <a href={safeHttpUrl(jib.website) || "https://www.vmpz.pro/"} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, border: `1px solid rgba(213,162,81,0.5)`, color: GOLD, textDecoration: "none", fontSize: 14, fontWeight: 700, letterSpacing: "0.08em", padding: "15px 30px" }}>
                   ПЕРЕЙТИ НА САЙТ ЗАВОДА →
                 </a>
               </motion.div>

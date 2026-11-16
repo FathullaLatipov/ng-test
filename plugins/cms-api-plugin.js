@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
-import { getAdminPassword, getStorageMode, readCms, writeCms } from "../api/_lib/storage.js";
+import { getStorageMode, passwordOk, readCms, writeCms } from "../api/_lib/storage.js";
+import { validateCms } from "../api/_lib/validate.js";
 import leadHandler from "../api/lead.js";
 
 /** Load .env into process.env for local dev (Vercel injects real env vars in production) */
@@ -41,7 +42,7 @@ function readBody(req) {
 function checkAuth(req) {
   const header = req.headers["x-admin-password"] || req.headers["authorization"] || "";
   const value = String(header).replace(/^Bearer\s+/i, "").trim();
-  return value && value === getAdminPassword();
+  return passwordOk(value);
 }
 
 /** Local /api/cms during `npm run dev` — stores to data/cms.json */
@@ -67,7 +68,7 @@ export function cmsApiPlugin() {
           if (req.method === "POST") {
             const body = await readBody(req);
             if (body?.action === "auth") {
-              const ok = body.password === getAdminPassword();
+              const ok = passwordOk(body.password);
               return sendJson(res, ok ? 200 : 401, { ok });
             }
             return sendJson(res, 400, { ok: false, error: "Unknown action" });
@@ -81,6 +82,8 @@ export function cmsApiPlugin() {
             if (!body || typeof body !== "object" || !body.homeHero) {
               return sendJson(res, 400, { ok: false, error: "Некорректные данные CMS" });
             }
+            const invalid = validateCms(body);
+            if (invalid) return sendJson(res, 400, { ok: false, error: invalid });
             const next = { ...body, updatedAt: new Date().toISOString() };
             const { mode } = await writeCms(next);
             return sendJson(res, 200, { ok: true, data: next, storage: mode });

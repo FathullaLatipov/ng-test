@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -52,8 +53,22 @@ function fileSet(data) {
   fs.writeFileSync(LOCAL_FILE, JSON.stringify(data, null, 2), "utf8");
 }
 
+/**
+ * Admin password comes only from ADMIN_PASSWORD. The old built-in default ("nobel2026") is public in the
+ * repository, so it is accepted only for local development (never on Vercel).
+ */
 export function getAdminPassword() {
-  return process.env.ADMIN_PASSWORD || "nobel2026";
+  if (process.env.ADMIN_PASSWORD) return process.env.ADMIN_PASSWORD;
+  return process.env.VERCEL ? "" : "nobel2026";
+}
+
+/** Constant-time check; an empty/unset password never matches */
+export function passwordOk(candidate) {
+  const expected = getAdminPassword();
+  if (!expected || typeof candidate !== "string" || !candidate) return false;
+  const a = crypto.createHash("sha256").update(candidate).digest();
+  const b = crypto.createHash("sha256").update(expected).digest();
+  return crypto.timingSafeEqual(a, b);
 }
 
 export function getStorageMode() {

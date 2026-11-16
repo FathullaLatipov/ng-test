@@ -1,3 +1,4 @@
+import { safeHttpUrl } from "../lib/safeUrl";
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
 import { Link } from "react-router";
@@ -126,7 +127,7 @@ export function JibPage() {
               </Link>
               {jib.website && (
                 <a
-                  href={jib.website}
+                  href={safeHttpUrl(jib.website)}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ border: "1px solid rgba(213,162,81,0.5)", color: GOLD_LIGHT, textDecoration: "none", fontSize: 12.5, fontWeight: 700, letterSpacing: "0.08em", padding: "15px 28px" }}
@@ -318,7 +319,7 @@ export function JibPage() {
                 ОБСУДИТЬ СОТРУДНИЧЕСТВО →
               </Link>
               {jib.website && (
-                <a href={jib.website} target="_blank" rel="noopener noreferrer" style={{ border: "1px solid rgba(213,162,81,0.5)", color: GOLD_LIGHT, textDecoration: "none", fontSize: 12.5, fontWeight: 700, letterSpacing: "0.08em", padding: "15px 30px" }}>
+                <a href={safeHttpUrl(jib.website)} target="_blank" rel="noopener noreferrer" style={{ border: "1px solid rgba(213,162,81,0.5)", color: GOLD_LIGHT, textDecoration: "none", fontSize: 12.5, fontWeight: 700, letterSpacing: "0.08em", padding: "15px 30px" }}>
                   {jib.websiteLabel || "Сайт завода"} ↗
                 </a>
               )}

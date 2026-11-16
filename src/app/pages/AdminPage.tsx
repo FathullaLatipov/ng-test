@@ -25,7 +25,6 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import {
-  ADMIN_PASSWORD,
   isAdminAuthed,
   loginAdmin,
   resetCms,
@@ -267,9 +266,6 @@ function LoginGate({ onOk }: { onOk: () => void }) {
         >
           {busy ? "ВХОД…" : "ВОЙТИ"}
         </button>
-        <div style={{ marginTop: 16, fontSize: 12, color: "#8A8580" }}>
-          Демо-пароль: <code style={{ color: "#8A6A2F", background: "#F7F1E6", padding: "2px 6px", borderRadius: 4 }}>{ADMIN_PASSWORD}</code>
-        </div>
       </form>
     </div>
   );
