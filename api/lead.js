@@ -37,7 +37,8 @@ function readBody(req) {
 }
 
 /** Trim + hard length cap; always a string */
-const clean = (v, max = 500) => String(v ?? "").replace(/\u0000/g, "").trim().slice(0, max);
+/** Trim, cap the length and drop characters that could fake the bot's status block (📌) */
+const clean = (v, max = 500) => String(v ?? "").replace(/\u0000/g, "").replace(/\u{1F4CC}/gu, "").trim().slice(0, max);
 
 const escapeHtml = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 

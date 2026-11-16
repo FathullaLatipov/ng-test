@@ -72,7 +72,7 @@ export async function handleUpdate(update) {
   }
 
   const key = m[1];
-  const cut = msg.text.indexOf(STATUS_MARK);
+  const cut = msg.text.lastIndexOf(STATUS_MARK);
   const base = cut === -1 ? msg.text : msg.text.slice(0, cut);
   const currentLine = cut === -1 ? "" : msg.text.slice(cut + STATUS_MARK.length).split("\n")[0];
   if (currentLine === STATUS[key]) {

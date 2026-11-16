@@ -1137,6 +1137,9 @@ export function AdminPage() {
             <Field lab="Телефон" value={data.contact.phone} onChange={(v) => patch("contact", { ...data.contact, phone: v })} />
             <Field lab="Email" value={data.contact.email} onChange={(v) => patch("contact", { ...data.contact, email: v })} />
             <Field lab="Часы работы" value={data.contact.hours} onChange={(v) => patch("contact", { ...data.contact, hours: v })} />
+            <Field lab="Instagram (ссылка)" value={data.contact.instagram || ""} onChange={(v) => patch("contact", { ...data.contact, instagram: v })} />
+            <Field lab="Telegram (ссылка)" value={data.contact.telegram || ""} onChange={(v) => patch("contact", { ...data.contact, telegram: v })} />
+            <Field lab="Запрос для карты (если пусто — адрес)" value={data.contact.mapQuery || ""} onChange={(v) => patch("contact", { ...data.contact, mapQuery: v })} />
             <Field lab="Текст в футере" value={data.contact.footerBlurb} onChange={(v) => patch("contact", { ...data.contact, footerBlurb: v })} multiline />
             <Field lab="Copyright" value={data.contact.copyright} onChange={(v) => patch("contact", { ...data.contact, copyright: v })} />
           </Card>

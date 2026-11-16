@@ -91,14 +91,20 @@ export function ContactFooterNew() {
 
               <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.4 }} style={{ display: "flex", flexDirection: "column" }}>
                 {[
-                  { label: "Адрес", value: contact.address },
-                  { label: "Телефон", value: contact.phone },
-                  { label: "Email", value: contact.email },
-                  { label: "Часы работы", value: contact.hours },
-                ].filter((item) => item.value.trim()).map((item) => (
+                  { label: "Адрес", value: contact.address, href: "" },
+                  { label: "Телефон", value: contact.phone, href: contact.phone ? "tel:" + contact.phone.replace(/[^\d+]/g, "") : "" },
+                  { label: "Email", value: contact.email, href: contact.email ? "mailto:" + contact.email : "" },
+                  { label: "Instagram", value: contact.instagram ? "@" + (contact.instagram.match(/instagram\.com\/([^/?#]+)/i)?.[1] ?? "") : "", href: contact.instagram || "" },
+                  { label: "Telegram", value: contact.telegram ? "@" + (contact.telegram.match(/t\.me\/([^/?#]+)/i)?.[1] ?? "") : "", href: contact.telegram || "" },
+                  { label: "Часы работы", value: contact.hours, href: "" },
+                ].filter((item) => item.value && item.value.trim() && item.value !== "@").map((item) => (
                   <div key={item.label} style={{ display: "grid", gridTemplateColumns: "90px 1fr", gap: 16, padding: "13px 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
                     <span style={{ color: "#9A9A9A", fontSize: 11, fontWeight: 600, letterSpacing: "0.08em" }}>{item.label.toUpperCase()}</span>
-                    <span style={{ color: "#FFFFFF", fontSize: 13, fontWeight: 400, lineHeight: 1.6, whiteSpace: "pre-line" }}>{item.value}</span>
+                    {item.href ? (
+                      <a href={item.href} {...(item.href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})} style={{ color: "#FFFFFF", fontSize: 13, fontWeight: 400, lineHeight: 1.6, textDecoration: "none" }}>{item.value}</a>
+                    ) : (
+                      <span style={{ color: "#FFFFFF", fontSize: 13, fontWeight: 400, lineHeight: 1.6, whiteSpace: "pre-line" }}>{item.value}</span>
+                    )}
                   </div>
                 ))}
                 {!contact.phone && !contact.email && !contact.address && (

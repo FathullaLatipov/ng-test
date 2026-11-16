@@ -182,6 +182,12 @@ export type CmsData = {
     phone: string;
     email: string;
     hours: string;
+    /** Ссылка на Instagram */
+    instagram: string;
+    /** Ссылка на Telegram */
+    telegram: string;
+    /** Что искать на карте (если пусто — берётся адрес) */
+    mapQuery?: string;
     footerBlurb: string;
     copyright: string;
   };
