@@ -3,7 +3,6 @@ import { AboutGroup } from "../components/AboutGroup";
 import { BusinessDirections } from "../components/BusinessDirections";
 import { BrandsPortfolio } from "../components/BrandsPortfolio";
 import { WhyChooseUs } from "../components/WhyChooseUs";
-import { PartnershipSection } from "../components/PartnershipSection";
 import { KeyStats } from "../components/KeyStats";
 import { SectionDivider, RouteTransition } from "../components/BrandDecor";
 import { PageLayout } from "../components/PageLayout";
@@ -23,7 +22,6 @@ export function HomePage() {
       <BusinessDirections limit={6} showAllLink />
       <BrandsPortfolio />
       <WhyChooseUs />
-      <PartnershipSection showForm={false} />
       <SectionDivider mark="hex" />
     </PageLayout>
   );
