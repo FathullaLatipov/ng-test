@@ -52,7 +52,7 @@ export function SemeySection() {
         <IbmGrid opacity={0.02} />
         <div style={{ maxWidth: 1400, margin: "0 auto", position: "relative", zIndex: 1 }}>
           <div style={{ maxWidth: 860, marginBottom: 44 }}>
-            <Reveal><Eyebrow>ПРОЕКТ В РЕАЛИЗАЦИИ · КАЗАХСТАН</Eyebrow></Reveal>
+            <Reveal><Eyebrow>ЗАПУСК ПЛАНИРУЕТСЯ В 2027 ГОДУ · КАЗАХСТАН</Eyebrow></Reveal>
             <Reveal delay={0.05}>
               <h2 style={{ fontSize: "clamp(28px, 3.4vw, 46px)", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.1, margin: "0 0 18px" }}>
                 Маслоэкстракционный завод <span style={{ color: GOLD_LIGHT }}>Семей</span>
@@ -68,7 +68,7 @@ export function SemeySection() {
           <div className="ng-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center", marginBottom: 40 }}>
             <Reveal delay={0.1}>
               <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 17.5, lineHeight: 1.8, marginBottom: 18 }}>
-                Завод в Семее — проект в реализации. Отраслевые цифры и проектные мощности публикуются только после подтверждения источником.
+                Запуск завода в Семее планируется в 2027 году. Отраслевые цифры и проектные мощности публикуются только после подтверждения источником.
               </p>
               <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 17.5, lineHeight: 1.8, margin: 0 }}>
                 Государственные и отраслевые инициативы направлены на увеличение глубокой переработки, развитие инфраструктуры и экспортных потоков — отрасль остаётся приоритетной и способствует диверсификации сельского хозяйства и росту внешнеторговой выручки.

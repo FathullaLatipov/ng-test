@@ -116,7 +116,7 @@ export function GeographyNew() {
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <div style={{ width: 7, height: 7, borderRadius: "50%", background: "rgba(201,162,75,0.7)" }} />
-                <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 11 }}>Проект в реализации</span>
+                <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 11 }}>Проект: запуск в 2027 году</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <div style={{ width: 20, height: 1, borderTop: "1px dashed rgba(201,162,75,0.4)" }} />
