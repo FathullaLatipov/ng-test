@@ -12,7 +12,7 @@ import {
 } from "../components/BrandDecor";
 import { submitLead, fileToBase64 } from "../lib/submitLead";
 import { Link } from "react-router";
-import { BarChart3, ClipboardList, Globe2, Megaphone, Truck, UtensilsCrossed, type LucideIcon } from "lucide-react";
+import { BarChart3, ClipboardList, FileCheck2, Globe2, Megaphone, Truck, UploadCloud, UtensilsCrossed, X, type LucideIcon } from "lucide-react";
 
 const DEPT_ICONS: LucideIcon[] = [BarChart3, Truck, Globe2, UtensilsCrossed, Megaphone, ClipboardList];
 
@@ -34,6 +34,30 @@ export function CareersPage() {
   const [error, setError] = useState("");
   const [fileName, setFileName] = useState("");
   const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [dragOver, setDragOver] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const clearResume = () => {
+    setFileName("");
+    setResumeFile(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+  const pickResume = (file?: File | null) => {
+    if (!file) return;
+    if (!/\.(pdf|docx?)$/i.test(file.name)) {
+      setError("Подойдут только файлы PDF, DOC или DOCX.");
+      clearResume();
+      return;
+    }
+    if (file.size > 3 * 1024 * 1024) {
+      setError("Файл больше 3 МБ.");
+      clearResume();
+      return;
+    }
+    setError("");
+    setFileName(file.name);
+    setResumeFile(file);
+  };
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -252,28 +276,35 @@ export function CareersPage() {
                 />
               </div>
               <div style={{ gridColumn: "1 / -1" }}>
-                <label style={{ display: "block", color: "rgba(255,255,255,0.6)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", marginBottom: 8 }}>
-                  РЕЗЮМЕ PDF / DOCX, ДО 3 МБ
+                <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", marginBottom: 8 }}>
+                  РЕЗЮМЕ — PDF, DOC, DOCX · ДО 3 МБ
+                </div>
+                <label
+                  className={`ng-upload ${fileName ? "ng-upload-done" : ""} ${dragOver ? "ng-upload-drag" : ""}`}
+                  onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+                  onDragLeave={() => setDragOver(false)}
+                  onDrop={(e) => { e.preventDefault(); setDragOver(false); pickResume(e.dataTransfer.files?.[0]); }}
+                >
+                  <input
+                    ref={fileInputRef}
+                    className="ng-upload-input"
+                    type="file"
+                    accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    onChange={(e) => pickResume(e.target.files?.[0])}
+                  />
+                  <span className="ng-upload-icon">{fileName ? <FileCheck2 size={28} strokeWidth={1.6} /> : <UploadCloud size={28} strokeWidth={1.6} />}</span>
+                  <span className="ng-upload-text">
+                    <strong>{fileName || "Прикрепить резюме"}</strong>
+                    <small>{fileName ? "Файл выбран · нажмите, чтобы заменить" : "Перетащите файл сюда или нажмите, чтобы выбрать"}</small>
+                  </span>
+                  {fileName ? (
+                    <button type="button" className="ng-upload-clear" aria-label="Убрать файл" onClick={(e) => { e.preventDefault(); clearResume(); }}>
+                      <X size={16} />
+                    </button>
+                  ) : (
+                    <span className="ng-upload-cta">ВЫБРАТЬ ФАЙЛ</span>
+                  )}
                 </label>
-                <input
-                  type="file"
-                  accept=".pdf,.doc,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (!file) return;
-                    if (file.size > 3 * 1024 * 1024) {
-                      setError("Файл больше 3 МБ.");
-                      e.target.value = "";
-                      setFileName("");
-                      setResumeFile(null);
-                      return;
-                    }
-                    setError("");
-                    setFileName(file.name);
-                    setResumeFile(file);
-                  }}
-                  style={{ color: "rgba(255,255,255,0.8)", fontSize: 13 }}
-                />
               </div>
               <label style={{ gridColumn: "1 / -1", display: "flex", gap: 10, color: "rgba(255,255,255,0.75)", fontSize: 13, lineHeight: 1.5 }}>
                 <input type="checkbox" required checked={form.consent} onChange={(e) => setForm((p) => ({ ...p, consent: e.target.checked }))} />

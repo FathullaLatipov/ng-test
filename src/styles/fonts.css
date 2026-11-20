@@ -238,3 +238,46 @@ a.ng-contact-card:hover .ng-contact-go { color: #E8C97A; transform: translate(3p
 .ng-map-btn-ghost { background: transparent; color: #E8C97A; border: 1px solid rgba(213,162,81,0.45); }
 .ng-map-btn-ghost:hover { background: rgba(213,162,81,0.12); box-shadow: none; }
 @media (max-width: 1024px) { .ng-map-frame { min-height: 360px; flex: none; height: 380px; } }
+
+
+/* Careers: resume upload zone */
+@keyframes ng-upload-pulse { 0% { box-shadow: 0 0 0 0 rgba(213,162,81,0.45); } 70% { box-shadow: 0 0 0 14px rgba(213,162,81,0); } 100% { box-shadow: 0 0 0 0 rgba(213,162,81,0); } }
+@keyframes ng-upload-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+.ng-upload {
+  position: relative; display: flex; align-items: center; gap: 18px; padding: 20px 22px; cursor: pointer; border-radius: 14px;
+  background: linear-gradient(160deg, rgba(213,162,81,0.10), rgba(213,162,81,0.025) 70%), #111111;
+  border: 2px dashed rgba(213,162,81,0.55);
+  transition: border-color .3s, background .3s, transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s;
+}
+.ng-upload:hover, .ng-upload-drag { border-color: #E8C97A; transform: translateY(-2px); box-shadow: 0 14px 30px rgba(0,0,0,0.4), 0 0 26px rgba(213,162,81,0.16); background: linear-gradient(160deg, rgba(213,162,81,0.18), rgba(213,162,81,0.05) 70%), #131210; }
+.ng-upload-drag { transform: scale(1.01); }
+.ng-upload:focus-within { outline: 2px solid #E8C97A; outline-offset: 3px; }
+.ng-upload-input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.ng-upload-icon {
+  flex-shrink: 0; width: 58px; height: 58px; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: #1A1408;
+  background: linear-gradient(145deg, #E8C97A, #D5A251); animation: ng-upload-pulse 2.4s ease-out infinite;
+}
+.ng-upload:not(.ng-upload-done) .ng-upload-icon svg { animation: ng-upload-bob 2.4s ease-in-out infinite; }
+.ng-upload-text { min-width: 0; flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.ng-upload-text strong { color: #fff; font-size: 17px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ng-upload-text small { color: rgba(255,255,255,0.62); font-size: 13px; line-height: 1.4; }
+.ng-upload-cta { flex-shrink: 0; padding: 11px 18px; border-radius: 8px; background: #C9A24B; color: #0A0A0A; font-size: 12px; font-weight: 700; letter-spacing: .08em; transition: background .25s; }
+.ng-upload:hover .ng-upload-cta { background: #E8C97A; }
+.ng-upload-clear { position: relative; z-index: 2; flex-shrink: 0; width: 38px; height: 38px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background .25s, border-color .25s; }
+.ng-upload-clear:hover { background: rgba(192,57,43,0.25); border-color: rgba(231,120,110,0.6); }
+.ng-upload-done { border-style: solid; border-color: rgba(143,205,30,0.7); background: linear-gradient(160deg, rgba(143,205,30,0.10), rgba(143,205,30,0.02) 70%), #111111; }
+.ng-upload-done .ng-upload-icon { background: linear-gradient(145deg, #A6E03A, #6FA812); animation: none; }
+@media (max-width: 560px) { .ng-upload { padding: 16px; gap: 14px; } .ng-upload-icon { width: 50px; height: 50px; } .ng-upload-cta { display: none; } }
+@media (prefers-reduced-motion: reduce) { .ng-upload-icon, .ng-upload-icon svg { animation: none !important; } }
+
+
+/* Brands: partner logo wall */
+.ng-partner-wall { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; padding: clamp(14px, 2vw, 24px); border-radius: 18px; background: linear-gradient(160deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015)), #0F0E0C; border: 1px solid rgba(255,255,255,0.08); }
+.ng-partner-tile {
+  display: flex; align-items: center; justify-content: center; width: 176px; height: 92px; padding: 14px 18px; border-radius: 12px; background: #fff;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25); transition: transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s;
+}
+.ng-partner-tile img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; filter: grayscale(1) contrast(1.05); opacity: .78; transition: filter .35s, opacity .35s, transform .5s cubic-bezier(.22,1,.36,1); }
+.ng-partner-tile:hover { transform: translateY(-4px); box-shadow: 0 16px 30px rgba(0,0,0,0.45), 0 0 22px rgba(213,162,81,0.25); }
+.ng-partner-tile:hover img { filter: none; opacity: 1; transform: scale(1.06); }
+@media (max-width: 680px) { .ng-partner-wall { gap: 8px; padding: 10px; } .ng-partner-tile { width: calc(50% - 4px); height: 76px; padding: 10px 12px; } }

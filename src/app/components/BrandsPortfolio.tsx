@@ -89,6 +89,7 @@ export function BrandsPortfolio({ showCta = true, showCompanies = true }: { show
   const companies = [...data.companies].filter((c) => c.published).sort((a, b) => a.order - b.order);
   const own = [...brands.own].sort((a, b) => a.order - b.order);
   const exclusive = [...brands.exclusive].sort((a, b) => a.order - b.order);
+  const partners = [...(brands.partners ?? [])].sort((a, b) => a.order - b.order);
   const [openBrand, setOpenBrand] = useState<BrandItem | null>(null);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
@@ -199,10 +200,17 @@ export function BrandsPortfolio({ showCta = true, showCompanies = true }: { show
           </div>
         </motion.div>
 
-        {exclusive.length === 0 && (
-          <p style={{ color: "rgba(255,255,255,0.62)", fontSize: 14, lineHeight: 1.7, margin: "0 0 36px" }}>
-            Партнёрские бренды не опубликованы: логотип добавляется только после проверки отношений и разрешения правообладателя.
-          </p>
+        {partners.length > 0 && (
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.34 }} style={{ marginBottom: 48 }}>
+            <SectionLabel accent>НАШИ ПАРТНЁРЫ</SectionLabel>
+            <div className="ng-partner-wall">
+              {partners.map((p) => (
+                <div key={p.id} className="ng-partner-tile" title={p.name}>
+                  <img src={p.logo} alt={p.name} loading="lazy" draggable={false} />
+                </div>
+              ))}
+            </div>
+          </motion.div>
         )}
 
         {exclusive.length > 0 && (

@@ -13,6 +13,25 @@ import brandDonskoy from "../../assets/brands/donskoy-yantar.webp";
 import brandNonna from "../../assets/brands/nonna.webp";
 import brandChoice from "../../assets/brands/choice.webp";
 import brandRamazan from "../../assets/brands/ramazan.webp";
+import partner01 from "../../assets/partners/01.webp";
+import partner02 from "../../assets/partners/02.webp";
+import partner03 from "../../assets/partners/03.webp";
+import partner04 from "../../assets/partners/04.webp";
+import partner05 from "../../assets/partners/05.webp";
+import partner06 from "../../assets/partners/06.webp";
+import partner07 from "../../assets/partners/07.webp";
+import partner08 from "../../assets/partners/08.webp";
+import partner09 from "../../assets/partners/09.webp";
+import partner10 from "../../assets/partners/10.webp";
+import partner12 from "../../assets/partners/12.webp";
+import partner13 from "../../assets/partners/13.webp";
+import partner14 from "../../assets/partners/14.webp";
+import partner15 from "../../assets/partners/15.webp";
+import partner16 from "../../assets/partners/16.webp";
+import partner17 from "../../assets/partners/17.webp";
+import partner18 from "../../assets/partners/18.webp";
+import partner24 from "../../assets/partners/24.webp";
+import partner25 from "../../assets/partners/25.webp";
 import markEcoborn from "../../assets/ecoborn-logo.svg";
 import markNobelTrade from "../../assets/marks/nobel-trade.webp";
 import markRimado from "../../assets/marks/rimado.webp";
@@ -112,7 +131,7 @@ export const DEFAULT_CMS: CmsData = {
         number: "03",
         name: "Логистика и инфраструктура",
         tagline: "Перевозки, склады, распределение",
-        desc: "Международные железнодорожные и автомобильные перевозки, управление товарами в пути, региональное складирование и распределение продукции. Развивается логистический проект Акча в Узбекистане.",
+        desc: "Международные железнодорожные и автомобильные перевозки, управление товарами в пути, региональное складирование и распределение продукции. Логистический центр и склады перераспределения Акча работают в Узбекистане.",
         img: dirLogistics,
         order: 3,
         published: true,
@@ -141,8 +160,8 @@ export const DEFAULT_CMS: CmsData = {
         id: "projects",
         number: "06",
         name: "Инвестиционные и региональные проекты",
-        tagline: "Статус каждого проекта указан отдельно",
-        desc: "ARIS и SEMEY — проекты в реализации, Казахстан. Акча — логистический проект, Узбекистан. Торговый дом в Афганистане — в процессе.",
+        tagline: "Казахстан, Узбекистан, Афганистан",
+        desc: "ARIS и SEMEY — проекты в реализации, Казахстан. Акча — логистический центр и склады перераспределения, Узбекистан. Торговый дом в Афганистане — действующий.",
         img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
         order: 6,
         published: true,
@@ -154,7 +173,28 @@ export const DEFAULT_CMS: CmsData = {
     eyebrow: "БРЕНДЫ И ПРОДУКЦИЯ",
     title: "Бренды и продукция",
     titleAccent: "Nobel Group.",
-    lead: "Портфель группы объединяет собственные торговые марки, бренды международных производителей и продукты для розничного, оптового, HoReCa и промышленного рынков. Партнёрские бренды публикуются только после подтверждения отношений и разрешения на логотип.",
+    lead: "Портфель группы объединяет собственные торговые марки, бренды международных производителей и продукты для розничного, оптового, HoReCa и промышленного рынков.",
+    partners: [
+      { id: "pt01", name: "Pacific Inter-Link", logo: partner01, order: 1 },
+      { id: "pt02", name: "IFFCO", logo: partner02, order: 2 },
+      { id: "pt03", name: "Musim Mas", logo: partner03, order: 3 },
+      { id: "pt04", name: "Able Farm", logo: partner04, order: 4 },
+      { id: "pt05", name: "Молочный мир", logo: partner05, order: 5 },
+      { id: "pt06", name: "ICC Group", logo: partner06, order: 6 },
+      { id: "pt07", name: "Юг Руси", logo: partner07, order: 7 },
+      { id: "pt08", name: "1М Молочный", logo: partner08, order: 8 },
+      { id: "pt09", name: "НьюБио", logo: partner09, order: 9 },
+      { id: "pt10", name: "PZ Trzemeszno", logo: partner10, order: 10 },
+      { id: "pt12", name: "Бабушкина крынка", logo: partner12, order: 11 },
+      { id: "pt13", name: "Гудвилл", logo: partner13, order: 12 },
+      { id: "pt14", name: "Русагро", logo: partner14, order: 13 },
+      { id: "pt15", name: "Sime Darby Oils", logo: partner15, order: 14 },
+      { id: "pt16", name: "Эфко", logo: partner16, order: 15 },
+      { id: "pt17", name: "Нива", logo: partner17, order: 16 },
+      { id: "pt18", name: "Ресурс", logo: partner18, order: 17 },
+      { id: "pt24", name: "Актобе Фудс", logo: partner24, order: 18 },
+      { id: "pt25", name: "Cargill", logo: partner25, order: 19 },
+    ],
     own: [
       { id: "br1", img: brandLekker, about: "Растительное подсолнечное масло «Lekker» — натуральное, рафинированное, дезодорированное и вымороженное масло, которое сохранило полезные свойства витамина E. После переработки семян подсолнечника продукт проходит тщательную очистку в несколько этапов, поэтому масло подходит для жарки, выпечки и соусов.\n\nОно универсальное: подходит для приготовления любых блюд, не имеет запаха, не пенится и не содержит консервантов или вредных добавок.", volumes: "1 л / 4,6 л / 4,8 л / 5 л", shelfLife: "12 месяцев", badges: ["Рафинированное", "Дезодорированное", "Вымороженное", "Без ГМО", "Без холестерина", "Без консервантов"], name: "ЛЕККЕР", cat: "Подсолнечное масло · EcoBorn", desc: "Флагманский бренд рафинированного масла", order: 1 },
       { id: "br2", img: brandZlatozhar, about: "Растительное подсолнечное масло «Златожар» с добавлением масла рапсовых семян — полезное и универсальное масло, которое сделает приготовление блюд ещё вкуснее и проще. Для его получения используются отборные семена подсолнечника и рапса первого сорта.\n\nМасло обогащено ценными пищевыми свойствами витамина E и некоторых жирных кислот, которые полезны для нормальной деятельности организма.", volumes: "0,9 л / 1 л / 2 л / 3 л / 5 л", shelfLife: "12 месяцев", badges: ["С добавлением рапсового масла", "Без ГМО", "Без холестерина"], name: "Златожар", cat: "Подсолнечное масло · EcoBorn", order: 2 },
@@ -185,7 +225,7 @@ export const DEFAULT_CMS: CmsData = {
       { id: "g1", label: "Действующий рынок", value: "Узбекистан — рынок группы" },
       { id: "g2", label: "Проект", value: "Казахстан — Aris, Semey" },
       { id: "g3", label: "Актив", value: "Россия — J.I.B. INVEST" },
-      { id: "g4", label: "В процессе", value: "Афганистан — торговый дом" },
+      { id: "g4", label: "Действует", value: "Афганистан — торговый дом" },
     ],
     factories: [
       { id: "f1", country: "Казахстан", role: "Aris и Semey — проект в реализации" },
@@ -425,9 +465,9 @@ export const DEFAULT_CMS: CmsData = {
       id: "ahcha",
       number: "07",
       name: "Акча",
-      entityType: "Логистический проект · Узбекистан",
-      description: "Логистический проект группы. Детальное описание публикуется после подтверждения параметров объекта.",
-      tags: ["Логистика", "Проект", "Узбекистан"],
+      entityType: "Логистический центр · Узбекистан",
+      description: "Логистический центр и склады перераспределения группы в Узбекистане.",
+      tags: ["Логистика", "Склады", "Узбекистан"],
       website: "",
       websiteLabel: "",
       bgKind: "oil",
@@ -440,9 +480,9 @@ export const DEFAULT_CMS: CmsData = {
       id: "afghanistan",
       number: "08",
       name: "Торговый дом в Афганистане",
-      entityType: "В процессе",
-      description: "Торговый дом в Афганистане находится в процессе. Подробности публикуются после подтверждения статуса.",
-      tags: ["Проект", "Афганистан"],
+      entityType: "Действующее предприятие · Афганистан",
+      description: "Действующий торговый дом группы в Афганистане.",
+      tags: ["Торговля", "Афганистан"],
       website: "",
       websiteLabel: "",
       bgKind: "oil",
@@ -492,9 +532,9 @@ export const DEFAULT_CMS: CmsData = {
       points: ["Пищевые ингредиенты", "B2B и HoReCa"],
     },
     {
-      id: "m-aqcha", year: "2025", title: "Акча (Aqcha)", tag: "Логистика", order: 8, published: true,
-      desc: "Логистический проект группы в Узбекистане: складская и транспортная инфраструктура для хранения и распределения продукции Nobel Group и партнёров.",
-      points: ["Склады и хранение", "Распределение", "Узбекистан"],
+      id: "m-aqcha", year: "2025", title: "Акча (Aqcha) — логистический центр", tag: "Логистика", order: 8, published: true,
+      desc: "Логистический центр и склады перераспределения в Узбекистане: хранение и распределение продукции Nobel Group и партнёров.",
+      points: ["Склады перераспределения", "Хранение и распределение", "Узбекистан"],
     },
     {
       id: "m-distribution", logo: markNobelTrade, year: "2026", title: "Nobel Distribution", tag: "Дистрибуция", order: 9, published: true,

@@ -6,12 +6,12 @@ import bannerBrands from "../../assets/banner-brands.webp";
 
 export function BrandsPage() {
   return (
-    <PageLayout title="Бренды и продукция — Nobel Group" description="Собственные торговые марки Nobel Group и товарные категории. Партнёрские бренды публикуются после подтверждения.">
+    <PageLayout title="Бренды и продукция — Nobel Group" description="Собственные торговые марки Nobel Group и товарные категории.">
       <PageHero
         eyebrow="БРЕНДЫ И ПРОДУКЦИЯ"
         title="Бренды и продукция"
         titleAccent="Nobel Group."
-        subtitle="Портфель группы объединяет собственные торговые марки и продукты для розничного, оптового, HoReCa и промышленного рынков. Партнёрские бренды добавляются только после подтверждения."
+        subtitle="Портфель группы объединяет собственные торговые марки и продукты для розничного, оптового, HoReCa и промышленного рынков."
         crumbs={[{ label: "Бренды" }]}
         bgImage={bannerBrands}
         bgImagePosition="right 70%"

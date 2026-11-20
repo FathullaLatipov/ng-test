@@ -574,7 +574,7 @@ export function SectionTeaser({
   eyebrow: string;
   title: string;
   titleAccent?: string;
-  desc: string;
+  desc?: string;
   points: string[];
   ctaLabel?: string;
   ctaTo?: string;
@@ -624,14 +624,16 @@ export function SectionTeaser({
                 </>
               )}
             </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.14 }}
-              style={{ color: "#FFFFFF", fontSize: 15, lineHeight: 1.75, maxWidth: 480, marginBottom: 26 }}
-            >
-              {desc}
-            </motion.p>
+            {desc && (
+              <motion.p
+                initial={{ opacity: 0, y: 16 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.14 }}
+                style={{ color: "#FFFFFF", fontSize: 15, lineHeight: 1.75, maxWidth: 480, marginBottom: 26 }}
+              >
+                {desc}
+              </motion.p>
+            )}
             {ctaLabel && ctaTo && (
             <motion.div initial={{ opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }}>
               <Link

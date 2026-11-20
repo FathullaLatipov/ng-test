@@ -38,6 +38,7 @@ export function mergeCms(parsed: Partial<CmsData> | null | undefined): CmsData {
       ...base.brands,
       ...parsed.brands,
       own: parsed.brands?.own?.length ? parsed.brands.own : base.brands.own,
+      partners: parsed.brands?.partners?.length ? parsed.brands.partners : base.brands.partners,
       exclusive: parsed.brands?.exclusive?.length ? parsed.brands.exclusive : base.brands.exclusive,
       distributed: parsed.brands?.distributed?.length ? parsed.brands.distributed : base.brands.distributed,
       categories: parsed.brands?.categories?.length ? parsed.brands.categories : base.brands.categories,

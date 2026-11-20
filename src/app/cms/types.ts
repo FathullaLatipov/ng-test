@@ -64,6 +64,14 @@ export type MilestoneItem = {
   published: boolean;
 };
 
+export type PartnerItem = {
+  id: string;
+  name: string;
+  /** Логотип партнёра (URL) */
+  logo: string;
+  order: number;
+};
+
 export type BrandItem = {
   id: string;
   name: string;
@@ -148,6 +156,8 @@ export type CmsData = {
 
   brands: SectionHeader & {
     own: BrandItem[];
+    /** Логотипы партнёров (стена логотипов на странице «Бренды») */
+    partners?: PartnerItem[];
     exclusive: BrandItem[];
     distributed: BrandItem[];
     categories: string[];

@@ -42,6 +42,7 @@ import type {
   JobItem,
   MilestoneItem,
   NewsItem,
+  PartnerItem,
   StatItem,
   TextItem,
 } from "../cms/types";
@@ -920,6 +921,39 @@ export function AdminPage() {
                 saved();
               }}
             />
+            <Card
+              title="Партнёры (логотипы)"
+              actions={
+                <button
+                  onClick={() => {
+                    patch("brands", { ...data.brands, partners: [...(data.brands.partners ?? []), { id: uid("pt"), name: "Новый партнёр", logo: "", order: (data.brands.partners?.length ?? 0) + 1 }] });
+                    saved();
+                  }}
+                  style={{ background: "transparent", border: "1px solid rgba(201,162,75,0.4)", color: "#C9A24B", padding: "6px 10px", cursor: "pointer", fontSize: 12 }}
+                >
+                  +
+                </button>
+              }
+            >
+              <p style={{ margin: 0, color: "var(--admin-muted)", fontSize: 12, lineHeight: 1.6 }}>
+                Логотип — ссылка на изображение (лучше прозрачный PNG/WebP или картинка на белом фоне, до ~320 px по ширине).
+              </p>
+              {(data.brands.partners ?? []).slice().sort((a, b) => a.order - b.order).map((pt) => {
+                const set = (patchItem: Partial<PartnerItem>) =>
+                  patch("brands", { ...data.brands, partners: (data.brands.partners ?? []).map((x) => (x.id === pt.id ? { ...x, ...patchItem } : x)) });
+                return (
+                  <div key={pt.id} style={{ display: "grid", gridTemplateColumns: "64px 1fr 2fr auto", gap: 8, alignItems: "center" }}>
+                    <div style={{ height: 40, background: "#fff", borderRadius: 6, border: "1px solid var(--admin-border)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+                      {pt.logo && <img src={pt.logo} alt="" style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }} />}
+                    </div>
+                    <input value={pt.name} onChange={(e) => set({ name: e.target.value })} style={field} placeholder="Название" />
+                    <input value={pt.logo} onChange={(e) => set({ logo: e.target.value })} style={field} placeholder="Логотип (URL)" />
+                    <DangerBtn onClick={() => { patch("brands", { ...data.brands, partners: (data.brands.partners ?? []).filter((x) => x.id !== pt.id) }); saved(); }}>×</DangerBtn>
+                  </div>
+                );
+              })}
+              <SaveBtn onClick={saved} />
+            </Card>
           </>
         )}
 
